@@ -1,21 +1,692 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shreyansh Terminal</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODERUDRAX // Tactical AI Systems Interface</title>
+<style>
+  /* =============================================
+     DESIGN SYSTEM — CSS Variables
+     Think of this as your "config file" for colors
+  ============================================= */
+  :root {
+    --bg:           #030a03;
+    --bg-card:      #080f08;
+    --bg-card2:     #0a140a;
+    --green:        #00ff41;
+    --green-dim:    #00c030;
+    --green-faint:  #003310;
+    --amber:        #ffb300;
+    --red:          #ff3333;
+    --cyan:         #00e5ff;
+    --white:        #e0ffe0;
+    --muted:        #3a5a3a;
+    --border:       #0d2a0d;
+    --font-mono:    'Courier New', Courier, monospace;
+    --scanline-opacity: 0.03;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* =============================================
+     BASE LAYER — The screen itself
+  ============================================= */
+  body {
+    background: var(--bg);
+    color: var(--green);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* CRT scanline overlay — pure CSS trick */
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,255,65,var(--scanline-opacity)) 2px,
+      rgba(0,255,65,var(--scanline-opacity)) 4px
+    );
+  }
+
+  /* Subtle vignette on edges like a real CRT */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* =============================================
+     TERMINAL WRAPPER
+  ============================================= */
+  #terminal-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 16px 100px;
+    min-height: 100vh;
+  }
+
+  /* =============================================
+     OUTPUT AREA — where all renders append
+     This is the core of the engine.
+     Every command output is APPENDED here.
+     Nothing is ever replaced (except on 'clear')
+  ============================================= */
+  #output-area {
+    width: 100%;
+  }
+
+  /* =============================================
+     INPUT ROW — the prompt line
+  ============================================= */
+  #input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    position: relative;
+  }
+
+  #prompt-label {
+    color: var(--green-dim);
+    white-space: nowrap;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  #prompt-label span.host   { color: var(--green); }
+  #prompt-label span.at     { color: var(--muted); }
+  #prompt-label span.loc    { color: var(--amber); }
+  #prompt-label span.dollar { color: var(--white); margin-left: 2px; }
+
+  #cmd-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    flex: 1;
+    caret-color: var(--green);
+  }
+
+  /* =============================================
+     BOOT / ASCII HEADER
+  ============================================= */
+  #boot-header {
+    margin-bottom: 16px;
+    white-space: pre;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--green-dim);
+    overflow-x: auto;
+  }
+
+  /* =============================================
+     GENERIC OUTPUT LINE
+  ============================================= */
+  .out-line {
+    margin: 1px 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .out-line.dim    { color: var(--muted); }
+  .out-line.bright { color: var(--white); }
+  .out-line.amber  { color: var(--amber); }
+  .out-line.red    { color: var(--red); }
+  .out-line.cyan   { color: var(--cyan); }
+  .out-line.green  { color: var(--green); }
+
+  /* The echo of the command you typed */
+  .cmd-echo {
+    color: var(--green-dim);
+    margin: 10px 0 4px;
+  }
+
+  /* Section headers inside command outputs */
+  .section-label {
+    color: var(--amber);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 12px 0 4px;
+    border-bottom: 1px solid var(--green-faint);
+    padding-bottom: 3px;
+  }
+
+  /* =============================================
+     WHOAMI CARD
+  ============================================= */
+  .whoami-card {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 16px;
+    margin: 8px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    animation: fadeSlide 0.3s ease;
+  }
+
+  .whoami-avatar {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border: 1px solid var(--green-faint);
+    background: var(--green-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--green-dim);
+    position: relative;
+  }
+
+  /* Radar sweep on the avatar */
+  .whoami-avatar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(
+      from 0deg,
+      rgba(0,255,65,0.15) 0deg,
+      transparent 60deg
+    );
+    animation: radar-sweep 3s linear infinite;
+    border-radius: 50%;
+  }
+
+  .whoami-text { flex: 1; }
+  .whoami-name {
+    color: var(--green);
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .whoami-alias { color: var(--amber); font-size: 11px; margin-bottom: 8px; }
+  .whoami-bio   { color: var(--white); font-size: 12px; line-height: 1.7; }
+
+  /* =============================================
+     PROJECT GRID
+     This is the "renderProjects()" equivalent
+  ============================================= */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    margin: 8px 0;
+    animation: fadeSlide 0.3s ease;
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card:hover {
+    border-color: var(--green-dim);
+    background: var(--bg-card2);
+  }
+
+  /* Tactical corner brackets — pure CSS */
+  .project-card::before,
+  .project-card::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--green-dim);
+    border-style: solid;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card::before { top: 4px; left: 4px;  border-width: 1px 0 0 1px; }
+  .project-card::after  { bottom: 4px; right: 4px; border-width: 0 1px 1px 0; }
+  .project-card:hover::before,
+  .project-card:hover::after { opacity: 1; }
+
+  .project-status {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--green-dim);
+    margin-bottom: 4px;
+  }
+  .project-status.active { color: var(--green); }
+  .project-status.wip    { color: var(--amber); }
+
+  .project-name {
+    color: var(--white);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tag {
+    font-size: 9px;
+    padding: 2px 6px;
+    border: 1px solid var(--green-faint);
+    color: var(--green-dim);
+    letter-spacing: 1px;
+  }
+  .tag.defense { border-color: #1a3a1a; color: var(--amber); }
+  .tag.ai      { border-color: #003333; color: var(--cyan); }
+
+  /* =============================================
+     SKILLS TABLE
+  ============================================= */
+  .skills-block {
+    margin: 8px 0;
+    animation: fadeSlide 0.3s ease;
+  }
+
+  .skills-row {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 2px;
+    align-items: center;
+  }
+
+  .skill-name {
+    color: var(--white);
+    width: 140px;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+
+  .skill-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--green-faint);
+    position: relative;
+    max-width: 200px;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    background: var(--green-dim);
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  .skill-level {
+    color: var(--muted);
+    font-size: 9px;
+    margin-left: 8px;
+    letter-spacing: 1px;
+    width: 60px;
+  }
+
+  /* =============================================
+     SCAN COMMAND — the coolest one
+  ============================================= */
+  .scan-block {
+    margin: 8px 0;
+    border: 1px solid var(--green-faint);
+    padding: 12px;
+    background: var(--bg-card);
+    animation: fadeSlide 0.3s ease;
+  }
+
+  .scan-line-item {
+    display: flex;
+    gap: 8px;
+    margin: 3px 0;
+    font-size: 11px;
+  }
+  .scan-label { color: var(--green-dim); width: 180px; flex-shrink: 0; }
+  .scan-value { color: var(--white); }
+  .scan-value.ok      { color: var(--green); }
+  .scan-value.warn    { color: var(--amber); }
+  .scan-value.threat  { color: var(--red); }
+
+  /* =============================================
+     HELP COMMAND LAYOUT
+  ============================================= */
+  .help-block {
+    margin: 8px 0;
+    animation: fadeSlide 0.3s ease;
+  }
+  .cmd-list-item {
+    display: flex;
+    gap: 16px;
+    margin: 3px 0;
+    font-size: 12px;
+  }
+  .cmd-keyword {
+    color: var(--green);
+    width: 160px;
+    flex-shrink: 0;
+  }
+  .cmd-desc { color: var(--muted); }
+
+  /* =============================================
+     CONTACT BLOCK
+  ============================================= */
+  .contact-block {
+    margin: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fadeSlide 0.3s ease;
+  }
+  .contact-item {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+  }
+  .contact-label { color: var(--green-dim); width: 100px; }
+  .contact-link  { color: var(--cyan); text-decoration: none; }
+  .contact-link:hover { text-decoration: underline; }
+
+  /* =============================================
+     STATUS BAR — fixed at bottom
+  ============================================= */
+  #status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--green-faint);
+    border-top: 1px solid var(--border);
+    padding: 4px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--green-dim);
+    z-index: 100;
+  }
+  #status-bar .blink {
+    animation: blink 1s step-end infinite;
+  }
+  #status-clock { color: var(--amber); }
+
+  /* =============================================
+     KEYFRAME ANIMATIONS
+  ============================================= */
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  @keyframes radar-sweep {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes typing {
+    from { width: 0; }
+  }
+
+  @keyframes glitch {
+    0%   { transform: translate(0); }
+    20%  { transform: translate(-2px, 1px); }
+    40%  { transform: translate(2px, -1px); }
+    60%  { transform: translate(-1px, 2px); }
+    80%  { transform: translate(1px, -1px); }
+    100% { transform: translate(0); }
+  }
+
+  /* =============================================
+     MOBILE RESPONSIVE
+  ============================================= */
+  @media (max-width: 540px) {
+    body { font-size: 12px; }
+    #boot-header { font-size: 8px; }
+    #terminal-wrapper { padding: 12px 10px 80px; }
+
+    .projects-grid { grid-template-columns: 1fr; }
+
+    .whoami-card { flex-direction: column; }
+    .whoami-avatar { width: 52px; height: 52px; }
+
+    .skill-name { width: 110px; }
+    .skill-bar-bg { max-width: 120px; }
+
+    .cmd-list-item { flex-direction: column; gap: 0; }
+    .cmd-keyword { width: auto; }
+    .scan-label { width: 130px; }
+  }
+</style>
 </head>
 <body>
-  <div id="terminal">
-    <div id="output"></div>
 
-    <div class="input-line">
-      <span id="prompt" class="prompt"></span>
-      <input id="commandInput" autocomplete="off" autofocus />
-    </div>
+<!-- =============================================
+     HTML STRUCTURE — minimal.
+     Real content is injected by JS.
+     This is the key insight from Kuber's site.
+============================================= -->
+<div id="terminal-wrapper">
+  <div id="output-area">
+
+    <!-- Boot ASCII art header -->
+    <div id="boot-header"></div>
+
+    <!-- Boot messages come here dynamically -->
+    <div id="boot-msgs"></div>
+
   </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+  <!-- Input row — always at the bottom of content -->
+  <div id="input-row">
+    <div id="prompt-label">
+      <span class="host">CODERUDRAX</span><span class="at">@</span><span class="loc">sys</span><span class="dollar">:~$</span>
+    </div>
+    <input type="text" id="cmd-input" autocomplete="off" autocorrect="off" spellcheck="false" autofocus>
+  </div>
+</div>
+
+<!-- Fixed status bar -->
+<div id="status-bar">
+  <span>SYS v2.0.1 &nbsp; | &nbsp; <span class="blink">■</span> ONLINE</span>
+  <span id="status-clock"></span>
+  <span>INDRA-AI // ACTIVE</span>
+</div>
+
+
+<script>
+/* =============================================
+   ╔══════════════════════════════════════════╗
+   ║   CODERUDRAX TERMINAL ENGINE             ║
+   ║   Architecture:                          ║
+   ║   DATA → COMMANDS → PARSER → RENDERER   ║
+   ╚══════════════════════════════════════════╝
+
+   HOW THIS WORKS (read this carefully):
+   1. DATA    — your projects, skills, info (change this)
+   2. COMMANDS — functions that return HTML strings
+   3. PARSER  — maps typed string → command function
+   4. RENDERER — appends output to #output-area
+
+   Kuber's site works the SAME way.
+   Difference: his is in separate files.
+   We start in one file, then split later.
+============================================= */
+
+
+/* =============================================
+   [1] DATA LAYER
+   Change this section to update your content.
+   Think of it as a mini JSON database.
+============================================= */
+const DATA = {
+
+  identity: {
+    name:   "Shreyansh Srivastava",
+    alias:  "CODERUDRAX // dragonblastz",
+    role:   "AI/ML Engineer — Defense Tech Builder",
+    org:    "United Institute of Technology, Prayagraj (AKTU)",
+    bio: [
+      "BTech CSE (Data Science) — building toward India's indigenous AI defense infrastructure.",
+      "Google Student Ambassador — Pan-India GSA Logistics & Operations Head.",
+      "Founded Gemini AI Community @ UIT.",
+      "Working on AI systems for defense perception, drone intelligence & edge deployment.",
+      "Long-term mission: build India's next-gen AI-driven defense technology company."
+    ]
+  },
+
+  projects: [
+    {
+      id:     "INDRA-AI",
+      status: "ACTIVE",       // ACTIVE | WIP | ARCHIVED
+      name:   "Project INDRA-AI",
+      desc:   "Transmission line damage detection via drone imagery. Computer vision pipeline for critical infrastructure monitoring.",
+      tags:   ["YOLOv8", "OpenCV", "Defense", "Drone"],
+      tagTypes: ["ai", "ai", "defense", "defense"],
+      url:    "https://github.com/CODERUDRA-X/Project-Indra-AI"
+    },
+    {
+      id:     "FLOWSYNC",
+      status: "COMPLETE",
+      name:   "FlowSync AI",
+      desc:   "Adaptive traffic signal system. Multi-Agent PPO Reinforcement Learning + YOLO vehicle detection. UHack 4.0.",
+      tags:   ["PPO-RL", "YOLOv8", "SUMO", "Flask"],
+      tagTypes: ["ai", "ai", "ai", "ai"],
+      url:    "#"
+    },
+    {
+      id:     "AVATAR",
+      status: "WIP",
+      name:   "A.V.A.T.A.R",
+      desc:   "Edge-AI kinematic simulation system. Autonomous agent with real-time environmental response.",
+      tags:   ["Edge-AI", "Kinematics", "Defense"],
+      tagTypes: ["ai", "ai", "defense"],
+      url:    "#"
+    },
+    {
+      id:     "DATASENTINEL",
+      status: "WIP",
+      name:   "DataSentinel AI",
+      desc:   "Intelligent data governance system. Automated quality checks and anomaly detection pipeline.",
+      tags:   ["Data Gov", "Anomaly Detection", "Python"],
+      tagTypes: ["ai", "ai", "ai"],
+      url:    "#"
+    },
+    {
+      id:     "MAYA",
+      status: "WIP",
+      name:   "Maya Protocol",
+      desc:   "Behavioral consequence simulator. Models cascade effects of decisions in complex systems.",
+      tags:   ["Simulation", "Behavioral AI"],
+      tagTypes: ["ai", "ai"],
+      url:    "#"
+    },
+    {
+      id:     "ECOSANJEEVANI",
+      status: "WIP",
+      name:   "EcoSanjeevani",
+      desc:   "Vegetable waste to biofuel conversion. Sustainable engineering meets AI optimization.",
+      tags:   ["Sustainability", "Optimization"],
+      tagTypes: ["ai", "ai"],
+      url:    "#"
+    }
+  ],
+
+  skills: [
+    { name: "Python",       level: 82, label: "PROFICIENT"  },
+    { name: "PyTorch",      level: 70, label: "PROFICIENT"  },
+    { name: "OpenCV / CV",  level: 75, label: "PROFICIENT"  },
+    { name: "YOLOv8/v11",   level: 72, label: "PROFICIENT"  },
+    { name: "FastAPI",      level: 65, label: "DEVELOPING"  },
+    { name: "React.js",     level: 60, label: "DEVELOPING"  },
+    { name: "Flutter/Dart", level: 55, label: "DEVELOPING"  },
+    { name: "PPO / RL",     level: 68, label: "DEVELOPING"  },
+    { name: "PostgreSQL",   level: 58, label: "DEVELOPING"  },
+    { name: "C / C++",      level: 50, label: "LEARNING"    },
+    { name: "DSA",          level: 45, label: "LEARNING"    },
+    { name: "Edge-AI",      level: 62, label: "DEVELOPING"  },
+  ],
+
+  contact: [
+    { label: "GitHub",    url: "https://github.com/CODERUDRA-X",          display: "CODERUDRA-X"    },
+    { label: "LinkedIn",  url: "https://linkedin.com/in/shreyansh-srivastava", display: "shreyansh-srivastava" },
+    { label: "Email",     url: "mailto:your@email.com",                   display: "your@email.com" }
+  ],
+
+  scanData: {
+    "OPERATOR":        { value: "CODERUDRAX",         status: "ok"    },
+    "CLEARANCE":       { value: "BUILDER-CLASS",      status: "ok"    },
+    "ACTIVE PROJECTS": { value: "6 DEPLOYED",         status: "ok"    },
+    "MISSION FOCUS":   { value: "DEFENSE AI // INDRA",status: "ok"    },
+    "THREAT VECTOR":   { value: "COPY-PASTE LEARNING",status: "threat"},
+    "COUNTER-MEASURE": { value: "REVERSE ENGINEERING",status: "ok"    },
+    "2026 OBJECTIVE":  { value: "GATE + INTERNSHIP",  status: "warn"  },
+    "LONG-RANGE":      { value: "FOUND DEFENSE CO.",  status: "ok"    },
+    "GPU ASSET":       { value: "RTX 2050 // TUF-F15",status: "ok"    },
+    "NEURAL STATUS":   { value: "BUILDING ■■■□□",     status: "warn"  }
+  }
+
+};
+
+
+/* =============================================
+   [2] COMMAND REGISTRY
+   Each command is a function that:
+   - takes optional args (string)
+   - returns HTML string OR null
+   
+   This is what Kuber's commands/*.js files do.
+   We keep it in one object for now.
+============================================= */
+const COMMANDS = {
+
+  /* ---------- HELP ---------- */
+  help: () => {
+    const cmds = [
+      { keys: "help",           desc: "Show this command list" },
+      { keys: "whoami  [w]",    desc: "Identity dossier" },
+      { keys: "projects [pj]",  desc: "Mission project list" },
+      { keys: "skills  [s]",    desc: "Technical capabilities scan" },
+      { keys: "scan",           desc: "System & operator tactical scan" },
+      { keys: "contact [c]",    desc: "Communication channels" },
+      { keys: "clear",          desc: "Wipe terminal buffer" },
+      { keys: "status",         desc: "Current system status" },
+    ];
+
+    return `
+      <div class="help-block">
+        <div class="section-label">// AVAILABLE COMMANDS</div>
+        ${cmds.map(c => `
+          <div class="cmd-list-item">
+            <span class="cmd-keyword">[${c.keys}]</span>
+            <span class="cmd-desc">${c.desc}</span>
+          </div>
+        `).join('')}
+        <div class="out-line dim" style="margin-top:8px;">Type any command and press Enter.</div>
+      </div>
+    `;
+  },
+
+  /* ---------- WHOAMI ---------- */
+  whoami: () => {
+    const { name, alias, role, org, bio } = DATA.identity;
+    return `
+      <div class="whoami-card">
+        <div class="whoami-avatar">◈</div>
+        <div class="whoami-text">
+          <div class="whoam
