@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CODERUDRA-X | Operative Portfolio</title>
+<meta name="description" content="Shreyansh Srivastava — Building Safety-Critical AI Vision Systems">
+<meta name="theme-color" content="#060a04">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="noise"></div>
+<div id="scanlines"></div>
+<div id="map-tooltip"></div>
+
+<div id="boot-screen">
+  <div class="boot-logo">CODERUDRA-X</div>
+  <div class="boot-sub">|| HAR HAR MAHADEV ||</div>
+  <div class="boot-line"></div>
+  <div class="boot-log" id="boot-log"></div>
+  <div class="belt-prompt" id="belt-prompt">
+    <div class="belt-wrap" id="belt-wrap">
+      <div class="strap strap-l"></div>
+      <div class="buckle">🪖</div>
+      <div class="strap strap-r"></div>
+    </div>
+    <div class="tap-hint">[ TAP BUCKLE TO DEPLOY ]</div>
+  </div>
+</div>
+
+<div id="drop-screen">
+  <div id="sky"></div>
+  <div id="clouds"></div>
+  <div id="starfield"></div>
+  <div id="speed-lines"></div>
+  <div id="ground-approach"></div>
+  <div id="operative-wrap">
+    <svg class="chute-svg" viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8a96e"/>
+          <stop offset="100%" stop-color="#4a5c2a"/>
+        </linearGradient>
+      </defs>
+      <path d="M10,65 Q30,0 60,0 Q90,0 110,65 Z" fill="none" stroke="#c8a96e" stroke-width="1.5"/>
+      <path d="M10,65 Q30,0 60,0 Q90,0 110,65 Z" fill="url(#cg1)" opacity="0.85"/>
+      <line x1="35" y1="2" x2="22" y2="65" stroke="#8a7040" stroke-width=".8" opacity="0.7"/>
+      <line x1="60" y1="0" x2="60" y2="65" stroke="#8a7040" stroke-width=".8" opacity="0.7"/>
+      <line x1="85" y1="2" x2="98" y2="65" stroke="#8a7040" stroke-width=".8" opacity="0.7"/>
+    </svg>
+    <svg class="chute-lines-svg" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="0" x2="5"  y2="40" stroke="#c8a96e" stroke-width="0.8" opacity="0.6"/>
+      <line x1="30" y1="0" x2="20" y2="40" stroke="#c8a96e" stroke-width="0.8" opacity="0.6"/>
+      <line x1="30" y1="0" x2="40" y2="40" stroke="#c8a96e" stroke-width="0.8" opacity="0.6"/>
+      <line x1="30" y1="0" x2="55" y2="40" stroke="#c8a96e" stroke-width="0.8" opacity="0.6"/>
+    </svg>
+    <div class="op-body">🪖</div>
+  </div>
+  <div id="drop-hud">
+    <div class="dhud-row">
+      <div class="dhud-block">
+        OPERATIVE: CODERUDRA-X<br>
+        UNIT: AI-DEFENSE DIVISION<br>
+        CLEARANCE: LEVEL 5
+      </div>
+      <div class="dhud-block" style="text-align:right">
+        MISSION: OPERATION REBIRTH<br>
+        ZONE: CLASSIFIED SECTOR<br>
+        STATUS: FREE FALL
+      </div>
+    </div>
+    <div class="crosshair"><div class="ch-ring"></div></div>
+    <div class="alt-display">
+      <span id="alt-num">8800</span>M
+      <span>ALTITUDE</span>
+    </div>
+  </div>
+  <div id="land-flash"></div>
+</div>
+
+<div id="portfolio">
+  <div id="map"></div>
+
+  <div id="top-bar">
+    <div class="op-name">CODERUDRA-X</div>
+    <div class="op-tagline">// BUILDING SAFETY-CRITICAL AI VISION SYSTEMS</div>
+    <div class="bar-right">
+      <div class="badge">#Building</div>
+    </div>
+  </div>
+
+  <div id="bottom-nav">
+    <div class="nav-btn" data-nav="op"    onclick="openAbout()">[ OPERATIVE DOSSIER ]</div>
+    <div class="nav-btn" data-nav="intel" onclick="openIntel()">[ INTEL · CONTACT ]</div>
+    <a class="nav-btn" href="https://github.com/CODERUDRA-X" target="_blank" rel="noopener">[ GITHUB ]</a>
+    <a class="nav-btn" href="https://linkedin.com/in/shreyansh-srivastava-9a83b9291" target="_blank" rel="noopener">[ LINKEDIN ]</a>
+  </div>
+
+  <div id="side-panel">
+    <div class="p-close" onclick="closeAll()">✕</div>
+    <div id="panel-body"></div>
+  </div>
+
+  <div id="about-panel">
+    <div class="p-close" onclick="closeAll()">✕</div>
+    <div class="profile-ring">⚔️</div>
+    <div class="p-tag">// OPERATIVE DOSSIER</div>
+    <div class="p-title">SHREYANSH SRIVASTAVA</div>
+    <div class="p-divider"></div>
+    <div class="p-body">
+      <strong style="color:#f0a500">"Silence was for building. Now, the execution speaks."</strong><br><br>
+      Intentional builder of applied AI systems for safety-critical and high-reliability environments. Operating at the intersection of machine learning, computer vision, and reliability-aware system design.<br><br>
+      <strong style="color:#f0a500">CURRENT DEPLOYMENTS:</strong><br>
+      • SDE AI/ML Intern @ Empyrean Robotic Technologies<br>
+      • AI Research Intern @ Promptly AI Pvt Ltd<br>
+      • Logistics & Ops Head @ Google (Pan India GSA)<br>
+      • Core Member @ Elite Coders<br><br>
+      <strong style="color:#f0a500">PHILOSOPHY:</strong><br>
+      "The greatest battles are won by building a strong 'WHY' before writing a single line of code." Prioritizing system integrity, human-in-the-loop pipelines, and defense-ready architecture.
+    </div>
+    <div class="p-divider"></div>
+    <div class="p-tag">// CAPABILITY MATRIX</div>
+    <div style="margin-top:12px">
+      <div class="sk-row"><div class="sk-lbl"><span>Computer Vision (YOLO/OpenCV)</span><span>92%</span></div><div class="sk-track"><div class="sk-fill" style="width:92%"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span>Computational Math (MIT OCW)</span><span>85%</span></div><div class="sk-track"><div class="sk-fill" style="width:85%;animation-delay:.15s"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span>Reinforcement Learning</span><span>78%</span></div><div class="sk-track"><div class="sk-fill" style="width:78%;animation-delay:.3s"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span>Edge AI / WebAssembly</span><span>75%</span></div><div class="sk-track"><div class="sk-fill" style="width:75%;animation-delay:.45s"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span>C++ / Python Architecture</span><span>88%</span></div><div class="sk-track"><div class="sk-fill" style="width:88%;animation-delay:.6s"></div></div></div>
+    </div>
+  </div>
+
+  <div id="intel-panel">
+    <div class="p-tag" style="margin-bottom:10px">// ESTABLISH CONTACT · INTELLIGENCE LINKS</div>
+    <div class="intel-grid">
+      <a class="intel-card" href="https://github.com/CODERUDRA-X" target="_blank" rel="noopener"><div class="ic-icon">⬡</div><span class="ic-name">GITHUB</span><span class="ic-desc">35 Repos · 1K+ Commits</span></a>
+      <a class="intel-card" href="https://linkedin.com/in/shreyansh-srivastava-9a83b9291" target="_blank" rel="noopener"><div class="ic-icon">🔗</div><span class="ic-name">LINKEDIN</span><span class="ic-desc">Professional Intel</span></a>
+      <div class="intel-card" onclick="copyEmail()"><div class="ic-icon">📡</div><span class="ic-name">EMAIL</span><span class="ic-desc" id="email-lbl">COPY ADDRESS</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
