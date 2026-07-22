@@ -101,6 +101,10 @@
   <div id="scan-line"></div>
   <div id="reticle-container"></div>
 
+  <!-- SMART HOLOGRAPHIC POPUP CONTAINER -->
+  <div id="holo-popup">
+    <div class="hp-content" id="hp-content"></div>
+  </div>
   <div class="hud-corner hud-tl"><span class="hc-data">SYS: NOMINAL</span></div>
   <div class="hud-corner hud-tr"><span class="hc-data" id="live-clock">00:00:00 IST</span></div>
   <div class="hud-corner hud-bl"><span class="hc-data">● LIVE INTEL FEED</span></div>
@@ -144,13 +148,16 @@
   </div>
 
   <div id="botnav">
+    <div class="nbtn" data-nav="term" onclick="openTerminal()">[ >_ TERMINAL ]</div>
     <div class="nbtn" data-nav="op" onclick="openDossier()">[ OPERATIVE DOSSIER ]</div>
     <div class="nbtn" data-nav="in" onclick="openIntel()">[ INTEL · CONTACT ]</div>
     <a class="nbtn" href="https://github.com/CODERUDRA-X" target="_blank" rel="noopener">[ GITHUB ]</a>
-    <a class="nbtn" href="https://linkedin.com/in/shreyansh-srivastava-9a83b9291" target="_blank" rel="noopener">[ LINKEDIN ]</a>
   </div>
 
-</div><div id="mission-modal" class="h-modal">
+</div>
+
+<!-- Mission Details -->
+<div id="mission-modal" class="h-modal">
   <div class="hm-backdrop" onclick="closeModal()"></div>
   <div class="hm-content">
     <div class="hm-corner hm-tl"></div><div class="hm-corner hm-tr"></div>
@@ -176,12 +183,13 @@
       </div>
       
       <div class="mm-right" id="mm-right">
-        </div>
+      </div>
     </div>
 
   </div>
 </div>
 
+<!-- HN Style Dossier -->
 <div id="dossier-modal" class="h-modal">
   <div class="hm-backdrop" onclick="closeDossier()"></div>
   <div class="hm-content hm-narrow">
@@ -192,30 +200,39 @@
     <div class="pring">⚔️</div>
     <div class="ptag">// OPERATIVE DOSSIER</div>
     <div class="ptitle">SHREYANSH SRIVASTAVA</div>
-    <div class="tagline-quote">"The greatest battles are won by building a strong 'WHY' before writing a single line of code."</div>
+    <div class="tagline-quote">"Silence was for building. Now, the execution speaks."</div>
     <div class="pdiv"></div>
 
-    <div class="ptag">// EXECUTIVE LEADERSHIP & VISION</div>
+    <div class="ptag">// SERVICE RECORD (EXPERIENCE)</div>
     <div class="pbody" style="margin-top:8px">
-      <strong style="color:#f0a500">Business Vision:</strong> Scaling affordable, globally competitive AI defense infrastructure in India (#build4bharat).<br><br>
-      <strong style="color:#f0a500">Core Deployments:</strong><br>
-      • Logistics & Ops Head @ Google (Pan India GSA)<br>
-      • Core Member @ Elite Coders<br>
-      • SDE AI/ML Intern @ Empyrean Robotic Technologies<br>
-      • AI Research Intern @ Promptly AI Pvt Ltd
+      • <strong style="color:#00ff88">SDE AI/ML Intern</strong> @ Empyrean Robotic Technologies<br>
+      • <strong style="color:#00ff88">AI Research Intern</strong> @ Promptly AI Pvt Ltd<br>
+      • <strong style="color:#f0a500">Logistics & Ops Head</strong> @ Google (Pan India GSA)<br>
+      • <strong style="color:#f0a500">Core Member</strong> @ Elite Coders
     </div>
     <div class="pdiv"></div>
     
-    <div class="ptag">// TECHNICAL ARSENAL</div>
-    <div style="margin-top:11px">
-      <div class="skr"><div class="skl"><span>Computer Vision (YOLO/OpenCV)</span><span>92%</span></div><div class="skt"><div class="skf" style="width:92%"></div></div></div>
-      <div class="skr"><div class="skl"><span>Computational Math (MIT OCW)</span><span>85%</span></div><div class="skt"><div class="skf" style="width:85%;animation-delay:.15s"></div></div></div>
-      <div class="skr"><div class="skl"><span>C++ / Python Architecture</span><span>88%</span></div><div class="skt"><div class="skf" style="width:88%;animation-delay:.3s"></div></div></div>
-      <div class="skr"><div class="skl"><span>System & Scale Architecture</span><span>82%</span></div><div class="skt"><div class="skf" style="width:82%;animation-delay:.45s"></div></div></div>
+    <div class="ptag">// CAPABILITY MATRIX (TECH STACK)</div>
+    <div style="margin-top:15px">
+      <div class="skill-cat-title">📡 Core Intelligence & Defense Tech</div>
+      <div class="skill-badges">
+        <span class="s-badge">Python</span> <span class="s-badge">C++</span> <span class="s-badge">YOLOv8</span> <span class="s-badge">PyTorch</span> <span class="s-badge">OpenCV</span>
+      </div>
+
+      <div class="skill-cat-title" style="margin-top:12px;">⚙️ Edge Systems & Architecture</div>
+      <div class="skill-badges">
+        <span class="s-badge">Linux</span> <span class="s-badge">Docker</span> <span class="s-badge">WebAssembly</span> <span class="s-badge">PostgreSQL</span> <span class="s-badge">FastAPI</span>
+      </div>
+
+      <div class="skill-cat-title" style="margin-top:12px;">🧠 Mathematics & Algorithms</div>
+      <div class="skill-badges">
+        <span class="s-badge">Reinforcement Learning</span> <span class="s-badge">Multi-Agent PPO</span> <span class="s-badge">Linear Algebra</span>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- HN Style Intel -->
 <div id="intel-modal" class="h-modal">
   <div class="hm-backdrop" onclick="closeIntel()"></div>
   <div class="hm-content hm-wide">
@@ -223,27 +240,51 @@
     <div class="hm-corner hm-bl"></div><div class="hm-corner hm-br"></div>
     <div class="p-close" onclick="closeIntel()">✕</div>
     
-    <div class="ptag" style="margin-bottom:15px">// ESTABLISH CONTACT · INTELLIGENCE LINKS</div>
+    <div class="ptag" style="margin-bottom:15px">// ESTABLISH CONTACT & SECURE ASSETS</div>
     <div class="intel-grid">
+      <a class="icard resume-card" href="your_resume_link.pdf" target="_blank" rel="noopener">
+        <div class="ii" style="color:#000;">📄</div>
+        <span class="in" style="color:#000;">DOWNLOAD DOSSIER</span>
+        <span class="id2" style="color:#111;">PDF Resume / CV</span>
+        <div class="im-arrow" style="color:#000; border-top-color:#333;">→ INITIATE DOWNLOAD</div>
+      </a>
       <a class="icard" href="https://github.com/CODERUDRA-X" target="_blank" rel="noopener">
-        <div class="ii">⬡</div><span class="in">GITHUB</span><span class="id2">CODERUDRA-X</span><span class="id3">35 Repos · 1K+ Commits</span>
+        <div class="ii">⬡</div><span class="in">GITHUB</span><span class="id2">CODERUDRA-X</span>
+        <div class="im-arrow">→ OPEN CHANNEL</div>
       </a>
       <a class="icard" href="https://linkedin.com/in/shreyansh-srivastava-9a83b9291" target="_blank" rel="noopener">
-        <div class="ii">🔗</div><span class="in">LINKEDIN</span><span class="id2">/in/shreyansh-srivastava</span><span class="id3">Open Channel</span>
+        <div class="ii">🔗</div><span class="in">LINKEDIN</span><span class="id2">/in/shreyansh-srivastava</span>
+        <div class="im-arrow">→ OPEN CHANNEL</div>
       </a>
       <div class="icard" onclick="copyEmailIntel()">
-        <div class="ii">📡</div><span class="in">EMAIL</span><span class="id2" id="elbl">harshgroups247@gmail.com</span><span class="id3" id="email-copy-status">[ CLICK TO COPY ]</span>
-      </div>
-      <div class="icard">
-        <div class="ii">🎖️</div><span class="in">EMPYREAN ROBOTICS</span><span class="id2">SDE AI/ML Intern</span><span class="id3">Active Deployment</span>
-      </div>
-      <div class="icard">
-        <div class="ii">🧠</div><span class="in">PROMPTLY AI</span><span class="id2">AI Research Intern</span><span class="id3">Strategic R&D</span>
+        <div class="ii">📡</div><span class="in">EMAIL COMMS</span><span class="id2" id="elbl">harshgroups247@gmail.com</span>
+        <div class="im-arrow" id="email-copy-status">→ CLICK TO COPY</div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Terminal Modal -->
+<div id="terminal-modal" class="h-modal">
+  <div class="hm-backdrop" onclick="closeTerminal()"></div>
+  <div class="term-window">
+    <div class="term-header">
+      <span>coderudra@system:~</span>
+      <span class="p-close" style="position:static; border:none; top:0; right:0; width:auto; height:auto; padding:0 5px;" onclick="closeTerminal()">✕</span>
+    </div>
+    <div class="term-body" id="term-body">
+      <div class="term-line">CODERUDRA-X OS v1.6.9 [HN-Optimized]</div>
+      <div class="term-line">Type <span class="term-cmd">'help'</span> to see available commands.</div>
+      <div id="term-history"></div>
+      <div class="term-input-line">
+        <span class="term-prompt">coderudra@profile:~$</span>
+        <input type="text" id="term-input" autocomplete="off" spellcheck="false" autofocus>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sector Drill Down -->
 <div id="sector-screen">
   <div id="sector-rtb" onclick="exitSector()">
     <span class="rtb-arrow">◄</span>
