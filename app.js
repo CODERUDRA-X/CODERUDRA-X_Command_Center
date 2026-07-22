@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* ═══════════════════════════════════════════════════════════
    CODERUDRA-X COMMAND CENTER · ENGINE v10.0 (THE MASTERPIECE)
    1. Main Map = 6 HQ Portfolio Sections (Clean & Badass)
@@ -54,22 +53,6 @@ const MISSIONS = [
     stats: [{v:'CS',l:'MAJOR'},{v:'DS',l:'SPEC'},{v:'GSA',l:'ALUMNI'}],
     tags: ['AI Defense','UIT Prayagraj','Data Science','CODERUDRA-X'],
     sectorImage: 'main.png', 
-=======
-// Engine v6.0 (Terminal + Drill-Down)
-// Coderudra-X Command Center
-
-// Mission Data & Drill-Down Config
-const MISSIONS = [
-  {
-    id: 'citadel', type: 'citadel', lat: 672, lng: 932,
-    tag: '// EXECUTIVE COMMAND · SECTOR ZERO', title: 'THE CITADEL', sc: 'act', sl: 'COMMAND ACTIVE',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Centralize distributed AI defense infrastructure into a single operative node.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> React and FastAPI aggregating telemetry from 35+ active repositories.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 1K+ Commits | 11 Ops | Zero Downtime</div>`,
-    stats: [{v:'11',l:'OPS'},{v:'5',l:'ACTIVE'},{v:'CMD',l:'TIER'}],
-    tags: ['AI Defense','Strategic Command','India','DRDO Vision','iDEX','#build4bharat'],
-    sectorImage: 'main.png',
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
     sectorZones: [
       { lat: 500, lng: 960, label: 'DATA SCIENCE CORE', tag:'// ACADEMIC NODE', holo: {
         img: 'ds_core.jpg', why: 'Master computational mathematics and foundational CS principles[cite: 3].', arch: 'B.Tech CSE (Data Science) academic core. Independent study in Linear Algebra and AI foundations via MIT OCW[cite: 3].', metrics: '<span style="color:#f0a500">SGPA:</span> 8.3/10<br><span style="color:#f0a500">Rank:</span> Top 100 GfG[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: 'https://linkedin.com/in/shreyansh-srivastava-9a83b9291'
@@ -81,7 +64,6 @@ const MISSIONS = [
   },
   
   {
-<<<<<<< HEAD
     id: 'deployments', type: 'hud', lat: 872, lng: 1708,
     tag: '// SECTION 02 · CORE ENGINEERING', title: 'TACTICAL DEPLOYMENTS', sc: 'cmp', sl: 'SYSTEMS ONLINE',
     body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> A showcase of production-ready inference pipelines and autonomous systems[cite: 3].</div>
@@ -89,15 +71,6 @@ const MISSIONS = [
     <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 4 Major Ops | Edge-Focus | Production State</div>`,
     stats: [{v:'4',l:'MAJOR OPS'},{v:'EDGE',l:'FOCUS'},{v:'PROD',l:'STATE'}],
     tags: ['Computer Vision','Multi-Agent RL','Data Governance','FastAPI'],
-=======
-    id: 'indra', type: 'hud', lat: 872, lng: 1708,
-    tag: '// MISSION ALPHA · PRIORITY ONE', title: 'PROJECT INDRA-AI', sc: 'act', sl: 'ACTIVE DEPLOYMENT',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Automate fatal manual inspections of high-voltage transmission lines.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> YOLOv8 fault detection on drone imagery, integrated with a multi-factor risk scoring pipeline.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 94% Precision | 5 Severity Levels | Real-time Edge Processing</div>`,
-    stats: [{v:'CV',l:'DOMAIN'},{v:'UAV',l:'PLATFORM'},{v:'LIVE',l:'STATUS'}],
-    tags: ['YOLOv8','OpenCV','Python','Drone AI','Risk Scoring','Power Grid'],
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
     sectorImage: 'rightest.png',
     sectorZones: [
       { lat: 700, lng: 400, label: 'PROJECT INDRA-AI', tag:'// UAV VISION', holo: {
@@ -116,7 +89,6 @@ const MISSIONS = [
   },
 
   {
-<<<<<<< HEAD
     id: 'service', type: 'hud', lat: 954, lng: 1111,
     tag: '// SECTION 03 · PROFESSIONAL TENURE', title: 'SERVICE RECORD', sc: 'act', sl: 'ACTIVE DUTY',
     body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> Enterprise alliances established across leading organizations and strategic tech startups[cite: 3].</div>
@@ -124,15 +96,6 @@ const MISSIONS = [
     <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 3 Major Alliances | 6x Cost Moat | 70% Process Optimization[cite: 3, 4]</div>`,
     stats: [{v:'3',l:'ALLIANCES'},{v:'6x',l:'COST MOAT'},{v:'70%',l:'OPT'}],
     tags: ['Enterprise Audits','Backend Integrations','Automation','AI Safety'],
-=======
-    id: 'flowsync', type: 'hud', lat: 954, lng: 1111,
-    tag: '// MISSION BRAVO · URBAN OPS', title: 'FLOWSYNC-AI', sc: 'cmp', sl: 'DEPLOYED · UHACK 4.0',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Eradicate emergency vehicle delays caused by static urban traffic timers.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Multi-Agent PPO RL paired with YOLOv8n object detection for adaptive, density-based signal control.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 34% Wait-Time Reduction | 12 Nodes Synced | 100% Ambulance Override Success</div>`,
-    stats: [{v:'PPO',l:'RL ALGO'},{v:'87%',l:'mAP'},{v:'PROD',l:'STAGE'}],
-    tags: ['YOLOv8n','Multi-Agent PPO','Flask','Indian Traffic','RL','Emergency Override'],
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
     sectorImage: 'tower.png',
     sectorZones: [
       { lat: 600, lng: 500, label: 'PROMPTLY AI PVT LTD', tag:'// AI RESEARCH INTERN', holo: {
@@ -148,7 +111,6 @@ const MISSIONS = [
   },
 
   {
-<<<<<<< HEAD
     id: 'armory', type: 'hud', lat: 249, lng: 533,
     tag: '// SECTION 04 · CAPABILITY MATRIX', title: 'THE ARMORY (SKILLS)', sc: 'act', sl: 'WEAPONS HOT',
     body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> A deliberately selected technology stack to build high-reliability systems[cite: 4].</div>
@@ -156,15 +118,6 @@ const MISSIONS = [
     <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Edge Focus | C++ Native | Mathematics Base</div>`,
     stats: [{v:'AI',l:'CORE'},{v:'EDGE',l:'FOCUS'},{v:'MATH',l:'BASE'}],
     tags: ['Python','C++','PyTorch','WebAssembly','Docker','PostgreSQL'],
-=======
-    id: 'avatar', type: 'hud', lat: 249, lng: 533,
-    tag: '// MISSION CHARLIE · EDGE OPS', title: 'A.V.A.T.A.R', sc: 'act', sl: 'R&D · ONGOING',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Enable zero-latency gesture command systems without cloud dependency.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> 3D kinematic pipeline mapping 33 landmarks, compiled via WebAssembly for edge hardware execution.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Solid 60FPS | Zero Cloud Ping | Local Browser Execution</div>`,
-    stats: [{v:'60',l:'FPS'},{v:'EDGE',l:'DEPLOY'},{v:'WASM',l:'ENGINE'}],
-    tags: ['Edge-AI','WebAssembly','Kinematics','Digital Twin','60FPS','Defense-grade'],
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
     sectorImage: 'many.png',
     sectorZones: [
       { lat: 500, lng: 600, label: 'CORE & MATHEMATICS', tag:'// THE BRAIN', holo: {
@@ -180,7 +133,6 @@ const MISSIONS = [
   },
 
   {
-<<<<<<< HEAD
     id: 'blacksite', type: 'amber', lat: 322, lng: 1275,
     tag: '// SECTION 05 · CLASSIFIED R&D', title: 'BLACK SITE (LABS)', sc: 'cls', sl: 'STEALTH MODE',
     body: `<div class="hn-section"><span class="hn-label">[ ⚠ RESTRICTED ACCESS ]</span> The underground laboratory for highly experimental architectures[cite: 4].</div>
@@ -189,16 +141,6 @@ const MISSIONS = [
     stats: [{v:'C++',l:'SWARMS'},{v:'WASM',l:'EDGE'},{v:'🔒',l:'CLASSIFIED'}],
     tags: ['Swarm AI','Kinematics','Behavioral Sim','Decentralized'],
     sectorImage: 'mount.png',
-=======
-    id: 'vidyutnetra', type: 'hud', lat: 398, lng: 180,
-    tag: '// MISSION DELTA · DATA GOVERNANCE', title: 'VIDYUTNETRA AI', sc: 'cmp', sl: 'OPERATIONAL',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Unmonitored data pipelines lead to silent schema failures and compliance breaches.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Automated metadata tagging and anomaly detection via PostgreSQL and FastAPI integration.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Sub-second Flagging | 100% Pipeline Visibility | Real-time Data Health APIs</div>`,
-    stats: [{v:'DG',l:'DOMAIN'},{v:'RT',l:'MODE'},{v:'AI',l:'ENGINE'}],
-    tags: ['Data Governance','Anomaly Detection','PostgreSQL','FastAPI','ML Pipelines'],
-    sectorImage: 'lefti.png',
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
     sectorZones: [
       { lat: 400, lng: 600, label: 'PROJECT VYUHA', tag:'// CLASSIFIED SWARM', holo: {
         img: 'vyuha.jpg', why: 'Eliminate Single Point of Failure (SPOF) in drone swarms[cite: 4].', arch: 'Decentralized multi-agent coordination built in C++. Nodes use emergent logic inspired by Mahabharat Vyuha military formations[cite: 4].', metrics: '<span style="color:#f0a500">Status:</span> Stealth Mode<br><span style="color:#f0a500">Comms:</span> O(log N) Overhead[cite: 4]', git: 'https://github.com/CODERUDRA-X', live: ''
@@ -216,7 +158,6 @@ const MISSIONS = [
   },
 
   {
-<<<<<<< HEAD
     id: 'vault', type: 'hud', lat: 320, lng: 680,
     tag: '// SECTION 06 · COMMS & ARCHIVE', title: 'INTEL VAULT', sc: 'act', sl: 'TRANSMITTING',
     body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> UPLINK ESTABLISHED. Central repository for open-source codebase contributions[cite: 4].</div>
@@ -225,16 +166,6 @@ const MISSIONS = [
     stats: [{v:'35+',l:'REPOS'},{v:'1K+',l:'COMMITS'},{v:'LIVE',l:'UPLINK'}],
     tags: ['GitHub','CI/CD','Intelligence','Open Source'],
     sectorImage: 'lefti.png',
-=======
-    id: 'maya', type: 'hud', lat: 952, lng: 212,
-    tag: '// MISSION ECHO · BEHAVIORAL OPS', title: 'MAYA PROTOCOL', sc: 'cmp', sl: 'SHIPPED · CROSS-PLATFORM',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Modern gamification lacks severe, permanent consequences for behavioral study.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Cross-platform C++ engine enforcing strict dopamine limits where wrong decisions permanently crash the simulated ecosystem.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> High-stakes Processing | Permanent Permadeath States</div>`,
-    stats: [{v:'C++',l:'CORE'},{v:'SIM',l:'MODE'},{v:'XP',l:'PLATFORM'}],
-    tags: ['C++','Behavioral AI','Gamification','Dopamine Modeling','Simulation'],
-    sectorImage: 'kona.png',
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
     sectorZones: [
       { lat: 400, lng: 800, label: 'DEFENSE AI ARCHIVE', tag:'// AUTOMATION', holo: {
         img: 'archive.jpg', why: 'Aggregate global defense-tech and swarm publications[cite: 4].', arch: 'Python-driven CI/CD pipeline that scrapes, synthesizes, and securely catalogs petabyte-scale data natively[cite: 4].', metrics: '<span style="color:#f0a500">Sync:</span> 24hr Automated<br><span style="color:#f0a500">Mode:</span> Hands-free[cite: 4]', git: 'https://github.com/CODERUDRA-X', live: ''
@@ -243,80 +174,12 @@ const MISSIONS = [
         img: 'gcb.jpg', why: 'Deploy petabyte-scale genetic models (BLISS) for global access[cite: 4].', arch: 'Engineered the frontend data pipeline to transform dense statistical pQTL data into an intuitive platform[cite: 4].', metrics: '<span style="color:#f0a500">Scale:</span> Petabyte Ready<br><span style="color:#f0a500">Scope:</span> 5,779+ Models[cite: 4]', git: 'https://github.com/gcb-hub/BLISS', live: 'https://www.gcbhub.org/'
       }}
     ]
-<<<<<<< HEAD
   }
-=======
-  },
-  {
-    id: 'vyuha', type: 'amber', lat: 322, lng: 1275,
-    tag: '// CLASSIFIED DIRECTIVE · STEALTH MODE', title: 'PROJECT VYUHA', sc: 'cls', sl: 'CLASSIFIED · STEALTH MODE',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Centralized drone swarms present a fatal Single Point of Failure (SPOF) in tactical zones.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Decentralized multi-agent swarm logic in C++, inspired by emergent Mahabharat Vyuha military formations.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Zero SPOF | O(log N) Comms | Emergent Swarm Intelligence</div>`,
-    stats: [{v:'C++',l:'CORE'},{v:'SWARM',l:'TYPE'},{v:'🔒',l:'ACCESS'}],
-    tags: ['C++','Swarm AI','Drone Swarms','Multi-Agent','Decentralized','[CLASSIFIED]'],
-    sectorImage: 'mount.png',
-    sectorZones: [
-      { lat: 540, lng: 960, label: 'SWARM LOGIC CORE', tag:'// NEURAL NET', body: 'Highly restricted decentralized behavior testing arena. Emergent swarm logic active.' }
-    ]
-  },
-  {
-    id: 'promptly', type: 'hud', lat: 560, lng: 1660,
-    tag: '// STRATEGIC R&D · AI SAFETY', title: 'PROMPTLY AI R&D', sc: 'act', sl: 'ACTIVE RESEARCH',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Rapid LLM deployments ignore Indian regulatory compliance and legal liabilities.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Developed automated intelligence bots and a 3-Phase audit protocol to track AI deployment risks.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Identified 6x Cost Moat | Multi-phase Liability Tracking</div>`,
-    stats: [{v:'6x',l:'COST MOAT'},{v:'SAFE',l:'DOMAIN'},{v:'R&D',l:'STAGE'}],
-    tags: ['AI Safety','Legal Liability','Audit AI','Compliance','India AI Policy'],
-    sectorImage: 'image_b1bf78.jpg',
-    sectorZones: [
-      { lat: 650, lng: 800, label: 'COMPLIANCE AUDITOR', tag:'// LEGAL AI', body: 'Scanning AI outputs for liability gaps according to upcoming Indian regulatory frameworks.' }
-    ]
-  },
-  {
-    id: 'archive', type: 'hud', lat: 320, lng: 680,
-    tag: '// INTEL REPOSITORY', title: 'DEFENSE AI ARCHIVE', sc: 'act', sl: 'CI/CD · DAILY UPDATE',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Defense-tech and swarm research is fragmented across unorganized global publications.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Python-driven CI/CD pipeline that scrapes, synthesizes, and catalogs daily AI defense repos.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 24hr Auto-Sync | 100% Hands-free Archiving</div>`,
-    stats: [{v:'DAILY',l:'UPDATE'},{v:'CI/CD',l:'PIPELINE'},{v:'AUTO',l:'MODE'}],
-    tags: ['Python','Automation','Defense Research','Swarm AI','CI/CD'],
-    sectorImage: 'image_b1bfd1.png',
-    sectorZones: [
-      { lat: 450, lng: 550, label: 'DATA SYNTHESIZER', tag:'// AUTOMATION', body: 'Scraping and summarizing defense-tech publications globally.' },
-      { lat: 750, lng: 1300, label: 'CI/CD REPOSITORY', tag:'// PIPELINE', body: 'Automated push to secure intelligence vaults every 24 hours.' }
-    ]
-  },
-  {
-    id: 'fixit', type: 'hud', lat: 150, lng: 900,
-    tag: '// CIVIC INTELLIGENCE OPS', title: 'FIX-IT-NOW AI', sc: 'cmp', sl: 'PUBLIC DEPLOYMENT',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Manual civic grievance routing causes critical infrastructure response delays.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> AI-driven classification engine parsing natural language to route city infrastructure complaints instantly.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> High-Volume Categorization | Real-Time Routing</div>`,
-    stats: [{v:'CIVIC',l:'DOMAIN'},{v:'LIVE',l:'STATUS'},{v:'AI',l:'ENGINE'}],
-    tags: ['Python','Civic Tech','Public Infrastructure','AI Routing'],
-    sectorImage: 'image_07b91a.jpg',
-    sectorZones: [
-      { lat: 600, lng: 800, label: 'URBAN ROUTER', tag:'// CIVIC AI', body: 'Mapping public grievances directly to municipal action nodes.' }
-    ]
-  },
-  {
-    id: 'naad', type: 'hud', lat: 850, lng: 1400,
-    tag: '// STREAMING ARCHITECTURE R&D', title: 'NAAD PROTOCOL', sc: 'act', sl: 'EXPERIMENTAL',
-    body: `<div class="hn-section"><span class="hn-label">[ THE WHY ]</span> Traditional waveform streaming wastes bandwidth by transmitting redundant sonic data.</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> "Streaming Meaning, Not Waveforms" utilizing advanced semantic JS encoding for extreme compression.</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Sub-kbps Audio Representation | Experimental Engine</div>`,
-    stats: [{v:'JS',l:'CORE'},{v:'DATA',l:'STREAM'},{v:'R&D',l:'STAGE'}],
-    tags: ['JavaScript','Data Streaming','Audio Architecture','Semantic Encoding'],
-    sectorImage: 'image_07bd1a.jpg',
-    sectorZones: [
-      { lat: 500, lng: 1000, label: 'SEMANTIC ENCODER', tag:'// PROTOCOL', body: 'Compressing wave data into raw meaning for ultra-low bandwidth transmission.' }
-    ]
-  },
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 ];
 
-// Ticker Tape Data
+/* ─────────────────────────────────────────────────────────
+   TICKER MESSAGES
+───────────────────────────────────────────────────────── */
 const TICKER_MSGS = [
   'OPERATION REBIRTH: ACTIVE · TIER-3 TO CEO MINDSET ENGAGED',
   'PROJECT INDRA-AI: 94% CV PRECISION ON TRANSMISSION FAULTS',
@@ -368,11 +231,7 @@ function animateBootPct(target) {
   requestAnimationFrame(step);
 }
 
-<<<<<<< HEAD
 // Background Starfield & Speed Particles
-=======
-// Background Starfield & Particles
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 const starsEl = document.getElementById('stars');
 for (let i = 0; i < 160; i++) {
   const s = document.createElement('div'); s.className = 'star';
@@ -394,11 +253,7 @@ for (let i = 0; i < 40; i++) {
   spdEl.appendChild(l);
 }
 
-<<<<<<< HEAD
 // Map Deployment Initialization
-=======
-// Deployment Flow
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 document.getElementById('belt-area').addEventListener('click', startDeploy);
 
 function startDeploy() {
@@ -433,11 +288,7 @@ function showMap() {
   }, 800);
 }
 
-<<<<<<< HEAD
 // Clock and Ticker Utilities
-=======
-// Global UI Tools
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 function startLiveClock() {
   const el = document.getElementById('live-clock');
   setInterval(() => {
@@ -457,11 +308,7 @@ function startTicker() {
   document.head.appendChild(style);
 }
 
-<<<<<<< HEAD
 // Leaflet Engine & Boundary Lock
-=======
-// Leaflet Edge-Locked Main Map
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 let leafMap;
 let hudCanvas, hudCtx, dashOffset = 0;
 let mapReady = false;
@@ -492,8 +339,7 @@ function initLeafletMap() {
   leafMap.on('click', e => {
     if (!e.originalEvent.target.closest('#mission-modal') &&
         !e.originalEvent.target.closest('#dossier-modal') &&
-        !e.originalEvent.target.closest('#intel-modal') &&
-        !e.originalEvent.target.closest('#terminal-modal')) {
+        !e.originalEvent.target.closest('#intel-modal')) {
       closeAllModals();
     }
   });
@@ -524,11 +370,7 @@ function resizeHUD() {
   }
 }
 
-<<<<<<< HEAD
 // Canvas HUD Overlay Loop
-=======
-// Canvas Rendering
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 function hudLoop() {
   if (!hudCtx || !mapReady) return requestAnimationFrame(hudLoop);
   hudCtx.clearRect(0, 0, hudCanvas.width, hudCanvas.height);
@@ -636,13 +478,9 @@ function showReticle(x, y, amber, cb) {
   setTimeout(() => { r.remove(); cb(); }, 520);
 }
 
-<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────
 // MODAL HUD CONTROLLERS (MISSION BRIEFING)
 // ─────────────────────────────────────────────────────────
-=======
-// Modal System Operations
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 let activeMissionId = null;
 
 function openMissionBriefing(id) {
@@ -713,13 +551,9 @@ function animateStats() {
 
 function closeModal() { document.getElementById('mission-modal').classList.remove('open'); }
 
-<<<<<<< HEAD
 // ─────────────────────────────────────────────────────────
 // SUB-MAP SYSTEM (SECTOR DRILL-DOWN ENGINE)
 // ─────────────────────────────────────────────────────────
-=======
-// Sub-Map System (Drill-Down)
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 let sectorMap = null;
 let sectorCanvas, sectorCtx;
 let activeSectorId = null;
@@ -833,7 +667,6 @@ function exitSector() {
   }, 600);
 }
 
-<<<<<<< HEAD
 /* ─────────────────────────────────────────────────────────
    SMART HOLOGRAPHIC POPUP LOGIC (SPACE-AWARE EMISSION)
 ───────────────────────────────────────────────────────── */
@@ -896,9 +729,6 @@ function closeHoloPopup() {
 }
 
 // Side and Intel Modals Flow
-=======
-// Side/Overlay Modals Integration
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 function openDossier() {
   closeAllModals();
   document.getElementById('dossier-modal').classList.add('open');
@@ -919,86 +749,11 @@ function closeIntel() {
   document.querySelector('[data-nav="in"]')?.classList.remove('lit');
 }
 
-// Terminal Logic Execution
-const termModal = document.getElementById('terminal-modal');
-const termInput = document.getElementById('term-input');
-const termHistory = document.getElementById('term-history');
-
-function openTerminal() {
-  closeAllModals();
-  if (termModal) {
-    termModal.classList.add('open');
-    setTimeout(() => termInput.focus(), 100);
-  }
-}
-
-function closeTerminal() { 
-  if (termModal) termModal.classList.remove('open'); 
-}
-
-if (termInput) {
-  termInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-      const val = this.value.trim().toLowerCase();
-      this.value = '';
-      
-      termHistory.innerHTML += `<div class="term-input-line"><span class="term-prompt">coderudra@profile:~$</span> ${val}</div>`;
-      
-      let response = '';
-      switch(val) {
-        case 'help':
-          response = `Available Commands:<br>
-            <span class="term-cmd">[who]</span> or <span class="term-cmd">[w]</span> - About me<br>
-            <span class="term-cmd">[skills]</span> or <span class="term-cmd">[s]</span> - Tech stack<br>
-            <span class="term-cmd">[resume]</span> or <span class="term-cmd">[cv]</span> - View PDF Resume<br>
-            <span class="term-cmd">[github]</span> - Open Github<br>
-            <span class="term-cmd">[clear]</span> - Clear terminal`;
-          break;
-        case 'who':
-        case 'w':
-          response = `Hey! I'm Shreyansh Srivastava.<br>
-            Building safety-critical AI vision systems. Previously Logistics & Ops Head @ Google Student Ambassador.<br>
-            I design edge-AI pipelines, optimize YOLO models, and build swarm logic in C++.`;
-          break;
-        case 'skills':
-        case 's':
-          response = `Core: Python, C++, SQL<br>
-            Vision/AI: YOLOv8, OpenCV, PyTorch, Multi-Agent RL<br>
-            Systems: WebAssembly, Linux, Docker, FastAPI`;
-          break;
-        case 'resume':
-        case 'cv':
-          response = `Opening secure dossier...`;
-          window.open('YOUR_RESUME_PDF_LINK_HERE', '_blank'); // Make sure to replace this
-          break;
-        case 'github':
-          window.open('https://github.com/CODERUDRA-X', '_blank');
-          response = `Redirecting to Github...`;
-          break;
-        case 'clear':
-          termHistory.innerHTML = '';
-          return;
-        case '':
-          return;
-        default:
-          response = `Command not found: ${val}. Type 'help' for a list of commands.`;
-      }
-      
-      termHistory.innerHTML += `<div class="term-line" style="margin: 10px 0; color: #fff;">${response}</div>`;
-      document.getElementById('term-body').scrollTop = document.getElementById('term-body').scrollHeight;
-    }
-  });
-}
-
 function closeAllModals() {
-<<<<<<< HEAD
   closeModal(); 
   closeHoloPopup();
   closeDossier(); 
   closeIntel();
-=======
-  closeModal(); closeDossier(); closeIntel(); closeTerminal();
->>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
 }
 
 // Copy Action Handling

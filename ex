@@ -1,766 +1,707 @@
-/* ═══════════════════════════════════════════════════════════
-   CODERUDRA-X COMMAND CENTER · ENGINE v10.0 (THE MASTERPIECE)
-   1. Main Map = 6 HQ Portfolio Sections (Clean & Badass)
-   2. Sector Drill-Down = Retained (Goosebumps intro)
-   3. Smart Hologram = Emits INSIDE the sub-map on node click
-═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   CODERUDRA-X COMMAND CENTER · STYLE SHEET v7.0
+   Features: Ocean Blend, Canvas HUD, Holographic Modals, 
+   Sector Drill-Down, Terminal & HN Content Depth
+═══════════════════════════════════════════════ */
 
-// Hologram HTML Generator
-const buildHoloHUD = (title, tag, h) => `
-<div class="hp-header">
-  <div>
-    <div style="color:var(--amber); font-size:0.5rem; letter-spacing:0.2em;">${tag}</div>
-    <div style="color:var(--hud); font-size:1.1rem; font-weight:900; font-family:'Orbitron', monospace; letter-spacing:0.1em; text-shadow:0 0 15px rgba(0,255,136,0.4); text-transform:uppercase;">${title}</div>
-  </div>
-  <div class="hp-close" onclick="closeHoloPopup()">✕</div>
-</div>
-<div style="padding:15px;">
-  <div style="width:100%; height:140px; border:1px solid rgba(0,255,136,0.3); margin-bottom:15px; position:relative; overflow:hidden; box-shadow: inset 0 0 20px rgba(0,255,136,0.1);">
-    <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,255,136,0.25), transparent); z-index:2; mix-blend-mode: overlay;"></div>
-    <img src="${h.img}" onerror="this.src='cinematic-map.png'" alt="SYS_ASSET" style="width:100%; height:100%; object-fit:cover; opacity:0.85; filter:grayscale(20%) contrast(1.2);">
-    <div class="scan-line-horizontal"></div>
-  </div>
-  <div style="border-left: 2px solid #00ff88; padding-left: 10px; margin-bottom: 15px; background: rgba(0,255,136,0.05); padding: 10px; box-shadow: inset 0 0 10px rgba(0,255,136,0.02);">
-    <span style="color:#a9b7c6; font-family:'Share Tech Mono', monospace; font-size:0.75rem; line-height: 1.4;">[>] DIRECTIVE: ${h.why}</span>
-  </div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family:'Share Tech Mono', monospace; font-size: 0.7rem; margin-bottom:15px;">
-    <div style="border: 1px solid rgba(0,255,136,0.2); padding: 10px; background: rgba(5,10,7,0.8);">
-      <div style="color:#00ff88; border-bottom: 1px dashed #333; padding-bottom:6px; margin-bottom:8px; letter-spacing:0.1em;">// ARCHITECTURE</div>
-      <div style="color:#c0d0c0; line-height:1.5;">${h.arch}</div>
-    </div>
-    <div style="border: 1px solid rgba(240,165,0,0.2); padding: 10px; background: rgba(10,8,0,0.8);">
-      <div style="color:#f0a500; border-bottom: 1px dashed #333; padding-bottom:6px; margin-bottom:8px; letter-spacing:0.1em;">// TELEMETRY</div>
-      <div style="color:#e0e0e0; line-height:1.5;">${h.metrics}</div>
-    </div>
-  </div>
-  <div style="display:flex; gap:10px;">
-    <a href="${h.git || '#'}" target="_blank" class="holo-btn">[ GITHUB_UPLINK ]</a>
-    <a href="${h.live || '#'}" target="_blank" class="holo-btn amber-btn" style="${!h.live ? 'opacity:0.3; pointer-events:none;' : ''}">[ DEPLOYED_NODE ]</a>
-  </div>
-</div>
-`;
-
-/* ─────────────────────────────────────────────────────────
-   PORTFOLIO SECTIONS (6 MAIN HQ ISLANDS)
-───────────────────────────────────────────────────────── */
-const MISSIONS = [
-  {
-    id: 'citadel', type: 'citadel', lat: 672, lng: 932,
-    tag: '// SECTION 01 · IDENTITY NEXUS', title: 'THE CITADEL (ABOUT)', sc: 'act', sl: 'COMMAND ACTIVE',
-    body: `<div class="hn-section"><span class="hn-label">[ IDENTITY ]</span> Shreyansh Srivastava. B.Tech CSE (Data Science) @ UIT Prayagraj (Batch '28)[cite: 3]. Operating under the "Tier-3 to CEO" and "One Man Army" ethos[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> Born from "Operation Rebirth" (2019)[cite: 4]. Architecting safety-critical AI vision systems for indigenous defense infrastructure (#build4bharat)[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 840+ DSA Solved | 1700+ CP Rating | 35+ Repos[cite: 3, 4]</div>`,
-    stats: [{v:'CS',l:'MAJOR'},{v:'DS',l:'SPEC'},{v:'GSA',l:'ALUMNI'}],
-    tags: ['AI Defense','UIT Prayagraj','Data Science','CODERUDRA-X'],
-    sectorImage: 'main.png', 
-    sectorZones: [
-      { lat: 500, lng: 960, label: 'DATA SCIENCE CORE', tag:'// ACADEMIC NODE', holo: {
-        img: 'ds_core.jpg', why: 'Master computational mathematics and foundational CS principles[cite: 3].', arch: 'B.Tech CSE (Data Science) academic core. Independent study in Linear Algebra and AI foundations via MIT OCW[cite: 3].', metrics: '<span style="color:#f0a500">SGPA:</span> 8.3/10<br><span style="color:#f0a500">Rank:</span> Top 100 GfG[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: 'https://linkedin.com/in/shreyansh-srivastava-9a83b9291'
-      }},
-      { lat: 700, lng: 1400, label: 'ELITE CODERS RELAY', tag:'// LEADERSHIP', holo: {
-        img: 'elite.jpg', why: 'Scale developer ecosystems and deploy robust credentialing across India[cite: 4].', arch: 'Engineered automated credentialing (TruScholar) and event operations using n8n for massive developer clusters[cite: 4].', metrics: '<span style="color:#f0a500">Impact:</span> 5000+ Devs<br><span style="color:#f0a500">Role:</span> Pan-India Ops Head[cite: 3, 4]', git: '', live: 'https://www.geeksforgeeks.org/profile/saitejareddy05'
-      }}
-    ]
-  },
-  
-  {
-    id: 'deployments', type: 'hud', lat: 872, lng: 1708,
-    tag: '// SECTION 02 · CORE ENGINEERING', title: 'TACTICAL DEPLOYMENTS', sc: 'cmp', sl: 'SYSTEMS ONLINE',
-    body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> A showcase of production-ready inference pipelines and autonomous systems[cite: 3].</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Bypassing cloud-dependency in favor of robust edge-computing, strict risk thresholds, and human-in-the-loop oversight[cite: 3, 4].</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 4 Major Ops | Edge-Focus | Production State</div>`,
-    stats: [{v:'4',l:'MAJOR OPS'},{v:'EDGE',l:'FOCUS'},{v:'PROD',l:'STATE'}],
-    tags: ['Computer Vision','Multi-Agent RL','Data Governance','FastAPI'],
-    sectorImage: 'rightest.png',
-    sectorZones: [
-      { lat: 700, lng: 400, label: 'PROJECT INDRA-AI', tag:'// UAV VISION', holo: {
-        img: 'indra.jpg', why: 'Automate fatal manual inspections of transmission lines for predictive grid maintenance[cite: 3].', arch: 'YOLOv8 pipeline → fault detection → damage classification. Real-time edge inference on drone footage[cite: 3].', metrics: '<span style="color:#f0a500">Precision:</span> 94% mAP<br><span style="color:#f0a500">Risk Matrix:</span> 5 Levels[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }},
-      { lat: 400, lng: 1000, label: 'FLOWSYNC-AI', tag:'// URBAN TRAFFIC', holo: {
-        img: 'flowsync.jpg', why: 'Eradicate emergency vehicle delays caused by static timers[cite: 3].', arch: 'Multi-Agent PPO Reinforcement Learning paired with YOLOv8n object detection for area-based density calculation[cite: 3, 4].', metrics: '<span style="color:#f0a500">Wait Reduction:</span> Proven<br><span style="color:#f0a500">Override:</span> 100% Success[cite: 3]', git: 'https://github.com/CODERUDRA-X/CODERUDRAX-FlowSync-AI', live: ''
-      }},
-      { lat: 600, lng: 1300, label: 'DATASENTINEL AI', tag:'// DATA GOVERNANCE', holo: {
-        img: 'datasentinel.jpg', why: 'Prevent silent schema failures and compliance risks in enterprise databases[cite: 4].', arch: 'FastAPI & PostgreSQL extraction integrated with Google Gemini API for PII detection and semantic duplicate flagging[cite: 4].', metrics: '<span style="color:#f0a500">Health Score:</span> Custom Algo<br><span style="color:#f0a500">Latency:</span> Sub-second[cite: 3, 4]', git: 'https://github.com/CODERUDRA-X/intelligent-data-dictionary-agent', live: 'https://www.commudle.com/builds/datasentinal-ai-an-intelligent-data-dictionary-agent'
-      }},
-      { lat: 800, lng: 900, label: 'FIX-IT-NOW AI', tag:'// CIVIC OPS', holo: {
-        img: 'fixit.jpg', why: 'Manual civic grievance routing causes critical public infrastructure response delays[cite: 3].', arch: 'AI-driven classification engine parsing natural language to route city infrastructure complaints instantly[cite: 3].', metrics: '<span style="color:#f0a500">Load:</span> High-Volume<br><span style="color:#f0a500">Routing:</span> Real-Time', git: 'https://github.com/CODERUDRA-X/fix-it-now-ai', live: ''
-      }}
-    ]
-  },
-
-  {
-    id: 'service', type: 'hud', lat: 954, lng: 1111,
-    tag: '// SECTION 03 · PROFESSIONAL TENURE', title: 'SERVICE RECORD', sc: 'act', sl: 'ACTIVE DUTY',
-    body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> Enterprise alliances established across leading organizations and strategic tech startups[cite: 3].</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Professional deployments integrating AI safety audits, scalable backend infrastructure, and national-level logistics automation[cite: 3, 4].</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 3 Major Alliances | 6x Cost Moat | 70% Process Optimization[cite: 3, 4]</div>`,
-    stats: [{v:'3',l:'ALLIANCES'},{v:'6x',l:'COST MOAT'},{v:'70%',l:'OPT'}],
-    tags: ['Enterprise Audits','Backend Integrations','Automation','AI Safety'],
-    sectorImage: 'tower.png',
-    sectorZones: [
-      { lat: 600, lng: 500, label: 'PROMPTLY AI PVT LTD', tag:'// AI RESEARCH INTERN', holo: {
-        img: 'promptly.jpg', why: 'Evaluate B2B AI tools and mitigate enterprise legal liability[cite: 3].', arch: 'Designed a 3-phase LLM-assisted audit system. Built Python NLP pipelines tracking ₹8 Crore+ ecosystem investments[cite: 3, 4].', metrics: '<span style="color:#f0a500">Throughput:</span> 3x Faster<br><span style="color:#f0a500">Cost Moat:</span> 6x Identified[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }},
-      { lat: 400, lng: 1100, label: 'EMPYREAN ROBOTICS', tag:'// SDE AI/ML INTERN', holo: {
-        img: 'empyrean.jpg', why: 'Develop real-world computer vision monitoring infrastructure[cite: 3, 4].', arch: 'Built scalable inference pipelines leveraging Python, FastAPI, and PostgreSQL for backend workflows[cite: 3, 4].', metrics: '<span style="color:#f0a500">Focus:</span> Reliability<br><span style="color:#f0a500">State:</span> Active Deployment[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }},
-      { lat: 800, lng: 900, label: 'GOOGLE GSA', tag:'// PAN-INDIA OPS HEAD', holo: {
-        img: 'google.jpg', why: 'Automate manual coordination for 110+ campus leads globally[cite: 3, 4].', arch: 'Engineered deep webhook automations via n8n and Python scripts to run community analytics dashboards[cite: 3, 4].', metrics: '<span style="color:#f0a500">Manual Work:</span> -70%<br><span style="color:#f0a500">Scale:</span> National[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }}
-    ]
-  },
-
-  {
-    id: 'armory', type: 'hud', lat: 249, lng: 533,
-    tag: '// SECTION 04 · CAPABILITY MATRIX', title: 'THE ARMORY (SKILLS)', sc: 'act', sl: 'WEAPONS HOT',
-    body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> A deliberately selected technology stack to build high-reliability systems[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Bridging the fatal gap between theoretical machine learning research and production-grade, low-latency software engineering[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Edge Focus | C++ Native | Mathematics Base</div>`,
-    stats: [{v:'AI',l:'CORE'},{v:'EDGE',l:'FOCUS'},{v:'MATH',l:'BASE'}],
-    tags: ['Python','C++','PyTorch','WebAssembly','Docker','PostgreSQL'],
-    sectorImage: 'many.png',
-    sectorZones: [
-      { lat: 500, lng: 600, label: 'CORE & MATHEMATICS', tag:'// THE BRAIN', holo: {
-        img: 'math.jpg', why: 'Provide robust logic and low-level memory management[cite: 4].', arch: 'C++ for deep DSA and native integrations. Python for ML ecosystems. SQL for data structuring[cite: 3, 4].', metrics: '<span style="color:#f0a500">Algorithms:</span> 840+ Solved<br><span style="color:#f0a500">Math:</span> Linear Algebra[cite: 3, 4]', git: '', live: ''
-      }},
-      { lat: 700, lng: 1200, label: 'AI & PERCEPTION', tag:'// THE EYES', holo: {
-        img: 'vision.jpg', why: 'Enable high-fidelity spatial and contextual awareness[cite: 4].', arch: 'YOLOv8/v11 for object detection. Multi-Agent PPO for Reinforcement Learning. NLP/LLMs for semantic parsing[cite: 3, 4].', metrics: '<span style="color:#f0a500">Focus:</span> Low-latency<br><span style="color:#f0a500">Frameworks:</span> PyTorch, OpenCV[cite: 3]', git: '', live: ''
-      }},
-      { lat: 400, lng: 1400, label: 'EDGE INFRASTRUCTURE', tag:'// THE SPINE', holo: {
-        img: 'infra.jpg', why: 'Ensure zero-downtime, cloud-independent execution[cite: 4].', arch: 'WebAssembly for browser edge AI. Docker for containerization. FastAPI & PostgreSQL for backend routing[cite: 3, 4].', metrics: '<span style="color:#f0a500">Export:</span> ONNX, TFLite<br><span style="color:#f0a500">OS:</span> Linux/Bash[cite: 3]', git: '', live: ''
-      }}
-    ]
-  },
-
-  {
-    id: 'blacksite', type: 'amber', lat: 322, lng: 1275,
-    tag: '// SECTION 05 · CLASSIFIED R&D', title: 'BLACK SITE (LABS)', sc: 'cls', sl: 'STEALTH MODE',
-    body: `<div class="hn-section"><span class="hn-label">[ ⚠ RESTRICTED ACCESS ]</span> The underground laboratory for highly experimental architectures[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Focus areas include decentralized drone swarm coordination, 60FPS edge kinematics, and permanent-consequence behavioral modeling[cite: 3, 4].</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> Zero Cloud Ping | Stealth Mode | Experimental Engine</div>`,
-    stats: [{v:'C++',l:'SWARMS'},{v:'WASM',l:'EDGE'},{v:'🔒',l:'CLASSIFIED'}],
-    tags: ['Swarm AI','Kinematics','Behavioral Sim','Decentralized'],
-    sectorImage: 'mount.png',
-    sectorZones: [
-      { lat: 400, lng: 600, label: 'PROJECT VYUHA', tag:'// CLASSIFIED SWARM', holo: {
-        img: 'vyuha.jpg', why: 'Eliminate Single Point of Failure (SPOF) in drone swarms[cite: 4].', arch: 'Decentralized multi-agent coordination built in C++. Nodes use emergent logic inspired by Mahabharat Vyuha military formations[cite: 4].', metrics: '<span style="color:#f0a500">Status:</span> Stealth Mode<br><span style="color:#f0a500">Comms:</span> O(log N) Overhead[cite: 4]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }},
-      { lat: 700, lng: 1100, label: 'A.V.A.T.A.R', tag:'// 60FPS KINEMATICS', holo: {
-        img: 'avatar.jpg', why: 'Real-time spatial mapping without cloud ping[cite: 4].', arch: 'Python-to-WebAssembly compiler running MediaPipe. Uses LERP-based smoothing and 3D Euclidean Z-axis correction[cite: 3, 4].', metrics: '<span style="color:#f0a500">Latency:</span> Zero Cloud Ping<br><span style="color:#f0a500">Target:</span> Defense-grade[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }},
-      { lat: 600, lng: 1500, label: 'MAYA PROTOCOL', tag:'// BEHAVIORAL SIM', holo: {
-        img: 'maya.jpg', why: 'Model physiological consequences of dopamine choices[cite: 3, 4].', arch: 'C++ native engine executing permadeath mechanics based on System Integrity vs. Willpower trade-offs[cite: 3, 4].', metrics: '<span style="color:#f0a500">State:</span> Shipped<br><span style="color:#f0a500">Platform:</span> Cross-platform[cite: 3]', git: 'https://github.com/CODERUDRA-X/maya_protocol', live: ''
-      }},
-      { lat: 800, lng: 400, label: 'NAAD PROTOCOL', tag:'// DATA STREAMING', holo: {
-        img: 'naad.jpg', why: 'Traditional waveform streaming wastes network bandwidth[cite: 4].', arch: '"Streaming Meaning, Not Waveforms" utilizing advanced semantic JS encoding for extreme compression[cite: 4].', metrics: '<span style="color:#f0a500">Audio Rep:</span> Sub-kbps<br><span style="color:#f0a500">Engine:</span> Experimental[cite: 4]', git: 'https://github.com/CODERUDRA-X/naad', live: ''
-      }}
-    ]
-  },
-
-  {
-    id: 'vault', type: 'hud', lat: 320, lng: 680,
-    tag: '// SECTION 06 · COMMS & ARCHIVE', title: 'INTEL VAULT', sc: 'act', sl: 'TRANSMITTING',
-    body: `<div class="hn-section"><span class="hn-label">[ DIRECTIVE ]</span> UPLINK ESTABLISHED. Central repository for open-source codebase contributions[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ ARCHITECTURE ]</span> Daily CI/CD intelligence pipelines and secure communication channels for strategic alliances[cite: 4].</div>
-    <div class="hn-section"><span class="hn-label">[ METRICS ]</span> 35+ Repos | 1K+ Annual Commits | Live Uplink[cite: 4]</div>`,
-    stats: [{v:'35+',l:'REPOS'},{v:'1K+',l:'COMMITS'},{v:'LIVE',l:'UPLINK'}],
-    tags: ['GitHub','CI/CD','Intelligence','Open Source'],
-    sectorImage: 'lefti.png',
-    sectorZones: [
-      { lat: 400, lng: 800, label: 'DEFENSE AI ARCHIVE', tag:'// AUTOMATION', holo: {
-        img: 'archive.jpg', why: 'Aggregate global defense-tech and swarm publications[cite: 4].', arch: 'Python-driven CI/CD pipeline that scrapes, synthesizes, and securely catalogs petabyte-scale data natively[cite: 4].', metrics: '<span style="color:#f0a500">Sync:</span> 24hr Automated<br><span style="color:#f0a500">Mode:</span> Hands-free[cite: 4]', git: 'https://github.com/CODERUDRA-X', live: ''
-      }},
-      { lat: 700, lng: 1200, label: 'GCB-HUB DEPLOYMENT', tag:'// WEB PIPELINE', holo: {
-        img: 'gcb.jpg', why: 'Deploy petabyte-scale genetic models (BLISS) for global access[cite: 4].', arch: 'Engineered the frontend data pipeline to transform dense statistical pQTL data into an intuitive platform[cite: 4].', metrics: '<span style="color:#f0a500">Scale:</span> Petabyte Ready<br><span style="color:#f0a500">Scope:</span> 5,779+ Models[cite: 4]', git: 'https://github.com/gcb-hub/BLISS', live: 'https://www.gcbhub.org/'
-      }}
-    ]
-  }
-];
-
-/* ─────────────────────────────────────────────────────────
-   TICKER MESSAGES
-───────────────────────────────────────────────────────── */
-const TICKER_MSGS = [
-  'OPERATION REBIRTH: ACTIVE · TIER-3 TO CEO MINDSET ENGAGED',
-  'PROJECT INDRA-AI: 94% CV PRECISION ON TRANSMISSION FAULTS',
-  'FLOWSYNC-AI: 12 INTERSECTIONS OPTIMIZED · WAIT-TIME REDUCTION ACHIEVED',
-  'VYUHA: CLASSIFIED DIRECTIVE · DECENTRALIZED SWARM LOGIC ACTIVE',
-  'DEFENSE AI ARCHIVE: DAILY CI/CD COMPLETE · DATA PIPELINES NOMINAL',
-  'A.V.A.T.A.R: EDGE-AI KINEMATIC PIPELINE · 60FPS TARGET · WASM: NOMINAL',
-  'PROMPTLY AI: 3X THROUGHPUT OPTIMIZED · LIABILITY AUDIT: ACTIVE',
-  'THREAT ASSESSMENT: ELEVATED · SWARM PROTOCOL ON STANDBY · CITADEL: SECURE',
-  'ALL OPERATIVES CLEAR · HAR HAR MAHADEV · CODERUDRA-X: ACTIVE',
-];
-
-// Boot Sequence
-const BLINES = [
-  '> INITIALIZING COMMAND CENTER OS v10.0...',
-  '> OPERATION REBIRTH: VERIFIED',
-  '> DECRYPTING 6 MAIN PORTFOLIO SECTORS...',
-  '> AUTH: CLEARANCE LVL-5 GRANTED',
-  '> AI SUBSYSTEMS: ALL NOMINAL',
-  '> TERRAIN DATABASE: LOADED',
-  '> SWARM PROTOCOL: STANDBY',
-  '> HAR HAR MAHADEV — OPERATIVE VERIFIED ■',
-  '> DROP ZONE LOCKED · AWAITING ORDER...',
-];
-
-let bi = 0, bootPct = 0;
-const blogEl = document.getElementById('blog');
-const bpbar  = document.getElementById('bpbar');
-const bpctEl = document.getElementById('bpct');
-
-function nextLine() {
-  if (bi >= BLINES.length) return;
-  const d = document.createElement('div'); d.className = 'ln';
-  d.textContent = BLINES[bi++]; blogEl.appendChild(d);
-  animateBootPct(Math.floor((bi / BLINES.length) * 100));
-  if (bi < BLINES.length) setTimeout(nextLine, 420);
-}
-setTimeout(nextLine, 600);
-
-function animateBootPct(target) {
-  const step = () => {
-    if (bootPct < target) {
-      bootPct++;
-      bpbar.style.width = bootPct + '%';
-      bpctEl.textContent = bootPct + '%';
-      if (bootPct < target) requestAnimationFrame(step);
-    }
-  };
-  requestAnimationFrame(step);
+:root {
+  --hud:#00ff88; --hud-dim:rgba(0,255,136,.2); --hud-glow:rgba(0,255,136,.6);
+  --amber:#f0a500; --khaki:#c8a96e; --red:#ff3333; --olive:#3a5020;
+  --glass:rgba(3,10,4,.94); --glass2:rgba(4,12,5,.92);
+  --border:rgba(0,255,136,.18); --border-lit:rgba(0,255,136,.5);
 }
 
-// Background Starfield & Speed Particles
-const starsEl = document.getElementById('stars');
-for (let i = 0; i < 160; i++) {
-  const s = document.createElement('div'); s.className = 'star';
-  const sz = Math.random() * 2.5 + .4;
-  s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;opacity:${(.1+Math.random()*.9).toFixed(2)};`;
-  starsEl.appendChild(s);
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;
+  font-family:'Share Tech Mono',monospace;cursor:crosshair;}
+
+/* ── OVERLAYS ── */
+#noise{position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  opacity:.28;mix-blend-mode:overlay;}
+#scanlines{position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.055) 2px,rgba(0,0,0,.055) 4px);}
+
+/* ═══════════════════════════════════════════════
+   BOOT SCREEN & PRELOADER
+═══════════════════════════════════════════════ */
+#boot{position:fixed;inset:0;z-index:1000;
+  background:radial-gradient(ellipse at 50% 40%,#060e06 0%,#000 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 1s ease;}
+#boot.out{opacity:0;pointer-events:none;}
+
+.b-logo{font-family:'Orbitron',monospace;font-size:clamp(2.2rem,8vw,5.5rem);
+  font-weight:900;color:var(--hud);letter-spacing:.3em;text-align:center;
+  text-shadow:0 0 40px var(--hud),0 0 80px rgba(0,255,136,.12),0 0 140px rgba(0,255,136,.05);
+  animation:glitch 5s infinite;}
+.b-mantra{font-family:'Rajdhani',sans-serif;font-size:clamp(.85rem,2.5vw,1.45rem);
+  color:var(--amber);letter-spacing:.45em;margin-top:.7rem;opacity:.88;text-align:center;
+  text-shadow:0 0 22px rgba(240,165,0,.4);animation:amber-pulse 2.5s ease infinite;}
+.b-line{width:clamp(200px,48vw,420px);height:1px;
+  background:linear-gradient(90deg,transparent,var(--hud),transparent);
+  margin:2rem 0 1.5rem;animation:scanbar 2.2s infinite;}
+.b-log{height:5.8em;overflow:hidden;font-size:clamp(.55rem,1.4vw,.72rem);
+  color:rgba(0,255,136,.55);text-align:center;line-height:2.2;
+  min-width:clamp(280px,55vw,500px);}
+.b-log .ln{animation:sup .28s ease both;opacity:0;}
+
+.boot-progress-wrap{position:relative;width:clamp(200px,48vw,420px);height:2px;
+  background:rgba(0,255,136,.08);margin-top:1.2rem;overflow:visible;}
+.boot-progress-bar{height:100%;width:0;
+  background:linear-gradient(90deg,var(--olive),var(--hud));
+  box-shadow:0 0 8px var(--hud);transition:width .1s ease;}
+.boot-pct{position:absolute;right:0;top:-20px;
+  font-size:.55rem;color:var(--hud);letter-spacing:.2em;}
+
+.belt-area{margin-top:2.5rem;display:flex;flex-direction:column;
+  align-items:center;gap:.9rem;cursor:pointer;user-select:none;}
+.belt-wrap{position:relative;width:clamp(230px,48vw,360px);height:68px;
+  border:2px solid var(--khaki);background:linear-gradient(135deg,#110d00,#221800);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  box-shadow:0 0 24px rgba(200,169,110,.3),inset 0 0 24px rgba(0,0,0,.6);
+  transition:transform .15s,box-shadow .15s;}
+.belt-wrap:hover{transform:scale(1.03);box-shadow:0 0 40px rgba(200,169,110,.55);}
+.belt-wrap:active{transform:scale(.96);}
+.strap{position:absolute;width:38%;height:100%;
+  background:repeating-linear-gradient(90deg,#3a2800,#4a3400 5px,#3a2800 10px);
+  border:1px solid #6a5020;transition:transform .72s cubic-bezier(.4,0,.2,1);}
+.sl{left:0;transform-origin:right center;}
+.sr{right:0;transform-origin:left center;}
+.belt-wrap.open .sl{transform:translateX(-115%) rotate(-8deg);}
+.belt-wrap.open .sr{transform:translateX( 115%) rotate( 8deg);}
+.buckle-body{width:68px;height:48px;
+  background:linear-gradient(135deg,#7a5c18,#d4a840,#7a5c18);
+  border:2px solid #e0b848;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;z-index:2;position:relative;
+  box-shadow:0 0 18px rgba(210,160,50,.65),inset 0 1px 0 rgba(255,255,255,.15);}
+.buckle-body::after{content:'DEPLOY';position:absolute;bottom:-22px;
+  font-size:.52rem;letter-spacing:.35em;color:var(--khaki);}
+.tap-hint{font-size:clamp(.52rem,1.3vw,.7rem);
+  color:rgba(200,169,110,.5);letter-spacing:.3em;animation:blink 1.5s infinite;}
+
+/* ═══════════════════════════════════════════════
+   DROP SCREEN
+═══════════════════════════════════════════════ */
+#drop{position:fixed;inset:0;z-index:900;display:none;overflow:hidden;}
+#drop.on{display:block;}
+#drop.shaking{animation:cam-shake .65s ease forwards;}
+
+#sky{position:absolute;inset:0;
+  background:linear-gradient(180deg,#000408 0%,#010c18 35%,#030f06 70%,#081404 100%);}
+#stars{position:absolute;inset:0;animation:stars-rush 4.5s ease-in forwards;}
+.star{position:absolute;border-radius:50%;background:#fff;}
+#terrain-rush{position:absolute;bottom:0;left:0;right:0;height:0;
+  background:linear-gradient(0deg,#0e1c08,#182808,#202e10);
+  animation:terrain-up 4.5s cubic-bezier(.08,0,.45,1) forwards;
+  border-top:1px solid rgba(0,255,136,.15);}
+#terrain-rush::before{content:'';position:absolute;top:-60px;left:0;right:0;height:60px;
+  background:linear-gradient(0deg,rgba(14,28,8,.8),transparent);}
+#clouds{position:absolute;inset:0;pointer-events:none;
+  animation:clouds-scroll 4.5s linear forwards;}
+.cloud{position:absolute;border-radius:50%;}
+#speed-lines{position:absolute;inset:0;pointer-events:none;}
+.spd{position:absolute;background:linear-gradient(180deg,transparent,rgba(180,220,180,.22),transparent);width:1px;}
+
+#op{position:absolute;left:50%;top:25%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;z-index:10;}
+.chute-svg{width:clamp(100px,22vw,160px);
+  filter:drop-shadow(0 0 10px rgba(200,169,110,.45));
+  animation:chute-open .5s ease .3s both;}
+.lines-svg{width:clamp(44px,10vw,68px);margin-top:-2px;}
+.op-fig{width:clamp(32px,7vw,52px);height:clamp(32px,7vw,52px);
+  background:linear-gradient(135deg,#1e2c10,#3a5020);
+  border:2px solid var(--khaki);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(.9rem,2.5vw,1.5rem);
+  box-shadow:0 0 18px rgba(200,169,110,.45);margin-top:-2px;
+  animation:op-sway 4.5s ease forwards;}
+
+#dhud{position:absolute;inset:0;pointer-events:none;padding:clamp(10px,3vw,20px);}
+.drow{display:flex;justify-content:space-between;}
+.dblk{font-size:clamp(.46rem,1.25vw,.65rem);color:var(--hud);line-height:2.1;opacity:.82;}
+.d-cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:clamp(64px,14vw,104px);height:clamp(64px,14vw,104px);pointer-events:none;}
+.d-cross::before,.d-cross::after{content:'';position:absolute;background:rgba(0,255,136,.38);}
+.d-cross::before{left:50%;top:0;width:1px;height:100%;transform:translateX(-50%);}
+.d-cross::after{top:50%;left:0;height:1px;width:100%;transform:translateY(-50%);}
+.cring{position:absolute;inset:0;border:1px solid rgba(0,255,136,.22);
+  border-radius:50%;animation:cpulse 1s infinite;}
+.alt-disp{position:absolute;right:clamp(12px,3vw,24px);top:50%;transform:translateY(-50%);
+  font-family:'Orbitron',monospace;font-size:clamp(1.3rem,4.5vw,2.4rem);
+  color:var(--amber);text-align:right;
+  text-shadow:0 0 20px rgba(240,165,0,.5);line-height:1.2;}
+.alt-disp small{font-size:.4em;color:var(--khaki);display:block;letter-spacing:.2em;}
+#lflash{position:absolute;inset:0;background:rgba(140,220,100,.2);
+  opacity:0;pointer-events:none;}
+#lflash.fire{animation:lflash .5s ease forwards;}
+
+/* ═══════════════════════════════════════════════
+   LEAFLET OVERRIDES
+═══════════════════════════════════════════════ */
+.leaflet-container {
+  background: radial-gradient(ellipse at center, #05131a 0%, #010609 100%) !important;
+  cursor: crosshair !important;
 }
-const cloudsEl = document.getElementById('clouds');
-for (let i = 0; i < 8; i++) {
-  const c = document.createElement('div'); c.className = 'cloud';
-  c.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*80}%;width:${150+Math.random()*280}px;height:${40+Math.random()*55}px;border-radius:50%;background:rgba(255,255,255,${(.02+Math.random()*.05).toFixed(3)});`;
-  cloudsEl.appendChild(c);
+.leaflet-control-attribution, .leaflet-control-zoom { display:none !important; }
+.leaflet-grab { cursor:crosshair !important; }
+.leaflet-dragging, .leaflet-dragging .leaflet-grab { cursor:grabbing !important; }
+
+/* ═══════════════════════════════════════════════
+   RADAR MARKERS
+═══════════════════════════════════════════════ */
+.radar-wrap{position:relative;width:48px;height:48px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.radar-core{width:10px;height:10px;border-radius:50%;background:var(--hud);z-index:3;
+  box-shadow:0 0 8px var(--hud),0 0 16px rgba(0,255,136,.5),0 0 30px rgba(0,255,136,.2);
+  transition:transform .2s,box-shadow .2s;}
+.radar-wrap:hover .radar-core{transform:scale(1.6);
+  box-shadow:0 0 14px var(--hud),0 0 28px rgba(0,255,136,.8),0 0 50px rgba(0,255,136,.3);}
+.rring{position:absolute;border-radius:50%;border:1.5px solid var(--hud);
+  animation:radar-pulse 2.4s ease-out infinite;opacity:0;}
+.rr1{width:20px;height:20px;}
+.rr2{width:34px;height:34px;animation-delay:.7s;}
+.rr3{width:50px;height:50px;animation-delay:1.4s;}
+
+.radar-wrap.amber .radar-core{background:var(--amber);
+  box-shadow:0 0 8px var(--amber),0 0 16px rgba(240,165,0,.4);}
+.radar-wrap.amber .rring{border-color:var(--amber);}
+.radar-wrap.amber:hover .radar-core{box-shadow:0 0 14px var(--amber),0 0 28px rgba(240,165,0,.7);}
+.radar-wrap.amber .m-label{color:rgba(240,165,0,.85);border-color:rgba(240,165,0,.25);}
+
+.radar-wrap.citadel .radar-core{width:16px;height:16px;
+  box-shadow:0 0 14px var(--hud),0 0 28px rgba(0,255,136,.7),0 0 50px rgba(0,255,136,.3);}
+.radar-wrap.citadel .rring{border-width:2px;}
+
+.m-label{position:absolute;top:calc(100% + 5px);left:50%;transform:translateX(-50%);
+  font-size:.5rem;color:rgba(0,255,136,.8);letter-spacing:.15em;
+  background:rgba(0,0,0,.72);padding:2px 8px;white-space:nowrap;pointer-events:none;
+  border:1px solid rgba(0,255,136,.2);backdrop-filter:blur(6px);
+  transition:all .2s;}
+.radar-wrap:hover .m-label{color:var(--hud);border-color:rgba(0,255,136,.5);
+  background:rgba(0,20,5,.9);box-shadow:0 0 10px rgba(0,255,136,.2);}
+
+/* ═══════════════════════════════════════════════
+   MAP SCREEN LAYOUT & GLOBAL UI
+═══════════════════════════════════════════════ */
+#port{position:fixed;inset:0;z-index:800;display:none;}
+#port.on{display:block;animation:maprev .9s ease both;}
+#map{position:absolute;inset:0;width:100%;height:100%;}
+
+/* HUD Canvas (hex grid + mission lines) */
+#hud-canvas{position:absolute;inset:0;z-index:400;pointer-events:none;width:100%;height:100%;}
+
+/* Scan sweep line */
+#scan-line{position:absolute;left:0;right:0;height:2px;z-index:420;pointer-events:none;
+  background:linear-gradient(90deg,transparent 0%,rgba(0,255,136,.3) 20%,rgba(0,255,136,.5) 50%,rgba(0,255,136,.3) 80%,transparent 100%);
+  box-shadow:0 0 12px rgba(0,255,136,.25),0 0 24px rgba(0,255,136,.1);
+  animation:scan-sweep 14s ease-in-out infinite;}
+
+/* HUD Corners */
+.hud-corner{position:absolute;z-index:550;pointer-events:none;
+  width:24px;height:24px;border-color:rgba(0,255,136,.45);border-style:solid;}
+.hud-tl{top:clamp(46px,8vw,60px);left:0;border-width:2px 0 0 2px;}
+.hud-tr{top:clamp(46px,8vw,60px);right:0;border-width:2px 2px 0 0;}
+.hud-bl{bottom:clamp(38px,7vw,52px);left:0;border-width:0 0 2px 2px;}
+.hud-br{bottom:clamp(38px,7vw,52px);right:0;border-width:0 2px 2px 0;}
+.hc-data{position:absolute;font-size:clamp(.4rem,1vw,.52rem);color:rgba(0,255,136,.45);
+  letter-spacing:.15em;white-space:nowrap;}
+.hud-tl .hc-data{top:4px;left:28px;}
+.hud-tr .hc-data{top:4px;right:28px;}
+.hud-bl .hc-data{bottom:4px;left:28px;}
+.hud-br .hc-data{bottom:4px;right:28px;}
+
+/* Coords */
+#map-coords{position:absolute;bottom:clamp(60px,10vw,76px);left:clamp(10px,2.5vw,18px);
+  z-index:550;pointer-events:none;
+  font-size:clamp(.44rem,1.1vw,.58rem);color:rgba(0,255,136,.38);line-height:1.9;}
+
+/* Top Bar */
+#topbar{position:absolute;top:0;left:0;right:0;z-index:600;
+  height:clamp(46px,8vw,60px);
+  background:linear-gradient(180deg,rgba(0,0,0,.94) 0%,transparent 100%);
+  border-bottom:1px solid rgba(0,255,136,.1);
+  display:flex;align-items:center;padding:0 clamp(12px,3vw,24px);pointer-events:none;}
+.t-name{font-family:'Orbitron',monospace;font-size:clamp(.8rem,2.5vw,1.25rem);
+  font-weight:900;color:var(--hud);letter-spacing:.2em;
+  text-shadow:0 0 14px rgba(0,255,136,.55);}
+.t-sep{color:rgba(0,255,136,.3);margin:0 clamp(6px,1.5vw,12px);}
+.t-sub{font-family:'Rajdhani',sans-serif;font-size:clamp(.48rem,1.4vw,.76rem);
+  color:var(--khaki);letter-spacing:.22em;opacity:.78;}
+@media(max-width:580px){.t-sub{display:none;}}
+.t-right{margin-left:auto;display:flex;align-items:center;gap:10px;pointer-events:all;}
+.mission-count{display:flex;align-items:baseline;gap:4px;}
+.mc-num{font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--hud);
+  text-shadow:0 0 10px rgba(0,255,136,.5);}
+.mc-lbl{font-size:.5rem;color:rgba(0,255,136,.5);letter-spacing:.2em;}
+.t-badge{font-size:clamp(.44rem,1.1vw,.6rem);color:var(--hud);
+  border:1px solid rgba(0,255,136,.35);padding:3px 9px;letter-spacing:.2em;
+  animation:blink 2s infinite;}
+
+/* Radar sweep */
+#radar-sweep{position:absolute;top:clamp(52px,9vw,66px);right:clamp(10px,2.5vw,18px);
+  z-index:550;pointer-events:none;
+  width:clamp(44px,7vw,62px);height:clamp(44px,7vw,62px);}
+
+/* Threat indicator */
+#threat-level{position:absolute;top:clamp(120px,18vw,150px);right:clamp(10px,2.5vw,18px);
+  z-index:550;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;gap:3px;}
+.tl-label,.tl-val{font-size:clamp(.4rem,.9vw,.52rem);color:rgba(240,165,0,.6);letter-spacing:.2em;}
+.tl-bars{display:flex;gap:2px;align-items:flex-end;}
+.tl-bar{width:4px;height:8px;background:rgba(255,255,255,.1);transition:background .3s;}
+.tl-bar:nth-child(1){height:6px;} .tl-bar:nth-child(2){height:9px;} .tl-bar:nth-child(3){height:12px;}
+.tl-bar:nth-child(4){height:9px;} .tl-bar:nth-child(5){height:6px;}
+.tl-bar.active{background:var(--amber);box-shadow:0 0 6px rgba(240,165,0,.5);}
+
+/* Ticker */
+#ticker-wrap{position:absolute;bottom:clamp(38px,7vw,52px);left:0;right:0;
+  height:20px;z-index:510;pointer-events:none;
+  background:rgba(0,0,0,.55);overflow:hidden;
+  border-top:1px solid rgba(0,255,136,.1);
+  border-bottom:1px solid rgba(0,255,136,.08);
+  display:flex;align-items:center;}
+.ticker-label{font-size:.48rem;color:var(--amber);letter-spacing:.2em;
+  padding:0 10px;border-right:1px solid rgba(240,165,0,.3);
+  white-space:nowrap;flex-shrink:0;}
+.ticker-content{font-size:.48rem;color:rgba(0,255,136,.6);letter-spacing:.14em;
+  white-space:nowrap;will-change:transform;}
+
+/* Bottom Nav */
+#botnav{position:absolute;bottom:0;left:0;right:0;z-index:600;
+  height:clamp(38px,7vw,52px);
+  background:linear-gradient(0deg,rgba(0,0,0,.94) 0%,transparent 100%);
+  border-top:1px solid rgba(0,255,136,.08);
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(5px,2vw,16px);}
+.nbtn{font-size:clamp(.44rem,1.2vw,.6rem);color:rgba(200,169,110,.62);
+  letter-spacing:.2em;cursor:pointer;padding:4px 10px;
+  border:1px solid transparent;transition:all .25s;text-decoration:none;
+  font-family:'Share Tech Mono',monospace;}
+.nbtn:hover,.nbtn.lit{color:var(--hud);border-color:rgba(0,255,136,.28);
+  text-shadow:0 0 10px rgba(0,255,136,.45);background:rgba(0,255,136,.04);}
+
+#zoom-lvl{cursor:default;}
+
+/* Targeting Reticle */
+#reticle-container{position:absolute;inset:0;z-index:650;pointer-events:none;}
+.t-reticle{position:absolute;pointer-events:none;transform:translate(-50%,-50%);}
+.t-reticle .tr-ring{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  border-radius:50%;border:1.5px solid var(--hud);}
+.t-reticle .tr-r1{width:60px;height:60px;
+  animation:tr-contract .5s cubic-bezier(.4,0,.2,1) forwards;}
+.t-reticle .tr-r2{width:90px;height:90px;
+  animation:tr-contract .5s cubic-bezier(.4,0,.2,1) .08s forwards;opacity:.5;}
+.t-reticle .tr-cross-h,.t-reticle .tr-cross-v{
+  position:absolute;background:rgba(0,255,136,.6);}
+.t-reticle .tr-cross-h{top:50%;left:0;right:0;height:1px;transform:translateY(-50%);}
+.t-reticle .tr-cross-v{left:50%;top:0;bottom:0;width:1px;transform:translateX(-50%);}
+.t-reticle .tr-c{position:absolute;width:12px;height:12px;
+  border-color:var(--hud);border-style:solid;}
+.t-reticle .tr-tl{top:-30px;left:-30px;border-width:2px 0 0 2px;}
+.t-reticle .tr-tr{top:-30px;right:-30px;border-width:2px 2px 0 0;}
+.t-reticle .tr-bl{bottom:-30px;left:-30px;border-width:0 0 2px 2px;}
+.t-reticle .tr-br{bottom:-30px;right:-30px;border-width:0 2px 2px 0;}
+.t-reticle.amber .tr-ring{border-color:var(--amber);}
+.t-reticle.amber .tr-cross-h,.t-reticle.amber .tr-cross-v{background:rgba(240,165,0,.6);}
+.t-reticle.amber .tr-c{border-color:var(--amber);}
+
+/* Tooltip */
+#tip{position:fixed;z-index:800;
+  background:rgba(2,8,3,.95);border:1px solid rgba(0,255,136,.32);
+  padding:5px 13px;font-size:clamp(.48rem,1.2vw,.62rem);
+  color:var(--hud);letter-spacing:.18em;
+  pointer-events:none;opacity:0;transition:opacity .15s;
+  backdrop-filter:blur(8px);white-space:nowrap;}
+#tip.show{opacity:1;}
+
+/* ═══════════════════════════════════════════════
+   HOLOGRAPHIC MODALS (Replaces old Panels)
+═══════════════════════════════════════════════ */
+.h-modal {
+  position:fixed; inset:0; z-index:850; display:none;
+  align-items:center; justify-content:center; pointer-events:none;
 }
-const spdEl = document.getElementById('speed-lines');
-for (let i = 0; i < 40; i++) {
-  const l = document.createElement('div'); l.className = 'spd';
-  const h = 80 + Math.random() * 260;
-  l.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*55}%;height:${h}px;animation:sup ${(.5+Math.random()*1.3).toFixed(2)}s ease ${(Math.random()*3.8).toFixed(2)}s both;`;
-  spdEl.appendChild(l);
+.h-modal.open { display:flex; pointer-events:all; }
+.hm-backdrop {
+  position:absolute; inset:0; background:rgba(0,0,0,.75);
+  backdrop-filter:blur(4px); animation:backdrop-in .3s ease forwards; cursor:pointer;
 }
-
-// Map Deployment Initialization
-document.getElementById('belt-area').addEventListener('click', startDeploy);
-
-function startDeploy() {
-  document.getElementById('belt-wrap').classList.add('open');
-  setTimeout(() => {
-    document.getElementById('boot').classList.add('out');
-    document.getElementById('drop').classList.add('on');
-    let alt = 8800;
-    const ae = document.getElementById('anum');
-    const ti = setInterval(() => {
-      alt -= Math.floor(Math.random() * 600 + 200);
-      if (alt <= 0) { alt = 0; clearInterval(ti); }
-      ae.textContent = alt.toLocaleString();
-    }, 85);
-    setTimeout(() => {
-      document.getElementById('drop').classList.add('shaking');
-      document.getElementById('lflash').classList.add('fire');
-    }, 3600);
-    setTimeout(showMap, 4400);
-  }, 680);
+.hm-content {
+  position:relative; z-index:1; width:min(860px, 92vw); max-height:85vh;
+  background:var(--glass); backdrop-filter:blur(24px) saturate(1.5);
+  border:1px solid var(--border-lit); padding:clamp(20px,4vw,30px);
+  overflow-y:auto; animation:modal-in .4s cubic-bezier(.4,0,.2,1) both;
+  display:flex; flex-direction:column;
+  box-shadow: 0 0 40px rgba(0,255,136,.1);
 }
+.hm-wide { width:min(1000px, 96vw); }
+.hm-narrow { width:min(600px, 90vw); }
+.hm-content::-webkit-scrollbar { width:2px; }
+.hm-content::-webkit-scrollbar-thumb { background:var(--hud); }
 
-function showMap() {
-  const d = document.getElementById('drop');
-  d.style.transition = 'opacity .75s'; d.style.opacity = '0';
-  setTimeout(() => {
-    d.classList.remove('on');
-    document.getElementById('port').classList.add('on');
-    initLeafletMap();
-    startLiveClock();
-    startTicker();
-  }, 800);
+.hm-corner {
+  position:absolute; width:20px; height:20px;
+  border-color:var(--hud); border-style:solid; z-index:5;
 }
+.hm-tl { top:0; left:0; border-width:2px 0 0 2px; }
+.hm-tr { top:0; right:0; border-width:2px 2px 0 0; }
+.hm-bl { bottom:0; left:0; border-width:0 0 2px 2px; }
+.hm-br { bottom:0; right:0; border-width:0 2px 2px 0; }
 
-// Clock and Ticker Utilities
-function startLiveClock() {
-  const el = document.getElementById('live-clock');
-  setInterval(() => {
-    const n = new Date();
-    el.textContent = `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')} IST`;
-  }, 1000);
+.p-close{position:absolute;top:15px;right:15px;
+  width:30px;height:30px;border:1px solid rgba(200,169,110,.32);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--khaki);font-size:.88rem;transition:all .2s;z-index:10;}
+.p-close:hover{background:rgba(200,169,110,.12);color:#fff;
+  border-color:var(--khaki);box-shadow:0 0 10px rgba(200,169,110,.3);}
+
+.ptag{font-size:.52rem;color:var(--amber);letter-spacing:.42em;margin-bottom:5px;opacity:.85;}
+.ptitle{font-family:'Orbitron',monospace;font-size:clamp(1.1rem,2.5vw,1.6rem);
+  font-weight:700;color:var(--hud);
+  text-shadow:0 0 15px rgba(0,255,136,.4);
+  margin-bottom:12px;line-height:1.3;}
+.pdiv{width:100%;height:1px;
+  background:linear-gradient(90deg,rgba(0,255,136,.4),transparent);
+  margin:15px 0;}
+.pbody{font-family:'Rajdhani',sans-serif;font-size:clamp(.75rem,2vw,.95rem);
+  color:rgba(200,225,185,.85);line-height:1.85;}
+
+/* Mission Modal Split Layout */
+.mm-split { display: flex; gap: clamp(15px, 3vw, 25px); flex-wrap: wrap; }
+.mm-left { flex: 1.5; min-width: 250px; }
+.mm-right { flex: 1; min-width: 200px; display: flex; flex-direction: column; }
+.mm-right-visual {
+  border:1px solid rgba(0,255,136,.15);background:rgba(0,0,0,.4);
+  flex:1;display:flex;align-items:center;justify-content:center;min-height:150px;
+  position:relative;overflow:hidden;
 }
-
-function startTicker() {
-  const el = document.getElementById('ticker-content');
-  const full = (TICKER_MSGS.join('   ◈   ') + '   ◈   ').repeat(2);
-  el.textContent = full;
-  const chars = full.length;
-  const dur = chars * 0.11;
-  const style = document.createElement('style');
-  style.textContent = `@keyframes ticker-run{from{transform:translateX(100vw)}to{transform:translateX(-${chars*7}px)}}.ticker-content{animation:ticker-run ${dur}s linear infinite!important;}`;
-  document.head.appendChild(style);
+.mm-right-visual::before {
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(0,255,136,.03) 18px,rgba(0,255,136,.03) 19px),
+  repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(0,255,136,.03) 18px,rgba(0,255,136,.03) 19px);
 }
+.mm-vis-label { font-size:.52rem;color:rgba(0,255,136,.35);letter-spacing:.25em;text-align:center;z-index:1; }
+.mm-sector-preview { width:100%; height:100%; object-fit:cover; opacity:.7; z-index:1; }
 
-// Leaflet Engine & Boundary Lock
-let leafMap;
-let hudCanvas, hudCtx, dashOffset = 0;
-let mapReady = false;
+/* Mission Stats & Tech Stack */
+.srow{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap;}
+.mm-stat{flex:1;min-width:80px;border:1px solid var(--border);padding:10px;
+  text-align:center;background:rgba(0,255,136,.03);position:relative;overflow:hidden;}
+.mm-stat::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,255,136,.05),transparent);opacity:0;transition:opacity .3s;}
+.mm-stat:hover::before{opacity:1;}
+.mm-stat .v{font-family:'Orbitron',monospace;font-size:clamp(1rem,3vw,1.4rem);
+  color:var(--amber);display:block;}
+.mm-stat .l{font-size:.5rem;color:rgba(200,169,110,.5);letter-spacing:.18em;}
 
-function initLeafletMap() {
-  const bounds = [[0,0],[1080,1920]];
-  leafMap = L.map('map', {
-    crs: L.CRS.Simple, attributionControl: false, zoomControl: false,
-    zoomSnap: 0.1, zoomDelta: 0.5, maxBoundsViscosity: 1.0, 
-  });
+.mm-ttag{display:inline-block;font-size:clamp(.48rem,1.2vw,.6rem);color:var(--hud);
+  border:1px solid rgba(0,255,136,.25);padding:4px 10px;margin:3px;letter-spacing:.1em;
+  background:rgba(0,255,136,.05);animation:tag-pop .3s cubic-bezier(.34,1.56,.64,1) both;}
 
-  L.imageOverlay('cinematic-map.png', bounds, {opacity:1, interactive:false}).addTo(leafMap);
+.mst{display:inline-block;font-size:.6rem;padding:4px 12px;letter-spacing:.25em;margin-top:5px; margin-bottom: 10px;}
+.act{color:#00ff88;border:1px solid #00ff88;background:rgba(0,255,136,.06);}
+.cmp{color:var(--amber);border:1px solid var(--amber);background:rgba(240,165,0,.06);}
+.cls{color:var(--red);border:1px solid var(--red);background:rgba(255,51,51,.06);}
 
-  leafMap.fitBounds(bounds);
-  leafMap.setMinZoom(leafMap.getZoom()); 
-  leafMap.setMaxBounds(bounds);
-
-  leafMap.on('zoomend', () => {
-    const el = document.getElementById('zoom-lvl');
-    if (el) el.textContent = `ZOOM: ${leafMap.getZoom().toFixed(2)}`;
-  });
-  
-  leafMap.on('mousemove', e => {
-    const el = document.getElementById('map-coords');
-    if (el) el.innerHTML = `28°36'N 81°52'E<br>PRAYAGRAJ · INDIA<br><span style="opacity:.5">Y:${e.latlng.lat.toFixed(0)} X:${e.latlng.lng.toFixed(0)}</span>`;
-  });
-  
-  leafMap.on('click', e => {
-    if (!e.originalEvent.target.closest('#mission-modal') &&
-        !e.originalEvent.target.closest('#dossier-modal') &&
-        !e.originalEvent.target.closest('#intel-modal')) {
-      closeAllModals();
-    }
-  });
-
-  hudCanvas = document.getElementById('hud-canvas');
-  hudCtx    = hudCanvas.getContext('2d');
-  resizeHUD();
-  
-  window.addEventListener('resize', () => {
-    resizeHUD();
-    if (leafMap) {
-      leafMap.setMinZoom(-5);
-      leafMap.fitBounds(bounds);
-      leafMap.setMinZoom(leafMap.getZoom());
-    }
-  });
-
-  MISSIONS.forEach((m, i) => setTimeout(() => addMarker(m), 300 + i * 100));
-
-  mapReady = true;
-  hudLoop();
+.deploy-btn {
+  display:inline-flex; align-items:center; gap:8px; 
+  background:rgba(0,255,136,.1); border:1px solid var(--hud); 
+  color:var(--hud); padding:10px 20px; font-family:'Share Tech Mono'; 
+  cursor:pointer; letter-spacing:.2em; margin-top:20px; 
+  transition:all .2s; align-self:flex-start; font-size: 0.7rem;
 }
+.deploy-btn:hover { background:var(--hud); color:#000; box-shadow:0 0 20px var(--hud); }
+.deploy-btn.hidden { display: none !important; }
 
-function resizeHUD() {
-  if (hudCanvas) { 
-    hudCanvas.width = window.innerWidth; 
-    hudCanvas.height = window.innerHeight; 
-  }
+/* Dossier specifics */
+.pring{width:clamp(62px,13vw,88px);height:clamp(62px,13vw,88px);border-radius:50%;
+  border:2px solid var(--khaki);background:linear-gradient(135deg,#1e2c10,#3a5020);
+  display:flex;align-items:center;justify-content:center;font-size:clamp(1.7rem,4.5vw,2.7rem);
+  margin-bottom:14px;box-shadow:0 0 20px rgba(200,169,110,.28);animation:gring 3s ease infinite;}
+.tagline-quote{font-family:'Rajdhani',sans-serif;font-style:italic;
+  font-size:clamp(.7rem,1.8vw,.9rem);color:rgba(200,210,170,.7);
+  border-left:2px solid var(--amber);padding-left:12px;margin:10px 0;line-height:1.6;}
+
+/* Old skill bars (Kept for compatibility) */
+.skr{margin:10px 0;}
+.skl{display:flex;justify-content:space-between;
+  font-size:clamp(.55rem,1.4vw,.68rem);color:var(--khaki);margin-bottom:5px;}
+.skt{height:4px;background:rgba(255,255,255,.07);overflow:hidden;position:relative;}
+.skf{height:100%;background:linear-gradient(90deg,var(--olive),var(--hud));
+  transform:scaleX(0);transform-origin:left;animation:barf .9s ease forwards;}
+.skt::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 60%,rgba(0,255,136,.12) 100%);}
+
+/* Intel Grid specifics */
+.intel-grid{display:flex;gap:clamp(12px,2.5vw,20px);flex-wrap:wrap;}
+.icard{flex:1;min-width:clamp(140px,25vw,180px);border:1px solid rgba(0,255,136,.15);
+  padding:clamp(12px,2.5vw,18px);background:rgba(0,255,136,.03);
+  cursor:pointer;transition:all .22s;text-decoration:none;display:block;position:relative;overflow:hidden;
+  display: flex; flex-direction: column;}
+.icard::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,255,136,.06),transparent);
+  opacity:0;transition:opacity .22s;}
+.icard:hover{border-color:var(--hud);transform:translateY(-5px);
+  box-shadow:0 8px 20px rgba(0,255,136,.15);}
+.icard:hover::before{opacity:1;}
+.ii{font-size:1.6rem;margin-bottom:8px;}
+.in{font-size:clamp(.6rem,1.4vw,.75rem);color:var(--hud);letter-spacing:.18em;display:block;}
+.id2{font-size:clamp(.5rem,1.1vw,.62rem);color:rgba(200,169,110,.6);letter-spacing:.1em;
+  display:block;margin-top:4px;}
+.id3{font-size:clamp(.46rem,1vw,.58rem);color:rgba(0,255,136,.4);
+  letter-spacing:.08em;display:block;margin-top:4px;}
+.im-arrow { margin-top: auto; padding-top: 10px; font-size: 0.55rem; color: rgba(0,255,136,.6); border-top: 1px solid rgba(0,255,136,.1); transition: color 0.2s; }
+.icard:hover .im-arrow { color: var(--hud); }
+
+/* ═══════════════════════════════════════════════
+   SECTOR DRILL-DOWN SCREEN
+═══════════════════════════════════════════════ */
+#sector-screen { position:fixed; inset:0; z-index:900; background:#000; display:none; }
+#sector-screen.on { display:block; animation:sector-in .5s ease forwards; }
+
+#sector-topbar {
+  position:absolute; top:0; left:0; right:0; z-index:600;
+  height:clamp(46px,8vw,60px);
+  background:linear-gradient(180deg,rgba(0,0,0,.95),transparent);
+  border-bottom:1px solid rgba(0,255,136,.12);
+  display:flex; align-items:center; justify-content:center;
+  gap:clamp(12px,3vw,24px);
 }
-
-// Canvas HUD Overlay Loop
-function hudLoop() {
-  if (!hudCtx || !mapReady) return requestAnimationFrame(hudLoop);
-  hudCtx.clearRect(0, 0, hudCanvas.width, hudCanvas.height);
-  drawHexGrid();
-  drawMissionLines();
-  dashOffset -= 0.55;
-  requestAnimationFrame(hudLoop);
+.st-status { font-size:.5rem; color:var(--hud); letter-spacing:.3em; animation:blink 1.5s infinite; }
+.st-name {
+  font-family:'Orbitron',monospace; font-size:clamp(.85rem,2.5vw,1.2rem);
+  font-weight:900; color:var(--hud); letter-spacing:.25em;
+  text-shadow:0 0 14px rgba(0,255,136,.5);
 }
+.st-clearance { font-size:.48rem; color:rgba(0,255,136,.45); letter-spacing:.25em; }
 
-function drawHexGrid() {
-  const sz = 38, W = hudCanvas.width, H = hudCanvas.height;
-  const hH = Math.sqrt(3) * sz, hW = 2 * sz;
-  hudCtx.save();
-  hudCtx.strokeStyle = 'rgba(0,255,136,0.032)';
-  hudCtx.lineWidth = 0.6;
-  for (let col = -1; col * hW * 0.75 < W + hW; col++) {
-    for (let row = -1; row * hH < H + hH; row++) {
-      const cx = col * hW * 0.75;
-      const cy = row * hH + (col % 2 === 0 ? 0 : hH / 2);
-      hudCtx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const a = Math.PI / 3 * i - Math.PI / 6;
-        const x = cx + sz * Math.cos(a), y = cy + sz * Math.sin(a);
-        i === 0 ? hudCtx.moveTo(x, y) : hudCtx.lineTo(x, y);
-      }
-      hudCtx.closePath(); hudCtx.stroke();
-    }
-  }
-  hudCtx.restore();
+#sector-rtb {
+  position:absolute; top:70px; left:20px; z-index:950;
+  background:rgba(0,0,0,.7); border:1px solid var(--hud);
+  color:var(--hud); padding:8px 16px; cursor:pointer;
+  font-family:'Share Tech Mono'; backdrop-filter:blur(4px);
+  transition:all .2s; font-size: 0.6rem; letter-spacing: .2em;
 }
-
-// Tactical Marker Paths 
-function drawMissionLines() {
-  if (!leafMap) return;
-  const cit = MISSIONS.find(m => m.id === 'citadel');
-  if(!cit) return;
-  const cp  = leafMap.latLngToContainerPoint(L.latLng(cit.lat, cit.lng));
-  MISSIONS.forEach(m => {
-    if (m.id === 'citadel') return;
-    const mp = leafMap.latLngToContainerPoint(L.latLng(m.lat, m.lng));
-    const amber = m.type === 'amber';
-    const [r,g,b] = amber ? [240,165,0] : [0,255,136];
-    hudCtx.save();
-    hudCtx.beginPath(); hudCtx.moveTo(cp.x, cp.y); hudCtx.lineTo(mp.x, mp.y);
-    hudCtx.strokeStyle = `rgba(${r},${g},${b},0.05)`; hudCtx.lineWidth = 7; hudCtx.setLineDash([]); hudCtx.stroke();
-    hudCtx.beginPath(); hudCtx.moveTo(cp.x, cp.y); hudCtx.lineTo(mp.x, mp.y);
-    hudCtx.strokeStyle = `rgba(${r},${g},${b},${amber?0.25:0.3})`; hudCtx.lineWidth = 1;
-    hudCtx.setLineDash([9,6]); hudCtx.lineDashOffset = dashOffset; hudCtx.stroke();
-    hudCtx.setLineDash([]);
-    hudCtx.beginPath(); hudCtx.arc(mp.x, mp.y, 2.5, 0, Math.PI*2);
-    hudCtx.fillStyle = `rgba(${r},${g},${b},0.6)`; hudCtx.fill();
-    hudCtx.restore();
-  });
-  hudCtx.save();
-  hudCtx.beginPath(); hudCtx.arc(cp.x, cp.y, 4, 0, Math.PI*2);
-  hudCtx.fillStyle = 'rgba(0,255,136,0.8)'; hudCtx.fill();
-  hudCtx.beginPath(); hudCtx.arc(cp.x, cp.y, 10, 0, Math.PI*2);
-  hudCtx.strokeStyle = 'rgba(0,255,136,0.2)'; hudCtx.lineWidth = 1; hudCtx.stroke();
-  hudCtx.restore();
+#sector-rtb:hover {
+  background:rgba(0,255,136,.2); box-shadow:0 0 15px rgba(0,255,136,.4);
 }
+.rtb-arrow { font-size:1rem; margin-right: 5px; }
 
-function addMarker(mission) {
-  const amber = mission.type === 'amber', citadel = mission.type === 'citadel';
-  const cls = citadel ? 'citadel' : amber ? 'amber' : '';
-  const rr3 = citadel ? '' : `<div class="rring rr3"></div>`;
-  const html = `<div class="radar-wrap ${cls}" style="animation:sup .4s ease both">
-    <div class="rring rr1"></div><div class="rring rr2"></div>${rr3}
-    <div class="radar-core"></div>
-    <div class="m-label">${mission.title}</div>
-  </div>`;
-  const icon = L.divIcon({ className: '', html, iconSize: [48,48], iconAnchor: [24,24] });
-  const marker = L.marker([mission.lat, mission.lng], { icon }).addTo(leafMap);
+#sector-map { position:absolute; inset:0; width:100%; height:100%; }
+#sector-canvas { position:absolute; inset:0; z-index:400; pointer-events:none; width:100%; height:100%; }
 
-  marker.on('click', e => {
-    L.DomEvent.stopPropagation(e);
-    const pt = leafMap.latLngToContainerPoint([mission.lat, mission.lng]);
-    showReticle(pt.x, pt.y, amber, () => openMissionBriefing(mission.id));
-  });
-
-  const tipEl = document.getElementById('tip');
-  marker.on('mouseover', e => {
-    tipEl.textContent = `[ ${mission.title} ] — CLICK TO OPEN DOSSIER`;
-    tipEl.style.left = (e.originalEvent.clientX + 16) + 'px';
-    tipEl.style.top  = (e.originalEvent.clientY - 22) + 'px';
-    tipEl.classList.add('show');
-  });
-  marker.on('mouseout',  () => tipEl.classList.remove('show'));
-  marker.on('mousemove', e => {
-    tipEl.style.left = (e.originalEvent.clientX + 16) + 'px';
-    tipEl.style.top  = (e.originalEvent.clientY - 22) + 'px';
-  });
+/* Sector markers */
+.sz-wrap {
+  position:relative; width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
-
-function showReticle(x, y, amber, cb) {
-  const rc = document.getElementById('reticle-container');
-  const r  = document.createElement('div');
-  r.className = `t-reticle${amber ? ' amber' : ''}`;
-  r.style.cssText = `left:${x}px;top:${y}px;`;
-  r.innerHTML = `<div class="tr-ring tr-r1"></div><div class="tr-ring tr-r2"></div>
-    <div class="tr-cross-h"></div><div class="tr-cross-v"></div>
-    <div class="tr-c tr-tl"></div><div class="tr-c tr-tr"></div>
-    <div class="tr-c tr-bl"></div><div class="tr-c tr-br"></div>`;
-  rc.appendChild(r);
-  setTimeout(() => { r.style.transition = 'opacity .3s'; r.style.opacity = '0'; }, 380);
-  setTimeout(() => { r.remove(); cb(); }, 520);
+.sz-core {
+  width:8px; height:8px; border-radius:50%; background:var(--amber);
+  box-shadow:0 0 8px var(--amber),0 0 16px rgba(240,165,0,.4); z-index:3;
+  transition: transform .2s;
 }
-
-// ─────────────────────────────────────────────────────────
-// MODAL HUD CONTROLLERS (MISSION BRIEFING)
-// ─────────────────────────────────────────────────────────
-let activeMissionId = null;
-
-function openMissionBriefing(id) {
-  const m = MISSIONS.find(x => x.id === id);
-  if (!m) return;
-  activeMissionId = id;
-  closeAllModals();
-
-  const scClass = {act:'act', cmp:'cmp', cls:'cls'}[m.sc] || 'act';
-
-  const statsHtml = m.stats.map((s, i) => `
-    <div class="mm-stat" style="animation:sup .3s ease ${.4+i*.07}s both;opacity:0;">
-      <span class="v" data-target="${s.v}">${isNaN(parseInt(s.v)) ? s.v : '0'}</span>
-      <span class="l">${s.l}</span>
-    </div>`).join('');
-
-  const tagsHtml = m.tags.map((t, i) =>
-    `<span class="mm-ttag" style="animation-delay:${.55+i*.06}s">${t}</span>`
-  ).join('');
-
-  const hasImage = m.sectorImage;
-  const rightHtml = hasImage
-    ? `<div class="mm-right-visual" style="padding:0"><img class="mm-sector-preview" src="${m.sectorImage}" alt="sector" onerror="this.parentElement.innerHTML='<div class=mm-vis-label>// ERROR<br>IMAGE NOT FOUND</div>'"/></div>`
-    : `<div class="mm-right-visual"><div class="mm-vis-label">// SECTOR IMAGERY<br>${m.sc === 'cls' ? '🔒 CLASSIFIED' : 'NO VISUAL DATA'}</div></div>`;
-
-  const canEnterSector = hasImage || (m.sectorZones && m.sectorZones.length > 0);
-
-  document.getElementById('mm-tag').textContent    = `// ${m.tag}`;
-  document.getElementById('mm-title').textContent  = m.title;
-  document.getElementById('mm-status').className   = `mm-status ${scClass}`;
-  document.getElementById('mm-status').textContent = m.sl;
-  document.getElementById('mm-objective').innerHTML= m.body;
-  document.getElementById('mm-stats').innerHTML    = statsHtml;
-  document.getElementById('mm-stack').innerHTML    = tagsHtml;
-  document.getElementById('mm-right').innerHTML    = rightHtml;
-
-  const deployBtn = document.getElementById('mm-deploy-btn');
-  if (canEnterSector) {
-    deployBtn.classList.remove('hidden');
-    deployBtn.textContent = `▶ ENTER SECTOR — DEEP DIVE`;
-  } else {
-    deployBtn.classList.add('hidden');
-  }
-
-  const tl = document.querySelector('.mm-title-line');
-  if (tl) { tl.style.transform = 'scaleX(0)'; setTimeout(() => tl.style.transform = '', 50); }
-
-  document.getElementById('mission-modal').classList.add('open');
-  setTimeout(animateStats, 500);
+.sz-ring {
+  position:absolute; border-radius:50%; border:1.5px solid var(--amber);
+  animation:radar-pulse 2.4s ease-out infinite; opacity:0;
 }
-
-function animateStats() {
-  document.querySelectorAll('#mm-stats .mm-stat .v[data-target]').forEach(el => {
-    const raw = el.getAttribute('data-target');
-    const num = parseInt(raw);
-    if (isNaN(num)) { el.textContent = raw; return; }
-    const sfx = raw.replace(/[0-9]/g, '');
-    let start = 0; const dur = 700, t0 = Date.now();
-    const tick = () => {
-      const p = Math.min((Date.now()-t0)/dur, 1);
-      const e = 1 - Math.pow(1-p, 3);
-      el.textContent = Math.floor(start + (num-start)*e) + sfx;
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  });
+.sz-r1 { width:18px; height:18px; }
+.sz-r2 { width:30px; height:30px; animation-delay:.8s; }
+.sz-label {
+  position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%);
+  font-size:.46rem; color:rgba(240,165,0,.8); letter-spacing:.12em;
+  background:rgba(0,0,0,.75); padding:3px 8px; white-space:nowrap; pointer-events:none;
+  border:1px solid rgba(240,165,0,.2); transition:all .2s;
 }
+.sz-wrap:hover .sz-core { transform:scale(1.8); }
+.sz-wrap:hover .sz-label { color:var(--amber); border-color:rgba(240,165,0,.5); }
 
-function closeModal() { document.getElementById('mission-modal').classList.remove('open'); }
-
-// ─────────────────────────────────────────────────────────
-// SUB-MAP SYSTEM (SECTOR DRILL-DOWN ENGINE)
-// ─────────────────────────────────────────────────────────
-let sectorMap = null;
-let sectorCanvas, sectorCtx;
-let activeSectorId = null;
-
-function enterSector() {
-  const mission = MISSIONS.find(m => m.id === activeMissionId);
-  if (!mission) return;
-  activeSectorId = activeMissionId;
-  closeModal();
-
-  const overlay = document.createElement('div');
-  overlay.id = 'sector-transition';
-  overlay.style.cssText = `
-    position:fixed;inset:0;z-index:1500;background:#000;opacity:0;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    font-family:'Orbitron',monospace;transition:opacity .4s;
-  `;
-  overlay.innerHTML = `
-    <div style="font-size:clamp(.7rem,2vw,1.1rem);color:#00ff88;letter-spacing:.4em;
-      text-shadow:0 0 20px #00ff88;margin-bottom:12px;animation:blink 1s infinite">
-      ◈ ACCESSING SYSTEM CORE
-    </div>
-    <div style="font-size:clamp(1rem,3vw,1.8rem);color:#00ff88;font-weight:900;
-      letter-spacing:.3em;text-shadow:0 0 30px #00ff88">${mission.title}</div>
-    <div style="width:200px;height:1px;background:rgba(0,255,136,.3);margin:16px 0;
-      position:relative;overflow:hidden">
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,#00ff88,transparent);
-        animation:scanbar 1s infinite"></div>
-    </div>
-    <div style="font-size:.52rem;color:rgba(0,255,136,.5);letter-spacing:.3em">CLEARANCE LEVEL 5 VERIFIED</div>
-  `;
-  document.body.appendChild(overlay);
-  requestAnimationFrame(() => { overlay.style.opacity = '1'; });
-
-  setTimeout(() => {
-    const ss = document.getElementById('sector-screen');
-    ss.classList.add('on');
-    document.getElementById('sector-name').textContent = mission.title;
-    document.getElementById('sector-sys').textContent  = `SECTOR: ${mission.id.toUpperCase()}`;
-
-    initSectorMap(mission);
-
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 400);
-  }, 1200);
+/* Sector popup (info card within sector map) */
+#sector-popup {
+  position:absolute; z-index:700; width:clamp(240px,35vw,360px);
+  background:var(--glass); backdrop-filter:blur(20px);
+  border:1px solid rgba(240,165,0,.3); border-left:2px solid var(--amber);
+  padding:clamp(12px,2.5vw,18px); display:none; pointer-events:all;
+  box-shadow:-2px 0 20px rgba(240,165,0,.1);
 }
-
-function initSectorMap(mission) {
-  if (sectorMap) { sectorMap.remove(); sectorMap = null; }
-
-  const bounds = [[0,0],[1080,1920]];
-  sectorMap = L.map('sector-map', {
-    crs: L.CRS.Simple, attributionControl: false, zoomControl: false,
-    zoomSnap: 0.1, zoomDelta: 0.5, maxBoundsViscosity: 1.0,
-  });
-
-  const imgSrc = mission.sectorImage || 'cinematic-map.png';
-  L.imageOverlay(imgSrc, bounds, {opacity:1, interactive:false}).addTo(sectorMap);
-  
-  sectorMap.fitBounds(bounds);
-  sectorMap.setMinZoom(sectorMap.getZoom());
-  sectorMap.setMaxBounds(bounds);
-
-  sectorCanvas = document.getElementById('sector-canvas');
-  sectorCtx    = sectorCanvas.getContext('2d');
-  sectorCanvas.width  = window.innerWidth;
-  sectorCanvas.height = window.innerHeight;
-
-  if (mission.sectorZones && mission.sectorZones.length > 0) {
-    mission.sectorZones.forEach((zone, i) => {
-      setTimeout(() => addSectorZone(zone), 400 + i * 150);
-    });
-  }
-
-  sectorMap.on('click', () => closeHoloPopup()); // Close hologram if background clicked
+#sector-popup.show { display:block; animation:modal-in .3s ease both; }
+.sp-close {
+  position:absolute; top:8px; right:8px; width:22px; height:22px;
+  border:1px solid rgba(240,165,0,.3); display:flex; align-items:center;
+  justify-content:center; cursor:pointer; color:var(--amber); font-size:.7rem; transition:all .2s;
 }
-
-function addSectorZone(zone) {
-  const html = `<div class="sz-wrap" style="animation:sup .4s ease both">
-    <div class="sz-ring sz-r1"></div><div class="sz-ring sz-r2"></div>
-    <div class="sz-core"></div>
-    <div class="sz-label">${zone.label}</div>
-  </div>`;
-  const icon = L.divIcon({ className:'', html, iconSize:[44,44], iconAnchor:[22,22] });
-  const marker = L.marker([zone.lat, zone.lng], { icon }).addTo(sectorMap);
-
-  marker.on('click', e => {
-    L.DomEvent.stopPropagation(e);
-    // GET POINT FROM THE SECTOR MAP (NOT MAIN LEAFMAP)
-    const pt = sectorMap.latLngToContainerPoint([zone.lat, zone.lng]);
-    openHoloPopup(zone, pt);
-  });
+.sp-close:hover { background:rgba(240,165,0,.15); }
+.sp-tag { font-size:.46rem; color:var(--amber); letter-spacing:.35em; margin-bottom:6px; }
+.sp-title {
+  font-family:'Orbitron',monospace; font-size:clamp(.72rem,2vw,.9rem);
+  font-weight:700; color:var(--hud); margin-bottom:8px; line-height:1.3;
+}
+.sp-divider { width:100%; height:1px; background:linear-gradient(90deg,var(--amber),transparent); margin:8px 0; }
+.sp-body {
+  font-family:'Rajdhani',sans-serif; font-size:clamp(.68rem,1.7vw,.85rem);
+  color:rgba(200,220,185,.82); line-height:1.75; margin-top: 10px;
 }
 
-function exitSector() {
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `position:fixed;inset:0;z-index:1500;background:#000;opacity:0;
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Orbitron',monospace;transition:opacity .35s;`;
-  overlay.innerHTML = `<div style="font-size:clamp(.7rem,2vw,1rem);color:#00ff88;letter-spacing:.4em;
-    text-shadow:0 0 20px #00ff88">◄ RETURNING TO GLOBAL RADAR...</div>`;
-  document.body.appendChild(overlay);
-  requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+/* ═══════════════════════════════════════════════
+   HACKER NEWS DEEP TECH CONTENT STYLING
+═══════════════════════════════════════════════ */
+.hn-section { margin-bottom: 12px; line-height: 1.6; }
+.hn-label {
+  color: var(--hud); font-family: 'Share Tech Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.1em; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3);
+  padding: 2px 6px; margin-right: 6px; display: inline-block; transform: translateY(-2px);
+}
+.hn-content strong { color: #00ff88; display: inline-block; margin-top: 8px; }
 
-  setTimeout(() => {
-    closeHoloPopup();
-    if (sectorMap) { sectorMap.remove(); sectorMap = null; }
-    document.getElementById('sector-screen').classList.remove('on');
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 350);
-  }, 600);
+/* ═══════════════════════════════════════════════
+   CAPABILITY MATRIX (SKILLS BADGES)
+═══════════════════════════════════════════════ */
+.skill-cat-title {
+  font-family: 'Share Tech Mono', monospace; color: var(--khaki); font-size: 0.75rem;
+  margin-bottom: 8px; border-bottom: 1px dashed rgba(200,169,110,0.3); padding-bottom: 4px;
+}
+.skill-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+.s-badge {
+  font-family: 'Orbitron', monospace; font-size: 0.55rem; color: var(--hud);
+  background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.4);
+  padding: 4px 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  transition: all 0.2s; box-shadow: 0 0 10px rgba(0,255,136,0);
+}
+.s-badge:hover {
+  background: rgba(0, 255, 136, 0.15); box-shadow: 0 0 10px rgba(0,255,136,0.3); transform: translateY(-2px);
 }
 
-/* ─────────────────────────────────────────────────────────
-   SMART HOLOGRAPHIC POPUP LOGIC (SPACE-AWARE EMISSION)
-───────────────────────────────────────────────────────── */
-function openHoloPopup(zone, pt) {
-  const popup = document.getElementById('holo-popup');
-  const content = document.getElementById('hp-content');
-  
-  // Inject Hardcore HUD Data from the Zone
-  content.innerHTML = buildHoloHUD(zone.label, zone.tag, zone.holo);
-
-  // Briefly show to calculate dimensions
-  popup.style.display = 'block';
-  popup.style.opacity = '0';
-  
-  const popW = popup.offsetWidth;
-  const popH = popup.offsetHeight;
-  const gap = 25; // Distance from node
-  
-  let left = pt.x;
-  let top = pt.y;
-  let originX = 'center';
-  let originY = 'bottom';
-
-  // Smart X-Axis Positioning
-  if (pt.x + popW + gap < window.innerWidth) {
-    left = pt.x + gap; 
-    originX = 'left';
-  } else {
-    left = pt.x - popW - gap;
-    originX = 'right';
-  }
-
-  // Smart Y-Axis Positioning
-  if (pt.y - popH - gap > 0) {
-    top = pt.y - popH - gap; // Emits UPWARDS
-    originY = 'bottom';
-  } else {
-    top = pt.y + gap; // Drops DOWNWARDS if near top edge
-    originY = 'top';
-  }
-
-  // Apply Coordinates & Origin
-  popup.style.left = left + 'px';
-  popup.style.top = top + 'px';
-  popup.style.transformOrigin = `${originX} ${originY}`;
-
-  // Trigger Hologram Physics Animation
-  popup.classList.remove('holo-anim');
-  void popup.offsetWidth; // Force Reflow
-  popup.style.opacity = '1';
-  popup.classList.add('holo-anim');
+/* ═══════════════════════════════════════════════
+   RESUME HIGHLIGHT CARD
+═══════════════════════════════════════════════ */
+.resume-card {
+  background: var(--hud) !important; border-color: #fff !important; color: #000;
+  box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.02);
+}
+.resume-card:hover {
+  transform: scale(1.05) translateY(-5px); box-shadow: 0 10px 30px rgba(0,255,136,0.6);
 }
 
-function closeHoloPopup() {
-  const popup = document.getElementById('holo-popup');
-  if(popup) {
-    popup.classList.remove('holo-anim');
-    popup.style.display = 'none';
-  }
+/* ═══════════════════════════════════════════════
+   INTERACTIVE TERMINAL
+═══════════════════════════════════════════════ */
+.term-window {
+  position: relative; z-index: 10; width: min(800px, 95vw); height: 70vh;
+  background: #050505; border: 1px solid rgba(0,255,136,0.3); border-radius: 6px;
+  display: flex; flex-direction: column; font-family: 'Share Tech Mono', monospace;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,255,136,0.1);
+  animation: modal-in .4s cubic-bezier(.4,0,.2,1) both;
+}
+.term-header {
+  background: #111; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid rgba(0,255,136,0.2); font-size: 0.75rem; color: var(--hud);
+}
+.term-body {
+  padding: 15px; overflow-y: auto; flex: 1; color: #a9b7c6; font-size: 0.85rem; line-height: 1.5;
+}
+.term-line { margin-bottom: 5px; }
+.term-prompt { color: var(--hud); margin-right: 8px; }
+.term-cmd { color: var(--amber); font-weight: bold; }
+.term-input-line { display: flex; margin-top: 10px; }
+#term-input {
+  background: transparent; border: none; color: #a9b7c6; font-family: inherit;
+  font-size: inherit; flex: 1; outline: none; caret-color: var(--hud);
+}
+#term-body::-webkit-scrollbar { width:4px; }
+#term-body::-webkit-scrollbar-thumb { background:rgba(0,255,136,.3); }
+
+/* ═══════════════════════════════════════════════
+   ALL ANIMATIONS
+═══════════════════════════════════════════════ */
+@keyframes glitch{
+  0%,92%,100%{text-shadow:0 0 40px var(--hud),0 0 80px rgba(0,255,136,.12);transform:none;}
+  93%{text-shadow:5px 0 #f00,-5px 0 #0ff;transform:skewX(7deg);}
+  95%{text-shadow:-5px 0 #f00,5px 0 #0ff;transform:skewX(-7deg);}
+  97%{text-shadow:0 0 40px var(--hud);transform:none;}
+}
+@keyframes amber-pulse{0%,100%{opacity:.88}50%{opacity:.45}}
+@keyframes blink{0%,100%{opacity:.85}50%{opacity:.18}}
+@keyframes scanbar{0%{opacity:.3;transform:scaleX(.2)}50%{opacity:1;transform:scaleX(1)}100%{opacity:.3;transform:scaleX(.2)}}
+@keyframes sup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes terrain-up{0%{height:0}100%{height:68%}}
+@keyframes stars-rush{0%{transform:scale(1);opacity:1}100%{transform:scale(3.5);opacity:.04}}
+@keyframes clouds-scroll{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-45%) scale(1.35);opacity:.06}}
+@keyframes chute-open{from{transform:scaleY(0);transform-origin:bottom;opacity:0}60%{transform:scaleY(1.1)}to{transform:scaleY(1);opacity:1}}
+@keyframes op-sway{0%{transform:translateX(0)}18%{transform:translateX(9px)}36%{transform:translateX(-9px)}54%{transform:translateX(5px)}72%{transform:translateX(-4px)}100%{transform:translateX(0)}}
+@keyframes lflash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+@keyframes cpulse{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(1.18);opacity:.8}}
+@keyframes cam-shake{0%,100%{transform:translate(0,0) rotate(0)}8%{transform:translate(-10px,6px) rotate(-.5deg)}16%{transform:translate(10px,-7px) rotate(.5deg)}24%{transform:translate(-8px,8px) rotate(-.4deg)}32%{transform:translate(9px,-5px) rotate(.35deg)}40%{transform:translate(-6px,6px) rotate(-.25deg)}50%{transform:translate(7px,-6px) rotate(.3deg)}60%{transform:translate(-5px,5px) rotate(-.2deg)}70%{transform:translate(5px,-4px) rotate(.15deg)}80%{transform:translate(-3px,3px) rotate(-.1deg)}90%{transform:translate(2px,-2px) rotate(0)}}
+
+/* Map */
+@keyframes radar-pulse{0%{transform:scale(.4);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+@keyframes maprev{from{opacity:0;filter:brightness(.1) saturate(0) blur(4px)}to{opacity:1;filter:brightness(1) saturate(1) blur(0)}}
+@keyframes barf{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes gring{0%,100%{box-shadow:0 0 18px rgba(200,169,110,.25)}50%{box-shadow:0 0 32px rgba(200,169,110,.55)}}
+@keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes scan-sweep{0%{top:0%;opacity:0}3%{opacity:1}97%{opacity:1}100%{top:100%;opacity:0}}
+
+/* Reticle */
+@keyframes tr-contract{from{transform:translate(-50%,-50%) scale(2.5);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+
+/* Modal & Sector Animations */
+@keyframes backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes modal-in{from{opacity:0;transform:scale(.96) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes tag-pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes sector-in{from{opacity:0;filter:brightness(.2)}50%{filter:brightness(.7)}to{opacity:1;filter:brightness(1)}}
+
+
+/* ═══════════════════════════════════════════════
+   SMART HOLOGRAPHIC POPUP ENGINE
+═══════════════════════════════════════════════ */
+#holo-popup {
+  position: absolute;
+  z-index: 1000;
+  display: none;
+  width: clamp(300px, 35vw, 420px);
+  background: linear-gradient(180deg, rgba(4, 15, 8, 0.95), rgba(0, 8, 4, 0.98));
+  border: 1px solid var(--hud);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.08);
+  backdrop-filter: blur(12px);
+  pointer-events: all;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
-// Side and Intel Modals Flow
-function openDossier() {
-  closeAllModals();
-  document.getElementById('dossier-modal').classList.add('open');
-  document.querySelector('[data-nav="op"]').classList.add('lit');
-}
-function closeDossier() {
-  document.getElementById('dossier-modal').classList.remove('open');
-  document.querySelector('[data-nav="op"]')?.classList.remove('lit');
+.holo-anim {
+  animation: holo-emit 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
 }
 
-function openIntel() {
-  closeAllModals();
-  document.getElementById('intel-modal').classList.add('open');
-  document.querySelector('[data-nav="in"]').classList.add('lit');
-}
-function closeIntel() {
-  document.getElementById('intel-modal').classList.remove('open');
-  document.querySelector('[data-nav="in"]')?.classList.remove('lit');
+@keyframes holo-emit {
+  0% { opacity: 0; transform: scale(0.1) translateZ(-100px); filter: brightness(3) blur(10px); }
+  60% { filter: brightness(1.5) blur(2px); }
+  100% { opacity: 1; transform: scale(1) translateZ(0); filter: brightness(1) blur(0); }
 }
 
-function closeAllModals() {
-  closeModal(); 
-  closeHoloPopup();
-  closeDossier(); 
-  closeIntel();
+.hp-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 15px; border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+  background: rgba(0, 255, 136, 0.08);
 }
+.hp-close {
+  color: var(--amber); cursor: pointer; font-size: 1.2rem;
+  transition: all 0.2s;
+}
+.hp-close:hover { color: #fff; text-shadow: 0 0 15px var(--amber); transform: scale(1.2); }
 
-// Copy Action Handling
-function copyEmailIntel(card) {
-  navigator.clipboard.writeText('harshgroups247@gmail.com').then(() => {
-    const el = document.getElementById('email-copy-status');
-    if (el) { el.textContent = '✓ SECURE COMMS LINK COPIED'; el.style.color = '#00ff88'; }
-    setTimeout(() => { if(el){el.textContent='→ CLICK TO COPY';el.style.color='';} }, 2500);
-  });
+.scan-line-horizontal {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: #00ff88; box-shadow: 0 0 15px #00ff88;
+  animation: scan-img 3s linear infinite; z-index: 5;
 }
+@keyframes scan-img { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
+
+.holo-btn {
+  flex: 1; text-align: center; padding: 10px; background: rgba(0,255,136,0.08);
+  border: 1px solid var(--hud); color: var(--hud); text-decoration: none;
+  font-size: 0.65rem; letter-spacing: 0.15em; transition: 0.2s; font-family: 'Share Tech Mono', monospace;
+  box-shadow: inset 0 0 10px rgba(0,255,136,0);
+}
+.holo-btn:hover { background: var(--hud); color: #000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 15px var(--hud); }
+.amber-btn { border-color: var(--amber); color: var(--amber); background: rgba(240,165,0,0.08); }
+.amber-btn:hover { background: var(--amber); color: #000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 15px var(--amber); }
