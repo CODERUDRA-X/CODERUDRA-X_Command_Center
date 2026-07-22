@@ -1,47 +1,68 @@
 /* ═══════════════════════════════════════════════════════════
-   CODERUDRA-X COMMAND CENTER · ENGINE v10.0 (THE MASTERPIECE)
-   1. Main Map = 6 HQ Portfolio Sections (Clean & Badass)
-   2. Sector Drill-Down = Retained (Goosebumps intro)
-   3. Smart Hologram = Emits INSIDE the sub-map on node click
+   CODERUDRA-X COMMAND CENTER · ENGINE v11.1 (BUG FIXES)
 ═══════════════════════════════════════════════════════════ */
 
-// Hologram HTML Generator
-const buildHoloHUD = (title, tag, h) => `
-<div class="hp-header">
-  <div>
-    <div style="color:var(--amber); font-size:0.5rem; letter-spacing:0.2em;">${tag}</div>
-    <div style="color:var(--hud); font-size:1.1rem; font-weight:900; font-family:'Orbitron', monospace; letter-spacing:0.1em; text-shadow:0 0 15px rgba(0,255,136,0.4); text-transform:uppercase;">${title}</div>
-  </div>
-  <div class="hp-close" onclick="closeHoloPopup()">✕</div>
-</div>
-<div style="padding:15px;">
-  <div style="width:100%; height:140px; border:1px solid rgba(0,255,136,0.3); margin-bottom:15px; position:relative; overflow:hidden; box-shadow: inset 0 0 20px rgba(0,255,136,0.1);">
-    <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,255,136,0.25), transparent); z-index:2; mix-blend-mode: overlay;"></div>
-    <img src="${h.img}" onerror="this.src='cinematic-map.png'" alt="SYS_ASSET" style="width:100%; height:100%; object-fit:cover; opacity:0.85; filter:grayscale(20%) contrast(1.2);">
-    <div class="scan-line-horizontal"></div>
-  </div>
-  <div style="border-left: 2px solid #00ff88; padding-left: 10px; margin-bottom: 15px; background: rgba(0,255,136,0.05); padding: 10px; box-shadow: inset 0 0 10px rgba(0,255,136,0.02);">
-    <span style="color:#a9b7c6; font-family:'Share Tech Mono', monospace; font-size:0.75rem; line-height: 1.4;">[>] DIRECTIVE: ${h.why}</span>
-  </div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family:'Share Tech Mono', monospace; font-size: 0.7rem; margin-bottom:15px;">
-    <div style="border: 1px solid rgba(0,255,136,0.2); padding: 10px; background: rgba(5,10,7,0.8);">
-      <div style="color:#00ff88; border-bottom: 1px dashed #333; padding-bottom:6px; margin-bottom:8px; letter-spacing:0.1em;">// ARCHITECTURE</div>
-      <div style="color:#c0d0c0; line-height:1.5;">${h.arch}</div>
+const buildHoloHUD = (zone) => {
+  const h = zone.holo || {}; // Extract holo object
+  return `
+<div style="clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%); background: rgba(4,10,6,0.95); border: 1px solid rgba(0,255,136,0.5); box-shadow: inset 0 0 40px rgba(0,255,136,0.1), 0 0 30px rgba(0,0,0,0.8); position:relative;">
+  
+  <!-- Cyberpunk Header -->
+  <div class="hp-header" style="background: repeating-linear-gradient(45deg, rgba(0,255,136,0.05) 0px, rgba(0,255,136,0.05) 2px, transparent 2px, transparent 4px); border-bottom: 1px solid var(--hud); padding: 12px 18px;">
+    <div>
+      <div style="color:var(--amber); font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase; margin-bottom:2px;">${zone.tag || '// SYSTEM NODE'}</div>
+      <div style="color:var(--hud); font-size:1.25rem; font-weight:900; font-family:'Orbitron', monospace; letter-spacing:0.15em; text-shadow:0 0 15px rgba(0,255,136,0.5); text-transform:uppercase;">${zone.label || 'UNKNOWN'}</div>
     </div>
-    <div style="border: 1px solid rgba(240,165,0,0.2); padding: 10px; background: rgba(10,8,0,0.8);">
-      <div style="color:#f0a500; border-bottom: 1px dashed #333; padding-bottom:6px; margin-bottom:8px; letter-spacing:0.1em;">// TELEMETRY</div>
-      <div style="color:#e0e0e0; line-height:1.5;">${h.metrics}</div>
+    <div class="hp-close" onclick="closeHoloPopup()" style="color:var(--amber); text-shadow: 0 0 10px var(--amber); font-size: 1.2rem; cursor:pointer;">✕</div>
+  </div>
+  
+  <div style="padding: 18px;">
+    <!-- Asset Viewer with CRT / Night Vision Tint -->
+    <div style="width:100%; height:150px; border: 1px solid rgba(0,255,136,0.4); margin-bottom:15px; position:relative; overflow:hidden;">
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, transparent, rgba(0,255,136,0.15)); z-index:2; mix-blend-mode: screen; pointer-events:none;"></div>
+      <img src="${h.img || 'cinematic-map.png'}" onerror="this.src='cinematic-map.png'" alt="SYS_ASSET" style="width:100%; height:100%; object-fit:cover; opacity:0.8; filter:grayscale(50%) contrast(1.3) sepia(40%) hue-rotate(90deg);">
+      <div class="scan-line-horizontal" style="height:2px; background:var(--hud); box-shadow: 0 0 15px var(--hud); opacity:0.8;"></div>
+      
+      <!-- Tech Corners -->
+      <div style="position:absolute; top:0; left:0; width:12px; height:12px; border-top:2px solid var(--hud); border-left:2px solid var(--hud); z-index:3;"></div>
+      <div style="position:absolute; bottom:0; right:0; width:12px; height:12px; border-bottom:2px solid var(--hud); border-right:2px solid var(--hud); z-index:3;"></div>
+    </div>
+
+    <!-- Hardcore Directive Output -->
+    <div style="border-left: 3px solid #00ff88; padding: 10px 12px; margin-bottom: 15px; background: rgba(0,255,136,0.06); box-shadow: inset 0 0 15px rgba(0,255,136,0.02);">
+      <span style="color:#e0e0e0; font-family:'Share Tech Mono', monospace; font-size:0.8rem; line-height: 1.5;"><span style="color:#00ff88; font-weight:bold; letter-spacing:0.1em;">[>] DIRECTIVE:</span> ${h.why || 'No directive found.'}</span>
+    </div>
+
+    <!-- Engineering Data Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-family:'Share Tech Mono', monospace; font-size: 0.75rem; margin-bottom:20px;">
+      
+      <!-- Architecture Block -->
+      <div style="border: 1px solid rgba(0,255,136,0.3); padding: 12px; background: rgba(0,10,5,0.8); position:relative;">
+        <div style="position:absolute; top:-2px; left:-2px; width:6px; height:6px; background:var(--hud);"></div>
+        <div style="color:#00ff88; border-bottom: 1px dashed rgba(0,255,136,0.4); padding-bottom:6px; margin-bottom:8px; letter-spacing:0.15em; font-weight:bold;">// ARCHITECTURE</div>
+        <div style="color:#a9b7c6; line-height:1.6;">${h.arch || 'System data corrupted.'}</div>
+      </div>
+      
+      <!-- Telemetry Block -->
+      <div style="border: 1px solid rgba(240,165,0,0.3); padding: 12px; background: rgba(10,8,0,0.8); position:relative;">
+        <div style="position:absolute; top:-2px; left:-2px; width:6px; height:6px; background:var(--amber);"></div>
+        <div style="color:#f0a500; border-bottom: 1px dashed rgba(240,165,0,0.4); padding-bottom:6px; margin-bottom:8px; letter-spacing:0.15em; font-weight:bold;">// TELEMETRY</div>
+        <div style="color:#d0c0a0; line-height:1.6;">${h.metrics || 'Awaiting signal...'}</div>
+      </div>
+    </div>
+
+    <!-- Action Triggers -->
+    <div style="display:flex; gap:12px;">
+      <a href="${h.git || '#'}" target="_blank" class="holo-btn" style="border-radius: 2px; text-shadow: 0 0 5px rgba(0,255,136,0.5);">[ GITHUB_UPLINK ]</a>
+      <a href="${h.live || '#'}" target="_blank" class="holo-btn amber-btn" style="border-radius: 2px; text-shadow: 0 0 5px rgba(240,165,0,0.5); ${!h.live ? 'opacity:0.2; pointer-events:none; filter:grayscale(100%);' : ''}">[ DEPLOYED_NODE ]</a>
     </div>
   </div>
-  <div style="display:flex; gap:10px;">
-    <a href="${h.git || '#'}" target="_blank" class="holo-btn">[ GITHUB_UPLINK ]</a>
-    <a href="${h.live || '#'}" target="_blank" class="holo-btn amber-btn" style="${!h.live ? 'opacity:0.3; pointer-events:none;' : ''}">[ DEPLOYED_NODE ]</a>
-  </div>
 </div>
-`;
+  `;
+};
 
 /* ─────────────────────────────────────────────────────────
-   PORTFOLIO SECTIONS (6 MAIN HQ ISLANDS)
+   PORTFOLIO SECTIONS (6 MAIN HQ ISLANDS -> DEEP SUB-NODES)
 ───────────────────────────────────────────────────────── */
 const MISSIONS = [
   {
@@ -55,10 +76,18 @@ const MISSIONS = [
     sectorImage: 'main.png', 
     sectorZones: [
       { lat: 500, lng: 960, label: 'DATA SCIENCE CORE', tag:'// ACADEMIC NODE', holo: {
-        img: 'ds_core.jpg', why: 'Master computational mathematics and foundational CS principles[cite: 3].', arch: 'B.Tech CSE (Data Science) academic core. Independent study in Linear Algebra and AI foundations via MIT OCW[cite: 3].', metrics: '<span style="color:#f0a500">SGPA:</span> 8.3/10<br><span style="color:#f0a500">Rank:</span> Top 100 GfG[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: 'https://linkedin.com/in/shreyansh-srivastava-9a83b9291'
+        title: 'DATA SCIENCE CORE', tag: '// ACADEMIC NODE',
+        img: 'ds_core.jpg', why: 'Master computational mathematics and foundational CS principles[cite: 3].', 
+        arch: 'B.Tech CSE (Data Science) academic core. Independent study in Linear Algebra and AI foundations via MIT OCW[cite: 3].', 
+        metrics: '<span style="color:#f0a500">SGPA:</span> 8.3/10<br><span style="color:#f0a500">Rank:</span> Top 100 GfG[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X', live: 'https://linkedin.com/in/shreyansh-srivastava-9a83b9291'
       }},
       { lat: 700, lng: 1400, label: 'ELITE CODERS RELAY', tag:'// LEADERSHIP', holo: {
-        img: 'elite.jpg', why: 'Scale developer ecosystems and deploy robust credentialing across India[cite: 4].', arch: 'Engineered automated credentialing (TruScholar) and event operations using n8n for massive developer clusters[cite: 4].', metrics: '<span style="color:#f0a500">Impact:</span> 5000+ Devs<br><span style="color:#f0a500">Role:</span> Pan-India Ops Head[cite: 3, 4]', git: '', live: 'https://www.geeksforgeeks.org/profile/saitejareddy05'
+        title: 'ELITE CODERS RELAY', tag: '// LEADERSHIP',
+        img: 'elite.jpg', why: 'Scale developer ecosystems and deploy robust credentialing across India[cite: 4].', 
+        arch: 'Engineered automated credentialing (TruScholar) and event operations using n8n for massive developer clusters[cite: 4].', 
+        metrics: '<span style="color:#f0a500">Impact:</span> 5000+ Devs<br><span style="color:#f0a500">Role:</span> Pan-India Ops Head[cite: 3, 4]', 
+        git: '', live: 'https://www.geeksforgeeks.org/profile/saitejareddy05'
       }}
     ]
   },
@@ -74,16 +103,32 @@ const MISSIONS = [
     sectorImage: 'rightest.png',
     sectorZones: [
       { lat: 700, lng: 400, label: 'PROJECT INDRA-AI', tag:'// UAV VISION', holo: {
-        img: 'indra.jpg', why: 'Automate fatal manual inspections of transmission lines for predictive grid maintenance[cite: 3].', arch: 'YOLOv8 pipeline → fault detection → damage classification. Real-time edge inference on drone footage[cite: 3].', metrics: '<span style="color:#f0a500">Precision:</span> 94% mAP<br><span style="color:#f0a500">Risk Matrix:</span> 5 Levels[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'PROJECT INDRA-AI', tag: '// UAV VISION',
+        img: 'indra.jpg', why: 'Automate fatal manual inspections of transmission lines for predictive grid maintenance[cite: 3].', 
+        arch: 'YOLOv8 pipeline → fault detection → damage classification. Real-time edge inference on drone footage[cite: 3].', 
+        metrics: '<span style="color:#f0a500">Precision:</span> 94% mAP<br><span style="color:#f0a500">Risk Matrix:</span> 5 Levels[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }},
       { lat: 400, lng: 1000, label: 'FLOWSYNC-AI', tag:'// URBAN TRAFFIC', holo: {
-        img: 'flowsync.jpg', why: 'Eradicate emergency vehicle delays caused by static timers[cite: 3].', arch: 'Multi-Agent PPO Reinforcement Learning paired with YOLOv8n object detection for area-based density calculation[cite: 3, 4].', metrics: '<span style="color:#f0a500">Wait Reduction:</span> Proven<br><span style="color:#f0a500">Override:</span> 100% Success[cite: 3]', git: 'https://github.com/CODERUDRA-X/CODERUDRAX-FlowSync-AI', live: ''
+        title: 'FLOWSYNC-AI', tag: '// URBAN TRAFFIC',
+        img: 'flowsync.jpg', why: 'Eradicate emergency vehicle delays caused by static timers[cite: 3].', 
+        arch: 'Multi-Agent PPO Reinforcement Learning paired with YOLOv8n object detection for area-based density calculation[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Wait Reduction:</span> Proven<br><span style="color:#f0a500">Override:</span> 100% Success[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X/CODERUDRAX-FlowSync-AI', live: ''
       }},
       { lat: 600, lng: 1300, label: 'DATASENTINEL AI', tag:'// DATA GOVERNANCE', holo: {
-        img: 'datasentinel.jpg', why: 'Prevent silent schema failures and compliance risks in enterprise databases[cite: 4].', arch: 'FastAPI & PostgreSQL extraction integrated with Google Gemini API for PII detection and semantic duplicate flagging[cite: 4].', metrics: '<span style="color:#f0a500">Health Score:</span> Custom Algo<br><span style="color:#f0a500">Latency:</span> Sub-second[cite: 3, 4]', git: 'https://github.com/CODERUDRA-X/intelligent-data-dictionary-agent', live: 'https://www.commudle.com/builds/datasentinal-ai-an-intelligent-data-dictionary-agent'
+        title: 'DATASENTINEL AI', tag: '// DATA GOVERNANCE',
+        img: 'datasentinel.jpg', why: 'Prevent silent schema failures and compliance risks in enterprise databases[cite: 4].', 
+        arch: 'FastAPI & PostgreSQL extraction integrated with Google Gemini API for PII detection and semantic duplicate flagging[cite: 4].', 
+        metrics: '<span style="color:#f0a500">Health Score:</span> Custom Algo<br><span style="color:#f0a500">Latency:</span> Sub-second[cite: 3, 4]', 
+        git: 'https://github.com/CODERUDRA-X/intelligent-data-dictionary-agent', live: 'https://www.commudle.com/builds/datasentinal-ai-an-intelligent-data-dictionary-agent'
       }},
       { lat: 800, lng: 900, label: 'FIX-IT-NOW AI', tag:'// CIVIC OPS', holo: {
-        img: 'fixit.jpg', why: 'Manual civic grievance routing causes critical public infrastructure response delays[cite: 3].', arch: 'AI-driven classification engine parsing natural language to route city infrastructure complaints instantly[cite: 3].', metrics: '<span style="color:#f0a500">Load:</span> High-Volume<br><span style="color:#f0a500">Routing:</span> Real-Time', git: 'https://github.com/CODERUDRA-X/fix-it-now-ai', live: ''
+        title: 'FIX-IT-NOW AI', tag: '// CIVIC OPS',
+        img: 'fixit.jpg', why: 'Manual civic grievance routing causes critical public infrastructure response delays[cite: 3].', 
+        arch: 'AI-driven classification engine parsing natural language to route city infrastructure complaints instantly[cite: 3].', 
+        metrics: '<span style="color:#f0a500">Load:</span> High-Volume<br><span style="color:#f0a500">Routing:</span> Real-Time', 
+        git: 'https://github.com/CODERUDRA-X/fix-it-now-ai', live: ''
       }}
     ]
   },
@@ -99,13 +144,25 @@ const MISSIONS = [
     sectorImage: 'tower.png',
     sectorZones: [
       { lat: 600, lng: 500, label: 'PROMPTLY AI PVT LTD', tag:'// AI RESEARCH INTERN', holo: {
-        img: 'promptly.jpg', why: 'Evaluate B2B AI tools and mitigate enterprise legal liability[cite: 3].', arch: 'Designed a 3-phase LLM-assisted audit system. Built Python NLP pipelines tracking ₹8 Crore+ ecosystem investments[cite: 3, 4].', metrics: '<span style="color:#f0a500">Throughput:</span> 3x Faster<br><span style="color:#f0a500">Cost Moat:</span> 6x Identified[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'PROMPTLY AI AUDITS', tag: '// AI RESEARCH INTERN',
+        img: 'promptly.jpg', why: 'Evaluate B2B AI tools and mitigate enterprise legal liability[cite: 3].', 
+        arch: 'Designed a 3-phase LLM-assisted audit system. Built Python NLP pipelines tracking ₹8 Crore+ ecosystem investments[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Throughput:</span> 3x Faster<br><span style="color:#f0a500">Cost Moat:</span> 6x Identified[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }},
       { lat: 400, lng: 1100, label: 'EMPYREAN ROBOTICS', tag:'// SDE AI/ML INTERN', holo: {
-        img: 'empyrean.jpg', why: 'Develop real-world computer vision monitoring infrastructure[cite: 3, 4].', arch: 'Built scalable inference pipelines leveraging Python, FastAPI, and PostgreSQL for backend workflows[cite: 3, 4].', metrics: '<span style="color:#f0a500">Focus:</span> Reliability<br><span style="color:#f0a500">State:</span> Active Deployment[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'EMPYREAN INFRASTRUCTURE', tag: '// SDE AI/ML INTERN',
+        img: 'empyrean.jpg', why: 'Develop real-world computer vision monitoring infrastructure[cite: 3, 4].', 
+        arch: 'Built scalable inference pipelines leveraging Python, FastAPI, and PostgreSQL for backend workflows[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Focus:</span> Reliability<br><span style="color:#f0a500">State:</span> Active Deployment[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }},
       { lat: 800, lng: 900, label: 'GOOGLE GSA', tag:'// PAN-INDIA OPS HEAD', holo: {
-        img: 'google.jpg', why: 'Automate manual coordination for 110+ campus leads globally[cite: 3, 4].', arch: 'Engineered deep webhook automations via n8n and Python scripts to run community analytics dashboards[cite: 3, 4].', metrics: '<span style="color:#f0a500">Manual Work:</span> -70%<br><span style="color:#f0a500">Scale:</span> National[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'GSA AUTOMATION', tag: '// PAN-INDIA OPS HEAD',
+        img: 'google.jpg', why: 'Automate manual coordination for 110+ campus leads globally[cite: 3, 4].', 
+        arch: 'Engineered deep webhook automations via n8n and Python scripts to run community analytics dashboards[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Manual Work:</span> -70%<br><span style="color:#f0a500">Scale:</span> National[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }}
     ]
   },
@@ -121,13 +178,25 @@ const MISSIONS = [
     sectorImage: 'many.png',
     sectorZones: [
       { lat: 500, lng: 600, label: 'CORE & MATHEMATICS', tag:'// THE BRAIN', holo: {
-        img: 'math.jpg', why: 'Provide robust logic and low-level memory management[cite: 4].', arch: 'C++ for deep DSA and native integrations. Python for ML ecosystems. SQL for data structuring[cite: 3, 4].', metrics: '<span style="color:#f0a500">Algorithms:</span> 840+ Solved<br><span style="color:#f0a500">Math:</span> Linear Algebra[cite: 3, 4]', git: '', live: ''
+        title: 'CORE DATA STRUCTURES', tag: '// THE BRAIN',
+        img: 'math.jpg', why: 'Provide robust logic and low-level memory management[cite: 4].', 
+        arch: 'C++ for deep DSA and native integrations. Python for ML ecosystems. SQL for data structuring[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Algorithms:</span> 840+ Solved<br><span style="color:#f0a500">Math:</span> Linear Algebra[cite: 3, 4]', 
+        git: '', live: ''
       }},
       { lat: 700, lng: 1200, label: 'AI & PERCEPTION', tag:'// THE EYES', holo: {
-        img: 'vision.jpg', why: 'Enable high-fidelity spatial and contextual awareness[cite: 4].', arch: 'YOLOv8/v11 for object detection. Multi-Agent PPO for Reinforcement Learning. NLP/LLMs for semantic parsing[cite: 3, 4].', metrics: '<span style="color:#f0a500">Focus:</span> Low-latency<br><span style="color:#f0a500">Frameworks:</span> PyTorch, OpenCV[cite: 3]', git: '', live: ''
+        title: 'PERCEPTION ENGINES', tag: '// THE EYES',
+        img: 'vision.jpg', why: 'Enable high-fidelity spatial and contextual awareness[cite: 4].', 
+        arch: 'YOLOv8/v11 for object detection. Multi-Agent PPO for Reinforcement Learning. NLP/LLMs for semantic parsing[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Focus:</span> Low-latency<br><span style="color:#f0a500">Frameworks:</span> PyTorch, OpenCV[cite: 3]', 
+        git: '', live: ''
       }},
       { lat: 400, lng: 1400, label: 'EDGE INFRASTRUCTURE', tag:'// THE SPINE', holo: {
-        img: 'infra.jpg', why: 'Ensure zero-downtime, cloud-independent execution[cite: 4].', arch: 'WebAssembly for browser edge AI. Docker for containerization. FastAPI & PostgreSQL for backend routing[cite: 3, 4].', metrics: '<span style="color:#f0a500">Export:</span> ONNX, TFLite<br><span style="color:#f0a500">OS:</span> Linux/Bash[cite: 3]', git: '', live: ''
+        title: 'DEPLOYMENT INFRA', tag: '// THE SPINE',
+        img: 'infra.jpg', why: 'Ensure zero-downtime, cloud-independent execution[cite: 4].', 
+        arch: 'WebAssembly for browser edge AI. Docker for containerization. FastAPI & PostgreSQL for backend routing[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Export:</span> ONNX, TFLite<br><span style="color:#f0a500">OS:</span> Linux/Bash[cite: 3]', 
+        git: '', live: ''
       }}
     ]
   },
@@ -143,16 +212,32 @@ const MISSIONS = [
     sectorImage: 'mount.png',
     sectorZones: [
       { lat: 400, lng: 600, label: 'PROJECT VYUHA', tag:'// CLASSIFIED SWARM', holo: {
-        img: 'vyuha.jpg', why: 'Eliminate Single Point of Failure (SPOF) in drone swarms[cite: 4].', arch: 'Decentralized multi-agent coordination built in C++. Nodes use emergent logic inspired by Mahabharat Vyuha military formations[cite: 4].', metrics: '<span style="color:#f0a500">Status:</span> Stealth Mode<br><span style="color:#f0a500">Comms:</span> O(log N) Overhead[cite: 4]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'PROJECT VYUHA', tag: '// CLASSIFIED SWARM',
+        img: 'vyuha.jpg', why: 'Eliminate Single Point of Failure (SPOF) in drone swarms[cite: 4].', 
+        arch: 'Decentralized multi-agent coordination built in C++. Nodes use emergent logic inspired by Mahabharat Vyuha military formations[cite: 4].', 
+        metrics: '<span style="color:#f0a500">Status:</span> Stealth Mode<br><span style="color:#f0a500">Comms:</span> O(log N) Overhead[cite: 4]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }},
       { lat: 700, lng: 1100, label: 'A.V.A.T.A.R', tag:'// 60FPS KINEMATICS', holo: {
-        img: 'avatar.jpg', why: 'Real-time spatial mapping without cloud ping[cite: 4].', arch: 'Python-to-WebAssembly compiler running MediaPipe. Uses LERP-based smoothing and 3D Euclidean Z-axis correction[cite: 3, 4].', metrics: '<span style="color:#f0a500">Latency:</span> Zero Cloud Ping<br><span style="color:#f0a500">Target:</span> Defense-grade[cite: 3]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'PROJECT A.V.A.T.A.R', tag: '// 60FPS KINEMATICS',
+        img: 'avatar.jpg', why: 'Real-time spatial mapping without cloud ping[cite: 4].', 
+        arch: 'Python-to-WebAssembly compiler running MediaPipe. Uses LERP-based smoothing and 3D Euclidean Z-axis correction[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">Latency:</span> Zero Cloud Ping<br><span style="color:#f0a500">Target:</span> Defense-grade[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }},
       { lat: 600, lng: 1500, label: 'MAYA PROTOCOL', tag:'// BEHAVIORAL SIM', holo: {
-        img: 'maya.jpg', why: 'Model physiological consequences of dopamine choices[cite: 3, 4].', arch: 'C++ native engine executing permadeath mechanics based on System Integrity vs. Willpower trade-offs[cite: 3, 4].', metrics: '<span style="color:#f0a500">State:</span> Shipped<br><span style="color:#f0a500">Platform:</span> Cross-platform[cite: 3]', git: 'https://github.com/CODERUDRA-X/maya_protocol', live: ''
+        title: 'MAYA PROTOCOL', tag: '// BEHAVIORAL SIM',
+        img: 'maya.jpg', why: 'Model physiological consequences of dopamine choices[cite: 3, 4].', 
+        arch: 'C++ native engine executing permadeath mechanics based on System Integrity vs. Willpower trade-offs[cite: 3, 4].', 
+        metrics: '<span style="color:#f0a500">State:</span> Shipped<br><span style="color:#f0a500">Platform:</span> Cross-platform[cite: 3]', 
+        git: 'https://github.com/CODERUDRA-X/maya_protocol', live: ''
       }},
       { lat: 800, lng: 400, label: 'NAAD PROTOCOL', tag:'// DATA STREAMING', holo: {
-        img: 'naad.jpg', why: 'Traditional waveform streaming wastes network bandwidth[cite: 4].', arch: '"Streaming Meaning, Not Waveforms" utilizing advanced semantic JS encoding for extreme compression[cite: 4].', metrics: '<span style="color:#f0a500">Audio Rep:</span> Sub-kbps<br><span style="color:#f0a500">Engine:</span> Experimental[cite: 4]', git: 'https://github.com/CODERUDRA-X/naad', live: ''
+        title: 'NAAD PROTOCOL', tag: '// DATA STREAMING',
+        img: 'naad.jpg', why: 'Traditional waveform streaming wastes network bandwidth[cite: 4].', 
+        arch: '"Streaming Meaning, Not Waveforms" utilizing advanced semantic JS encoding for extreme compression[cite: 4].', 
+        metrics: '<span style="color:#f0a500">Audio Rep:</span> Sub-kbps<br><span style="color:#f0a500">Engine:</span> Experimental[cite: 4]', 
+        git: 'https://github.com/CODERUDRA-X/naad', live: ''
       }}
     ]
   },
@@ -168,10 +253,18 @@ const MISSIONS = [
     sectorImage: 'lefti.png',
     sectorZones: [
       { lat: 400, lng: 800, label: 'DEFENSE AI ARCHIVE', tag:'// AUTOMATION', holo: {
-        img: 'archive.jpg', why: 'Aggregate global defense-tech and swarm publications[cite: 4].', arch: 'Python-driven CI/CD pipeline that scrapes, synthesizes, and securely catalogs petabyte-scale data natively[cite: 4].', metrics: '<span style="color:#f0a500">Sync:</span> 24hr Automated<br><span style="color:#f0a500">Mode:</span> Hands-free[cite: 4]', git: 'https://github.com/CODERUDRA-X', live: ''
+        title: 'DEFENSE AI ARCHIVE', tag: '// AUTOMATION',
+        img: 'archive.jpg', why: 'Aggregate global defense-tech and swarm publications[cite: 4].', 
+        arch: 'Python-driven CI/CD pipeline that scrapes, synthesizes, and securely catalogs petabyte-scale data natively[cite: 4].', 
+        metrics: '<span style="color:#f0a500">Sync:</span> 24hr Automated<br><span style="color:#f0a500">Mode:</span> Hands-free[cite: 4]', 
+        git: 'https://github.com/CODERUDRA-X', live: ''
       }},
       { lat: 700, lng: 1200, label: 'GCB-HUB DEPLOYMENT', tag:'// WEB PIPELINE', holo: {
-        img: 'gcb.jpg', why: 'Deploy petabyte-scale genetic models (BLISS) for global access[cite: 4].', arch: 'Engineered the frontend data pipeline to transform dense statistical pQTL data into an intuitive platform[cite: 4].', metrics: '<span style="color:#f0a500">Scale:</span> Petabyte Ready<br><span style="color:#f0a500">Scope:</span> 5,779+ Models[cite: 4]', git: 'https://github.com/gcb-hub/BLISS', live: 'https://www.gcbhub.org/'
+        title: 'GCB-HUB ARCHITECTURE', tag: '// WEB PIPELINE',
+        img: 'gcb.jpg', why: 'Deploy petabyte-scale genetic models (BLISS) for global access[cite: 4].', 
+        arch: 'Engineered the frontend data pipeline to transform dense statistical pQTL data into an intuitive platform[cite: 4].', 
+        metrics: '<span style="color:#f0a500">Scale:</span> Petabyte Ready<br><span style="color:#f0a500">Scope:</span> 5,779+ Models[cite: 4]', 
+        git: 'https://github.com/gcb-hub/BLISS', live: 'https://www.gcbhub.org/'
       }}
     ]
   }
@@ -674,8 +767,8 @@ function openHoloPopup(zone, pt) {
   const popup = document.getElementById('holo-popup');
   const content = document.getElementById('hp-content');
   
-  // Inject Hardcore HUD Data from the Zone
-  content.innerHTML = buildHoloHUD(zone.label, zone.tag, zone.holo);
+// Inject Hardcore HUD Data from the Zone
+  content.innerHTML = buildHoloHUD(zone); // Changed this line to pass only the zone object
 
   // Briefly show to calculate dimensions
   popup.style.display = 'block';

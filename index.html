@@ -101,10 +101,6 @@
   <div id="scan-line"></div>
   <div id="reticle-container"></div>
 
-  <!-- SMART HOLOGRAPHIC POPUP CONTAINER -->
-  <div id="holo-popup">
-    <div class="hp-content" id="hp-content"></div>
-  </div>
   <div class="hud-corner hud-tl"><span class="hc-data">SYS: NOMINAL</span></div>
   <div class="hud-corner hud-tr"><span class="hc-data" id="live-clock">00:00:00 IST</span></div>
   <div class="hud-corner hud-bl"><span class="hc-data">● LIVE INTEL FEED</span></div>
@@ -147,16 +143,16 @@
     <div class="ticker-content" id="ticker-content">AWAITING CONNECTION...</div>
   </div>
 
+  <!-- Terminal Button Removed. Focus is purely on Military Navigation. -->
   <div id="botnav">
-    <div class="nbtn" data-nav="term" onclick="openTerminal()">[ >_ TERMINAL ]</div>
     <div class="nbtn" data-nav="op" onclick="openDossier()">[ OPERATIVE DOSSIER ]</div>
     <div class="nbtn" data-nav="in" onclick="openIntel()">[ INTEL · CONTACT ]</div>
     <a class="nbtn" href="https://github.com/CODERUDRA-X" target="_blank" rel="noopener">[ GITHUB ]</a>
+    <a class="nbtn" href="https://linkedin.com/in/shreyansh-srivastava-9a83b9291" target="_blank" rel="noopener">[ LINKEDIN ]</a>
   </div>
-
 </div>
 
-<!-- Mission Details -->
+<!-- Main Island Mission Briefing -->
 <div id="mission-modal" class="h-modal">
   <div class="hm-backdrop" onclick="closeModal()"></div>
   <div class="hm-content">
@@ -178,61 +174,69 @@
         <div style="margin-top:8px" id="mm-stack"></div>
         
         <div class="deploy-btn hidden" id="mm-deploy-btn" onclick="enterSector()">
-          ▶ ENTER SECTOR
+          ▶ ENTER SECTOR — DEEP DIVE
         </div>
       </div>
       
       <div class="mm-right" id="mm-right">
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- HN Style Dossier -->
+<!-- Deep Lore Dossier (Kuber-Style Narrative Layout) -->
 <div id="dossier-modal" class="h-modal">
   <div class="hm-backdrop" onclick="closeDossier()"></div>
-  <div class="hm-content hm-narrow">
-    <div class="hm-corner hm-tl"></div><div class="hm-corner hm-tr"></div>
-    <div class="hm-corner hm-bl"></div><div class="hm-corner hm-br"></div>
+  <div class="hm-content hm-wide" style="background: #0a0a0a; border: 1px solid var(--border-lit); padding: clamp(20px, 4vw, 40px); border-radius: 8px;">
     <div class="p-close" onclick="closeDossier()">✕</div>
     
-    <div class="pring">⚔️</div>
-    <div class="ptag">// OPERATIVE DOSSIER</div>
-    <div class="ptitle">SHREYANSH SRIVASTAVA</div>
-    <div class="tagline-quote">"Silence was for building. Now, the execution speaks."</div>
-    <div class="pdiv"></div>
-
-    <div class="ptag">// SERVICE RECORD (EXPERIENCE)</div>
-    <div class="pbody" style="margin-top:8px">
-      • <strong style="color:#00ff88">SDE AI/ML Intern</strong> @ Empyrean Robotic Technologies<br>
-      • <strong style="color:#00ff88">AI Research Intern</strong> @ Promptly AI Pvt Ltd<br>
-      • <strong style="color:#f0a500">Logistics & Ops Head</strong> @ Google (Pan India GSA)<br>
-      • <strong style="color:#f0a500">Core Member</strong> @ Elite Coders
-    </div>
-    <div class="pdiv"></div>
-    
-    <div class="ptag">// CAPABILITY MATRIX (TECH STACK)</div>
-    <div style="margin-top:15px">
-      <div class="skill-cat-title">📡 Core Intelligence & Defense Tech</div>
-      <div class="skill-badges">
-        <span class="s-badge">Python</span> <span class="s-badge">C++</span> <span class="s-badge">YOLOv8</span> <span class="s-badge">PyTorch</span> <span class="s-badge">OpenCV</span>
+    <div style="display: flex; gap: clamp(20px, 4vw, 40px); flex-wrap: wrap;">
+      
+      <!-- Left Sidebar: Name & ASCII Art -->
+      <div style="flex: 1; min-width: 200px; max-width: 280px; display: flex; flex-direction: column; gap: 20px;">
+        <div>
+          <h1 style="color: var(--khaki); font-family: 'Share Tech Mono', monospace; font-size: clamp(2rem, 3vw, 2.5rem); line-height: 1.1; margin-bottom: 5px;">Shreyansh<br>Srivastava</h1>
+          <h3 style="color: var(--hud); font-family: 'Share Tech Mono', monospace; font-size: 1rem; letter-spacing: 0.1em;">// CODERUDRA-X</h3>
+        </div>
+        
+        <div style="width: 100%; border: 1px solid rgba(0,255,136,0.2); border-radius: 4px; overflow: hidden; background: #000; box-shadow: inset 0 0 20px rgba(0,255,136,0.05);">
+          <img src="ascii-art.png" alt="ASCII Portrait" style="width: 100%; height: auto; display: block; filter: contrast(1.5) drop-shadow(0 0 2px rgba(0,255,136,0.5)); opacity: 0.85;">
+        </div>
+        
+        <div style="font-size: 0.75rem; color: #888; font-family: 'Share Tech Mono', monospace; line-height: 1.8;">
+          <strong style="color:var(--amber)">STATUS:</strong> Stealth Mode<br>
+          <strong style="color:var(--amber)">BASE:</strong> Prayagraj, India<br>
+          <strong style="color:var(--amber)">MISSION:</strong> #build4bharat[cite: 4]
+        </div>
       </div>
 
-      <div class="skill-cat-title" style="margin-top:12px;">⚙️ Edge Systems & Architecture</div>
-      <div class="skill-badges">
-        <span class="s-badge">Linux</span> <span class="s-badge">Docker</span> <span class="s-badge">WebAssembly</span> <span class="s-badge">PostgreSQL</span> <span class="s-badge">FastAPI</span>
-      </div>
+      <!-- Right Content: The Story Narrative -->
+      <div style="flex: 2; min-width: 300px; font-family: 'Share Tech Mono', monospace; font-size: clamp(0.85rem, 1.5vw, 0.95rem); line-height: 1.8; color: #d0d0d0; display: flex; flex-direction: column; gap: 15px;">
+         
+         <p>Hey! I'm an AI/ML Engineer & Systems Architect from Prayagraj, India.</p>
+         
+         <p>I'm studying Computer Science & Data Science at UIT[cite: 3], primarily working on high-reliability Computer Vision, Edge AI, and production-ready inference pipelines @ Promptly AI and Empyrean Robotics[cite: 3, 4].</p>
+         
+         <p>In 2019, severe medical adversity triggered what I call "Operation Rebirth"[cite: 4]. I transitioned directly into builder mode. Today, the <span style="color: var(--amber)">"Tier-3 to CEO"</span> mindset fuels my drive to build for India's strategic defense and infrastructure (#build4bharat)[cite: 4].</p>
+         
+         <p>I've built and shipped complex architectures—from decentralized drone swarm logic (Project VYUHA) to hardware-free adaptive traffic systems (FlowSync AI)[cite: 3, 4]. I'm an AI generalist, but to see the architectures I usually build, check the map sectors.</p>
+         
+         <p>I also grind computational mathematics; I'm rated 1700+ in CP, have solved 840+ DSA problems, and recently won the ICUB8 2025 national hackathon[cite: 3, 4].</p>
+         
+         <p>Previously: Logistics & Ops Head for Google Student Ambassadors (Pan-India), managing automated operations for 110+ campus leads[cite: 3, 4].</p>
+         
+         <p>At my core, I love building fault-tolerant infrastructure and safety-critical systems. If you're building something ambitious, let's talk!</p>
+         
+         <div style="margin-top: 10px; font-style: italic; color: #888;">
+           Type <a href="https://github.com/CODERUDRA-X" target="_blank" style="color: var(--hud); text-decoration: none;">github</a>, <a href="https://linkedin.com/in/shreyansh-srivastava-9a83b9291" target="_blank" style="color: var(--hud); text-decoration: none;">linkedin</a>, or <a href="#" onclick="copyEmailIntel()" style="color: var(--hud); text-decoration: none;">email</a> to connect with me.
+         </div>
 
-      <div class="skill-cat-title" style="margin-top:12px;">🧠 Mathematics & Algorithms</div>
-      <div class="skill-badges">
-        <span class="s-badge">Reinforcement Learning</span> <span class="s-badge">Multi-Agent PPO</span> <span class="s-badge">Linear Algebra</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- HN Style Intel -->
+<!-- Intel Vault -->
 <div id="intel-modal" class="h-modal">
   <div class="hm-backdrop" onclick="closeIntel()"></div>
   <div class="hm-content hm-wide">
@@ -242,7 +246,7 @@
     
     <div class="ptag" style="margin-bottom:15px">// ESTABLISH CONTACT & SECURE ASSETS</div>
     <div class="intel-grid">
-      <a class="icard resume-card" href="your_resume_link.pdf" target="_blank" rel="noopener">
+      <a class="icard resume-card" href="Shreyansh_Resume_Final.pdf" target="_blank" rel="noopener">
         <div class="ii" style="color:#000;">📄</div>
         <span class="in" style="color:#000;">DOWNLOAD DOSSIER</span>
         <span class="id2" style="color:#111;">PDF Resume / CV</span>
@@ -264,27 +268,7 @@
   </div>
 </div>
 
-<!-- Terminal Modal -->
-<div id="terminal-modal" class="h-modal">
-  <div class="hm-backdrop" onclick="closeTerminal()"></div>
-  <div class="term-window">
-    <div class="term-header">
-      <span>coderudra@system:~</span>
-      <span class="p-close" style="position:static; border:none; top:0; right:0; width:auto; height:auto; padding:0 5px;" onclick="closeTerminal()">✕</span>
-    </div>
-    <div class="term-body" id="term-body">
-      <div class="term-line">CODERUDRA-X OS v1.6.9 [HN-Optimized]</div>
-      <div class="term-line">Type <span class="term-cmd">'help'</span> to see available commands.</div>
-      <div id="term-history"></div>
-      <div class="term-input-line">
-        <span class="term-prompt">coderudra@profile:~$</span>
-        <input type="text" id="term-input" autocomplete="off" spellcheck="false" autofocus>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Sector Drill Down -->
+<!-- Sector Drill Down Map Layer -->
 <div id="sector-screen">
   <div id="sector-rtb" onclick="exitSector()">
     <span class="rtb-arrow">◄</span>
@@ -301,18 +285,15 @@
   
   <canvas id="sector-canvas"></canvas>
 
+  <!-- MOVED HOLOGRAM CONTAINER TO BE INSIDE SECTOR SCREEN FOR PROPER Z-INDEX -->
+  <div id="holo-popup">
+    <div class="hp-content" id="hp-content"></div>
+  </div>
+
   <div class="hud-corner hud-tl" style="top:52px"><span class="hc-data" id="sector-sys">SECTOR: LOADING</span></div>
   <div class="hud-corner hud-tr" style="top:52px"><span class="hc-data">INTEL: ACTIVE</span></div>
   <div class="hud-corner hud-bl"><span class="hc-data">ZOOM: ENHANCED</span></div>
   <div class="hud-corner hud-br"><span class="hc-data">MODE: RECON</span></div>
-
-  <div id="sector-popup">
-    <div class="sp-close" onclick="closeSectorPopup()">✕</div>
-    <div class="sp-tag" id="sp-tag"></div>
-    <div class="sp-title" id="sp-title"></div>
-    <div class="sp-divider"></div>
-    <div class="sp-body" id="sp-body"></div>
-  </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
