@@ -650,6 +650,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;
 @keyframes tag-pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
 @keyframes sector-in{from{opacity:0;filter:brightness(.2)}50%{filter:brightness(.7)}to{opacity:1;filter:brightness(1)}}
 
+<<<<<<< HEAD
 /* ═══════════════════════════════════════════════
    SMART HOLOGRAPHIC POPUP ENGINE
 ═══════════════════════════════════════════════ */
@@ -704,3 +705,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;
 .holo-btn:hover { background: var(--hud); color: #000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 15px var(--hud); }
 .amber-btn { border-color: var(--amber); color: var(--amber); background: rgba(240,165,0,0.08); }
 .amber-btn:hover { background: var(--amber); color: #000; box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 15px var(--amber); }
+=======
+
+>>>>>>> 5f044d5513e340c318809b6077e2887e3fe32c0e
