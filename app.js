@@ -705,9 +705,13 @@ function initSectorMap(mission) {
 
   const imgSrc = mission.sectorImage || 'cinematic-map.png';
   L.imageOverlay(imgSrc, bounds, {opacity:1, interactive:false}).addTo(sectorMap);
-  
+
   sectorMap.fitBounds(bounds);
-  sectorMap.setMinZoom(sectorMap.getZoom());
+  const targetZoom   = sectorMap.getZoom();
+  const targetCenter = sectorMap.getCenter();
+
+  // Loosen min-zoom slightly so we can start "pulled back" for the descent
+  sectorMap.setMinZoom(targetZoom - 1.2);
   sectorMap.setMaxBounds(bounds);
 
   sectorCanvas = document.getElementById('sector-canvas');
@@ -715,9 +719,23 @@ function initSectorMap(mission) {
   sectorCanvas.width  = window.innerWidth;
   sectorCanvas.height = window.innerHeight;
 
+  // ── RECON DESCENT: start zoomed-out + offset, then fly into position ──
+  const offsetX = (Math.random() > 0.5 ? 1 : -1) * 240;
+  const offsetY = (Math.random() > 0.5 ? 1 : -1) * 160;
+  const startPt = sectorMap.project(targetCenter, targetZoom).add([offsetX, offsetY]);
+  const startLatLng = sectorMap.unproject(startPt, targetZoom);
+
+  sectorMap.setView(startLatLng, targetZoom - 1.2, { animate: false });
+
+  setTimeout(() => {
+    sectorMap.flyTo(targetCenter, targetZoom, { duration: 1.3, easeLinearity: 0.15 });
+    setTimeout(() => sectorMap.setMinZoom(targetZoom), 1300);
+  }, 150);
+
+  const zoneDelay = 150 + 1300;
   if (mission.sectorZones && mission.sectorZones.length > 0) {
     mission.sectorZones.forEach((zone, i) => {
-      setTimeout(() => addSectorZone(zone), 400 + i * 150);
+      setTimeout(() => addSectorZone(zone), zoneDelay + i * 150);
     });
   }
 
