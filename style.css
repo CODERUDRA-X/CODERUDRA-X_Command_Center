@@ -492,30 +492,89 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;
 #sector-map { position:absolute; inset:0; width:100%; height:100%; }
 #sector-canvas { position:absolute; inset:0; z-index:400; pointer-events:none; width:100%; height:100%; }
 
-/* Sector markers */
+/* ═══════════════════════════════════════════════
+   SECTOR SUB-ZONE MARKERS (recon-annotated nodes)
+   Default tier = green "friendly system" styling.
+   .classified  = BLACK SITE-tier zones (mission.type === 'amber' in
+                  app.js), styled as a hazard, not a normal op.
+   .sz-cloaked  = pre-detection state — set by default in app.js until
+                  the recon sweep (or its safety-net timer) reveals it.
+   .sz-detected = post-detection state, applied by revealZone() in app.js.
+═══════════════════════════════════════════════ */
 .sz-wrap {
   position:relative; width:44px; height:44px;
   display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
 .sz-core {
-  width:8px; height:8px; border-radius:50%; background:var(--amber);
-  box-shadow:0 0 8px var(--amber),0 0 16px rgba(240,165,0,.4); z-index:3;
-  transition: transform .2s;
+  width:8px; height:8px; border-radius:50%; background:var(--hud);
+  box-shadow:0 0 8px var(--hud),0 0 16px rgba(0,255,136,.4); z-index:3;
+  transition: transform .2s, opacity .3s;
 }
 .sz-ring {
-  position:absolute; border-radius:50%; border:1.5px solid var(--amber);
+  position:absolute; border-radius:50%; border:1.5px solid var(--hud);
   animation:radar-pulse 2.4s ease-out infinite; opacity:0;
 }
 .sz-r1 { width:18px; height:18px; }
 .sz-r2 { width:30px; height:30px; animation-delay:.8s; }
+
+/* Target-lock bracket corners — replaces the old bare dot with a
+   "this has been annotated" recon-photo look once detected. */
+.sz-bracket {
+  position:absolute; width:13px; height:13px; opacity:0;
+  border-color:var(--hud); border-style:solid; transition:opacity .3s;
+}
+.sz-bl { top:2px; left:2px; border-width:1.5px 0 0 1.5px; }
+.sz-br { bottom:2px; right:2px; border-width:0 1.5px 1.5px 0; }
+
+/* Thin leader stem from the node down to its label, echoing the
+   annotation lines used in real recon-photo intelligence briefs,
+   instead of a label that just floats beneath the dot. */
+.sz-leader {
+  position:absolute; top:100%; left:50%; width:1px; height:5px;
+  background:rgba(0,255,136,.4); opacity:0; transition:opacity .3s;
+}
+
 .sz-label {
-  position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%);
-  font-size:.46rem; color:rgba(240,165,0,.8); letter-spacing:.12em;
+  position:absolute; top:calc(100% + 9px); left:50%; transform:translateX(-50%);
+  font-size:.46rem; color:rgba(0,255,136,.8); letter-spacing:.12em;
   background:rgba(0,0,0,.75); padding:3px 8px; white-space:nowrap; pointer-events:none;
-  border:1px solid rgba(240,165,0,.2); transition:all .2s;
+  border:1px solid rgba(0,255,136,.2); transition:all .2s;
 }
 .sz-wrap:hover .sz-core { transform:scale(1.8); }
-.sz-wrap:hover .sz-label { color:var(--amber); border-color:rgba(240,165,0,.5); }
+.sz-wrap:hover .sz-label { color:var(--hud); border-color:rgba(0,255,136,.5); }
+
+/* Pre-detection: dim core, brackets/leader/label withheld. Clicking still
+   works underneath — the cloak is purely cosmetic, never functional, so a
+   missed sweep frame can never block someone from opening a briefing. */
+.sz-wrap.sz-cloaked .sz-core { opacity:.25; transform:scale(.6); box-shadow:none; }
+.sz-wrap.sz-cloaked .sz-ring,
+.sz-wrap.sz-cloaked .sz-bracket,
+.sz-wrap.sz-cloaked .sz-leader,
+.sz-wrap.sz-cloaked .sz-label { opacity:0; }
+
+/* Post-detection: brackets and leader materialize, core snaps to full
+   brightness with a quick pop instead of a plain fade. */
+.sz-wrap.sz-detected .sz-core { animation:sz-pop .35s ease both; }
+.sz-wrap.sz-detected .sz-bracket,
+.sz-wrap.sz-detected .sz-leader { opacity:1; }
+.sz-wrap.sz-detected .sz-label { opacity:1; }
+
+/* Classification tier: BLACK SITE zones read as a hazard, not a normal
+   op — amber/red irregular strobe instead of a steady green pulse. */
+.sz-wrap.classified .sz-core { background:var(--amber); animation:hazard-strobe 1.8s infinite; }
+.sz-wrap.classified .sz-ring { border-color:var(--amber); }
+.sz-wrap.classified .sz-bracket { border-color:var(--amber); }
+.sz-wrap.classified .sz-leader { background:rgba(240,165,0,.4); }
+.sz-wrap.classified .sz-label { color:rgba(240,165,0,.85); border-color:rgba(240,165,0,.3); }
+.sz-wrap.classified:hover .sz-core { box-shadow:0 0 14px var(--amber),0 0 28px rgba(240,165,0,.6); }
+.sz-wrap.classified:hover .sz-label { color:var(--amber); border-color:rgba(240,165,0,.5); }
+
+/* Classified + just-detected: play the reveal pop first, then settle
+   into the continuous hazard strobe (higher specificity wins over the
+   two rules above so both effects combine instead of one overriding). */
+.sz-wrap.classified.sz-detected .sz-core {
+  animation: sz-pop .35s ease both, hazard-strobe 1.8s infinite .35s;
+}
 
 /* Sector popup (info card within sector map) */
 #sector-popup {
@@ -640,6 +699,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000;
 @keyframes gring{0%,100%{box-shadow:0 0 18px rgba(200,169,110,.25)}50%{box-shadow:0 0 32px rgba(200,169,110,.55)}}
 @keyframes sweep{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes scan-sweep{0%{top:0%;opacity:0}3%{opacity:1}97%{opacity:1}100%{top:100%;opacity:0}}
+
+/* Sector recon-FX: zone detection pop + classified hazard strobe */
+@keyframes sz-pop{0%{transform:scale(2.2);opacity:0}60%{transform:scale(.85)}100%{transform:scale(1);opacity:1}}
+@keyframes hazard-strobe{0%,100%{opacity:1;box-shadow:0 0 8px var(--amber),0 0 16px rgba(240,165,0,.4)}8%{opacity:.3}14%{opacity:1}52%{opacity:1}58%{opacity:.25}64%{opacity:1}}
 
 /* Reticle */
 @keyframes tr-contract{from{transform:translate(-50%,-50%) scale(2.5);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}

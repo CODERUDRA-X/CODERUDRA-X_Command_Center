@@ -1,5 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   CODERUDRA-X COMMAND CENTER · ENGINE v11.1 (BUG FIXES)
+   CODERUDRA-X COMMAND CENTER · ENGINE v11.2 (SECTOR RECON OVERLAY)
+   New in this pass: circuit-trace links + a rotating recon sweep
+   inside each sector's drill-down view, classification-tier visual
+   language for sub-zone nodes, and a decrypt-style label reveal.
+   See "SECTOR RECON-FX STATE" further down for the full system.
 ═══════════════════════════════════════════════════════════ */
 
 const buildHoloHUD = (zone) => {
@@ -651,6 +655,19 @@ let sectorMap = null;
 let sectorCanvas, sectorCtx;
 let activeSectorId = null;
 
+/* ── SECTOR RECON-FX STATE ──────────────────────────────────
+   Drives the in-sector tactical overlay: circuit-trace links between
+   sub-zones, a rotating recon sweep that "decloaks" each node the
+   first time it rotates past it, and a safety-net timer so nothing
+   stays hidden if a user pans/zooms mid-sweep and the geometry check
+   ever misses a frame. All state below is reset per-sector in
+   initSectorMap() and torn down in exitSector(). */
+let sectorZoneMarkers = [];    // { marker, el, zone, revealed }
+let sectorSweepAngle  = 0;     // current recon-sweep heading, degrees (screen-space)
+let sectorFxActive    = false; // gates the rAF loop so it stops cleanly on exit
+let sectorCentroid    = null;  // {lat,lng} hub point the sweep/traces radiate from
+let sectorResizeBound = false; // ensures the resize listener below binds only once
+
 function enterSector() {
   const mission = MISSIONS.find(m => m.id === activeMissionId);
   if (!mission) return;
@@ -719,6 +736,20 @@ function initSectorMap(mission) {
   sectorCanvas.width  = window.innerWidth;
   sectorCanvas.height = window.innerHeight;
 
+  // Keep the recon-overlay canvas in sync with viewport changes while a
+  // sector is open. Bound once (guarded by sectorResizeBound) so repeated
+  // sector visits never stack up duplicate listeners.
+  if (!sectorResizeBound) {
+    window.addEventListener('resize', () => {
+      const ss = document.getElementById('sector-screen');
+      if (sectorCanvas && ss && ss.classList.contains('on')) {
+        sectorCanvas.width  = window.innerWidth;
+        sectorCanvas.height = window.innerHeight;
+      }
+    });
+    sectorResizeBound = true;
+  }
+
   // ── RECON DESCENT: start zoomed-out + offset, then fly into position ──
   const offsetX = (Math.random() > 0.5 ? 1 : -1) * 240;
   const offsetY = (Math.random() > 0.5 ? 1 : -1) * 160;
@@ -732,20 +763,49 @@ function initSectorMap(mission) {
     setTimeout(() => sectorMap.setMinZoom(targetZoom), 1300);
   }, 150);
 
+  // ── Reset recon-FX state for this sector and compute its geometric hub ──
+  // (hub = average position of all sub-zones; purely a visual anchor the
+  // circuit-trace lines and rotating sweep radiate from — not tied to any
+  // real coordinate on the underlying image)
+  sectorZoneMarkers = [];
+  sectorSweepAngle  = 0;
+  sectorCentroid    = computeCentroid(mission.sectorZones);
+  sectorFxActive    = true;
+  sectorFxLoop(); // safe to call even mid-teardown of a prior sector —
+                   // the loop checks sectorFxActive itself and exits cleanly
+
   const zoneDelay = 150 + 1300;
   if (mission.sectorZones && mission.sectorZones.length > 0) {
     mission.sectorZones.forEach((zone, i) => {
-      setTimeout(() => addSectorZone(zone), zoneDelay + i * 150);
+      setTimeout(() => addSectorZone(zone, mission.type), zoneDelay + i * 150);
     });
   }
 
   sectorMap.on('click', () => closeHoloPopup()); // Close hologram if background clicked
 }
 
-function addSectorZone(zone) {
-  const html = `<div class="sz-wrap" style="animation:sup .4s ease both">
+// Geometric center of a sector's sub-zones — the hub circuit-trace lines
+// converge on and the origin point the recon sweep rotates around.
+function computeCentroid(zones) {
+  if (!zones || zones.length === 0) return null;
+  const sum = zones.reduce((acc, z) => ({ lat: acc.lat + z.lat, lng: acc.lng + z.lng }), { lat: 0, lng: 0 });
+  return { lat: sum.lat / zones.length, lng: sum.lng / zones.length };
+}
+
+function addSectorZone(zone, missionType) {
+  // BLACK SITE-tier zones (mission.type === 'amber') read as a hazard,
+  // not a normal op — see the .classified styling block in style.css.
+  const classified = missionType === 'amber';
+
+  // Nodes spawn "cloaked" (dim core, brackets/label withheld) until the
+  // recon sweep in sectorFxLoop() rotates past them — see revealZone().
+  // The bracket + leader-stem markup replaces the old bare dot with a
+  // "this has been annotated" recon-photo look once detected.
+  const html = `<div class="sz-wrap ${classified ? 'classified' : ''} sz-cloaked" style="animation:sup .4s ease both">
     <div class="sz-ring sz-r1"></div><div class="sz-ring sz-r2"></div>
+    <div class="sz-bracket sz-bl"></div><div class="sz-bracket sz-br"></div>
     <div class="sz-core"></div>
+    <div class="sz-leader"></div>
     <div class="sz-label">${zone.label}</div>
   </div>`;
   const icon = L.divIcon({ className:'', html, iconSize:[44,44], iconAnchor:[22,22] });
@@ -757,6 +817,120 @@ function addSectorZone(zone) {
     const pt = sectorMap.latLngToContainerPoint([zone.lat, zone.lng]);
     openHoloPopup(zone, pt);
   });
+
+  // Register with the recon-FX system. The cloak is purely cosmetic —
+  // clicking always works underneath it — so a missed sweep frame can
+  // never block someone from opening a briefing.
+  const entry = { marker, el: null, zone, revealed: false };
+  sectorZoneMarkers.push(entry);
+
+  // getElement() only resolves once Leaflet has painted the marker —
+  // defer one frame so entry.el is guaranteed to be attached.
+  requestAnimationFrame(() => { entry.el = marker.getElement(); });
+
+  // Safety-net reveal: guarantees every node eventually surfaces even if
+  // the sweep's angle math never lines up with it (e.g. user is mid-drag).
+  setTimeout(() => revealZone(entry), 2600);
+}
+
+// Decloaks a sector node: swaps its dim/hidden state for the "detected"
+// look and runs a brief decrypt-style scramble on its label instead of
+// the text just popping into place.
+function revealZone(entry) {
+  if (!entry || entry.revealed) return;
+  entry.revealed = true;
+  if (!entry.el) entry.el = entry.marker.getElement();
+  if (!entry.el) return; // marker was already torn down (sector closed) before this fired
+  entry.el.classList.remove('sz-cloaked');
+  entry.el.classList.add('sz-detected');
+  const labelEl = entry.el.querySelector('.sz-label');
+  if (labelEl) scrambleReveal(labelEl, entry.zone.label);
+}
+
+// Cheap "matrix decrypt" text effect: cycles random glyphs, then locks
+// each character in left-to-right as `duration` elapses.
+function scrambleReveal(el, finalText, duration = 360) {
+  const glyphs = '!<>-_\\/[]{}=+*^?#';
+  const start = Date.now();
+  const tick = () => {
+    const p = Math.min((Date.now() - start) / duration, 1);
+    const lockedChars = Math.floor(p * finalText.length);
+    let out = '';
+    for (let i = 0; i < finalText.length; i++) {
+      out += i < lockedChars ? finalText[i] : glyphs[Math.floor(Math.random() * glyphs.length)];
+    }
+    el.textContent = out;
+    if (p < 1) requestAnimationFrame(tick); else el.textContent = finalText;
+  };
+  tick();
+}
+
+// ─────────────────────────────────────────────────────────
+// SECTOR RECON OVERLAY (circuit-trace + rotating sweep)
+// Draws directly on #sector-canvas — the same pointer-events:none,
+// painted-above-markers pattern the main map's hudLoop() already uses
+// for its hex grid and dashed mission lines, so nodes stay fully
+// clickable underneath it. All positions are recomputed every frame
+// via latLngToContainerPoint, so panning/zooming the sector never
+// desyncs the overlay.
+// ─────────────────────────────────────────────────────────
+function sectorFxLoop() {
+  if (!sectorFxActive || !sectorMap || !sectorCtx) return; // stopped in exitSector()
+  sectorCtx.clearRect(0, 0, sectorCanvas.width, sectorCanvas.height);
+
+  if (sectorCentroid) {
+    const hub = sectorMap.latLngToContainerPoint(L.latLng(sectorCentroid.lat, sectorCentroid.lng));
+
+    sectorZoneMarkers.forEach(entry => {
+      const p = sectorMap.latLngToContainerPoint(L.latLng(entry.zone.lat, entry.zone.lng));
+      const classified = entry.el && entry.el.classList.contains('classified');
+      const [r, g, b] = classified ? [240, 80, 40] : [0, 255, 136];
+
+      // Circuit-trace: hub-and-spoke link to this zone — reads as "one
+      // connected system", not a handful of scattered, unrelated pins.
+      sectorCtx.save();
+      sectorCtx.beginPath(); sectorCtx.moveTo(hub.x, hub.y); sectorCtx.lineTo(p.x, p.y);
+      sectorCtx.strokeStyle = `rgba(${r},${g},${b},.28)`;
+      sectorCtx.lineWidth = 1;
+      sectorCtx.setLineDash([6, 5]); sectorCtx.lineDashOffset = -sectorSweepAngle * 2;
+      sectorCtx.stroke();
+      sectorCtx.restore();
+
+      // Live screen-space angle of this node relative to the hub —
+      // recomputed every frame (not cached) so it stays correct through
+      // pan/zoom instead of drifting stale.
+      if (!entry.revealed) {
+        const liveAngle = (Math.atan2(p.y - hub.y, p.x - hub.x) * 180 / Math.PI + 360) % 360;
+        const diff = Math.min(Math.abs(sectorSweepAngle - liveAngle), 360 - Math.abs(sectorSweepAngle - liveAngle));
+        if (diff < 4) revealZone(entry);
+      }
+    });
+
+    // Hub marker
+    sectorCtx.save();
+    sectorCtx.beginPath(); sectorCtx.arc(hub.x, hub.y, 3, 0, Math.PI * 2);
+    sectorCtx.fillStyle = 'rgba(0,255,136,.7)'; sectorCtx.fill();
+    sectorCtx.restore();
+
+    // Rotating recon sweep — a soft directional beam from the hub, same
+    // spirit as the corner radar widget but drawn in-canvas so its angle
+    // can be geometrically compared against each node above.
+    const rad = sectorSweepAngle * Math.PI / 180;
+    const sweepLen = Math.max(sectorCanvas.width, sectorCanvas.height);
+    sectorCtx.save();
+    const grad = sectorCtx.createLinearGradient(hub.x, hub.y,
+      hub.x + Math.cos(rad) * sweepLen, hub.y + Math.sin(rad) * sweepLen);
+    grad.addColorStop(0, 'rgba(0,255,136,.35)');
+    grad.addColorStop(1, 'rgba(0,255,136,0)');
+    sectorCtx.beginPath(); sectorCtx.moveTo(hub.x, hub.y);
+    sectorCtx.lineTo(hub.x + Math.cos(rad) * sweepLen, hub.y + Math.sin(rad) * sweepLen);
+    sectorCtx.strokeStyle = grad; sectorCtx.lineWidth = 2; sectorCtx.stroke();
+    sectorCtx.restore();
+
+    sectorSweepAngle = (sectorSweepAngle + 1.6) % 360;
+  }
+
+  requestAnimationFrame(sectorFxLoop);
 }
 
 function exitSector() {
@@ -771,6 +945,9 @@ function exitSector() {
 
   setTimeout(() => {
     closeHoloPopup();
+    sectorFxActive    = false; // stop the recon-overlay loop cleanly
+    sectorZoneMarkers = [];
+    sectorCentroid    = null;
     if (sectorMap) { sectorMap.remove(); sectorMap = null; }
     document.getElementById('sector-screen').classList.remove('on');
     overlay.style.opacity = '0';
