@@ -17,34 +17,63 @@
 -->
 </div>
 
-## ✨ What's inside
+## 👁️ The Interface Directive
 
-- **Hold-to-deploy boot sequence** — press-and-hold buckle interaction (Web Audio-synthesized clank + wind, no audio assets), neural-radar canvas background, decrypt-style boot log
-- **Free-fall drop cinematic** — parachute descent HUD with live altitude/rate/drift telemetry before the map resolves
-- **Live tactical radar map** (Leaflet, `CRS.Simple`) — 6 main "mission islands" connected by animated dashed circuit lines over a hex-grid HUD overlay
-- **Sector drill-down engine** — zoom into any island to a sub-map with a rotating recon sweep that "decloaks" each project node in real time (`Math.atan2` angle-matching against a live sweep beam)
-- **Holographic project HUD** — space-aware popup positioning (always picks the side with the most room, hard-clamped to viewport)
-- **Fully data-driven** — every mission, sector zone, and dossier paragraph lives in `src/constants/` / `src/data/`, not hardcoded in markup
+Scrolling web pages don't do justice to edge-AI, drone swarms, and safety-critical infrastructure. Real-world defense tech operates on **spatial intelligence and telemetry**. 
 
-## 🛠️ Tech Stack
+I didn't want to build a standard portfolio. I built a live deployment simulation of the environments my code operates in. This repository replaces the traditional résumé with a fully modular, mathematically driven Leaflet radar map, spatial holograms, and trigonometric radar sweeps.
 
-| Layer | Choice |
-|---|---|
-| Build | Vite 5 (Vanilla ES6 modules, no framework) |
-| Mapping | Leaflet.js (`CRS.Simple` for a non-geographic pixel-space map) |
-| Rendering | Canvas 2D (HUD overlays, recon-FX, neural-radar bg) + CSS 3D transforms |
-| Audio | Web Audio API (synthesized SFX, zero audio assets) |
-| Deployment | GitHub Actions → GitHub Pages |
+---
 
-## 📂 Architecture
+## ⚙️ Infrastructure Core (Technical Stack)
 
-```
+To ensure maximum frame-rate and zero bloat, heavy frameworks were bypassed in favor of a strict **Enterprise-Grade Modular Architecture** powered by raw **Vanilla ES6 Modules** and **Vite**.
+
+| Layer | Technology Choice | Engineering Purpose |
+| :--- | :--- | :--- |
+| **Mapping Engine** | Leaflet.js (`CRS.Simple`) | Hijacked a geographic mapping library to render a custom Cartesian pixel-space environment without real-world coordinates. |
+| **Rendering** | Canvas 2D + CSS3 3D | Math-driven hex grids, circuit traces, and `rotateX` volumetric holograms mapped precisely to live DOM nodes. |
+| **Physics** | Trigonometry + `rAF` | Custom `Math.atan2` loops calculating real-time intersection angles between the radar sweep and active mission nodes. |
+| **Audio** | Web Audio API | Zero audio files (`.mp3`/`.wav`) used. Mechanical clanks and wind swells are 100% mathematically synthesized via oscillators. |
+
+---
+
+## 🎯 System Capabilities
+
+### 🗺️ Sector Drill-Down Architecture
+Navigating into an island doesn't trigger a standard modal—it transitions into a localized Cartesian sub-map.
+* Dynamically calculates bounding boxes for seamless spatial zooming.
+* Renders animated Canvas 2D circuit-traces connecting sub-nodes to the sector's centroid.
+
+### 📡 Trigonometric Radar Intersection
+The radar sweep is fully functional, not a looped CSS background.
+* A `requestAnimationFrame` loop tracks the exact angle of the sweep line.
+* Uses `Math.atan2` to calculate the bearing of every DOM node relative to the screen's center.
+* Triggers synchronized CSS ripple-bursts and "Loot Beam" flares the exact millisecond the radar angle crosses a node's coordinates.
+
+### 🗜️ Space-Aware 3D Holograms
+Clicking a node generates a floor-projected volumetric UI.
+* **Collision Math:** An algorithm calculates viewport boundaries to ensure the panel never renders off-screen, shifting its anchor dynamically.
+* **Perspective:** Uses `perspective(1000px)` and `rotateX()` to lay the UI flat against the isometric map floor while preserving text legibility.
+
+---
+
+## 🗂️ Systems Anatomy
+
+The codebase follows a strict separation of concerns, decoupling static data from UI logic to maintain production-readiness:
+
+```text
 src/
-├── constants/    # MISSIONS, ticker/boot text — pure data
-├── data/         # Dossier/profile lore
-├── context/      # StateStore — shared app state
-├── components/   # BootEngine, RadarMap, SectorDrillDown, Hologram, Modals
-└── main.js       # Orchestrator
+ ├── constants/     # Static data, boot logs, and the modular MISSIONS JSON array
+ ├── data/          # Profile metrics and operative history
+ ├── context/       # StateStore.js (Global state management)
+ ├── components/    # Isolated UI Logic:
+ │    ├── BootEngine.js       (Neural-radar canvas & deployment logic)
+ │    ├── RadarMap.js         (Leaflet init & Canvas 2D Hex-grid)
+ │    ├── SectorDrillDown.js  (Sub-map routing & circuit-trace logic)
+ │    ├── Hologram.js         (3D Projection math & bounding constraints)
+ │    └── Modals.js           (Dossier & Intel routing)
+ └── main.js        # The Central ES6 Orchestrator
 ```
 
 ## 🚀 Getting Started
