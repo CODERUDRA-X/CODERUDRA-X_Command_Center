@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>CODERUDRA-X | Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="noise"></div>
+<div id="scanlines"></div>
+<div id="tip"></div>
+
+<div id="boot">
+  <canvas id="boot-neural"></canvas>
+  <div id="boot-vignette"></div>
+  <div class="b-logo" id="blogo">CODERUDRA-X</div>
+  <div class="b-mantra">॥ HAR HAR MAHADEV ॥</div>
+  <div class="b-line"></div>
+  <div class="b-log" id="blog"></div>
+  
+  <div class="boot-progress-wrap">
+    <div class="boot-progress-bar" id="bpbar"></div>
+    <div class="boot-pct" id="bpct">0%</div>
+  </div>
+
+  <div class="belt-area" id="belt-area">
+    <div class="belt-wrap" id="belt-wrap">
+      <div class="strap sl"></div>
+      <div class="buckle-body">
+        <div class="hold-fill" id="hold-fill"></div>
+        <svg class="buckle-icon" viewBox="0 0 64 44" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="10" width="60" height="24" rx="3" fill="none" stroke="#3a2c08" stroke-width="2"/>
+          <rect x="6" y="14" width="24" height="16" rx="1.5" fill="#2a1e06" stroke="#e0b848" stroke-width="1.2"/>
+          <rect x="34" y="14" width="24" height="16" rx="1.5" fill="#2a1e06" stroke="#e0b848" stroke-width="1.2"/>
+          <circle cx="32" cy="22" r="4.5" fill="#e0b848" stroke="#3a2c08" stroke-width="1"/>
+          <rect x="30" y="6" width="4" height="10" rx="1" fill="#e0b848"/>
+          <rect x="30" y="28" width="4" height="10" rx="1" fill="#e0b848"/>
+        </svg>
+      </div>
+      <div class="strap sr"></div>
+    </div>
+    <div class="tap-hint">[ HOLD BUCKLE TO DEPLOY ]</div>
+  </div>
+</div>
+
+<div id="drop">
+  <div id="sky"></div>
+  <div id="clouds-far"></div>
+  <div id="stars"></div>
+  <div id="clouds"></div>
+  <div id="speed-lines"></div>
+  <div id="terrain-rush"></div>
+
+  <div id="op">
+    <svg class="chute-svg" viewBox="0 0 130 78" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8a96e"/>
+          <stop offset="50%" stop-color="#6a8040"/>
+          <stop offset="100%" stop-color="#3a5020"/>
+        </linearGradient>
+        <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(0,0,0,.3)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </linearGradient>
+      </defs>
+      <path d="M14,72 Q36,0 65,0 Q94,0 116,72 Z" fill="url(#cg2)" opacity=".4" transform="translate(3,2)"/>
+      <path d="M14,72 Q36,0 65,0 Q94,0 116,72 Z" fill="url(#cg)" opacity=".9"/>
+      <path d="M14,72 Q36,0 65,0 Q94,0 116,72 Z" fill="none" stroke="#c8a96e" stroke-width="1.5"/>
+      <line x1="38" y1="2" x2="26" y2="72" stroke="#8a7040" stroke-width=".9" opacity=".6"/>
+      <line x1="65" y1="0" x2="65" y2="72" stroke="#8a7040" stroke-width=".9" opacity=".6"/>
+      <line x1="92" y1="2" x2="104" y2="72" stroke="#8a7040" stroke-width=".9" opacity=".6"/>
+      <ellipse cx="65" cy="4" rx="8" ry="4" fill="rgba(0,0,0,.4)" stroke="#9a8050" stroke-width=".8"/>
+    </svg>
+    <svg class="lines-svg" viewBox="0 0 64 46" xmlns="http://www.w3.org/2000/svg">
+      <line x1="32" y1="0" x2="4"  y2="46" stroke="#c8a96e" stroke-width=".9" opacity=".55"/>
+      <line x1="32" y1="0" x2="19" y2="46" stroke="#c8a96e" stroke-width=".9" opacity=".55"/>
+      <line x1="32" y1="0" x2="45" y2="46" stroke="#c8a96e" stroke-width=".9" opacity=".55"/>
+      <line x1="32" y1="0" x2="60" y2="46" stroke="#c8a96e" stroke-width=".9" opacity=".55"/>
+    </svg>
+    <div class="op-fig">
+      <svg class="fig-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="24" cy="20" rx="6" ry="8" fill="#c8a96e"/>
+        <circle cx="24" cy="9" r="4.5" fill="#c8a96e"/>
+        <path d="M18,17 L4,10 L6,15 L17,22 Z" fill="#c8a96e"/>
+        <path d="M30,17 L44,10 L42,15 L31,22 Z" fill="#c8a96e"/>
+        <path d="M20,26 L10,42 L14,43 L23,30 Z" fill="#c8a96e"/>
+        <path d="M28,26 L38,42 L34,43 L25,30 Z" fill="#c8a96e"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="dhud">
+    <div class="drow">
+      <div class="dblk">
+        OPERATIVE: SHREYANSH S.<br>
+        UNIT: AI-DEFENSE DIVISION<br>
+        CLEARANCE: LEVEL 5 ■<br>
+        <span id="drift-stat">DRIFT: 0.0M</span>
+      </div>
+      <div class="dblk" style="text-align:right">
+        MISSION: CMD CENTER RECON<br>
+        LZ: CONFIRMED ■<br>
+        STATUS: FREE FALL<br>
+        <span id="descent-rate">RATE: --- M/S</span>
+      </div>
+    </div>
+    <div class="d-cross"><div class="cring"></div></div>
+    <div class="alt-disp">
+      <span id="anum">8800</span>M
+      <small>ALTITUDE</small>
+    </div>
+  </div>
+  <div id="signal-glitch">⚠ SIGNAL UNSTABLE</div>
+  <div id="lflash"></div>
+</div>
+
+<div id="port">
+  <div id="map"></div>
+
+  <canvas id="hud-canvas"></canvas>
+  <div id="scan-line"></div>
+  <div id="reticle-container"></div>
+
+  <div class="hud-corner hud-tl"><span class="hc-data">SYS: NOMINAL</span></div>
+  <div class="hud-corner hud-tr"><span class="hc-data" id="live-clock">00:00:00 IST</span></div>
+  <div class="hud-corner hud-bl"><span class="hc-data">● LIVE INTEL FEED</span></div>
+  <div class="hud-corner hud-br"><span class="hc-data" id="zoom-lvl">ZOOM: 0.00</span></div>
+
+  <div id="topbar">
+    <div class="t-name">CODERUDRA-X</div>
+    <div class="t-sep">//</div>
+    <div class="t-sub">BUILDING SAFETY-CRITICAL AI VISION SYSTEMS</div>
+    <div class="t-right">
+      <div class="mission-count"><span class="mc-num">11</span><span class="mc-lbl">OPS</span></div>
+      <div class="t-badge">#Building</div>
+    </div>
+  </div>
+
+  <div id="radar-sweep">
+    <svg viewBox="0 0 60 60" style="width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="30" r="28" fill="none" stroke="rgba(0,255,136,.15)" stroke-width="1"/>
+      <circle cx="30" cy="30" r="18" fill="none" stroke="rgba(0,255,136,.1)" stroke-width=".8"/>
+      <circle cx="30" cy="30" r="8" fill="none" stroke="rgba(0,255,136,.1)" stroke-width=".8"/>
+      <g style="transform-origin:30px 30px;animation:sweep 4s linear infinite;">
+        <line x1="30" y1="30" x2="30" y2="2" stroke="rgba(0,255,136,.6)" stroke-width="1"/>
+        <path d="M30,30 L30,2 A28,28 0 0,1 57,30 Z" fill="rgba(0,255,136,.06)"/>
+      </g>
+    </svg>
+  </div>
+
+  <div id="threat-level">
+    <div class="tl-label">THREAT</div>
+    <div class="tl-bars">
+      <div class="tl-bar active"></div><div class="tl-bar active"></div><div class="tl-bar active"></div><div class="tl-bar"></div><div class="tl-bar"></div>
+    </div>
+    <div class="tl-val">ELEVATED</div>
+  </div>
+
+  <div id="map-coords">28°36'N 81°52'E<br>PRAYAGRAJ · INDIA</div>
+
+  <div id="ticker-wrap">
+    <div class="ticker-label">INTEL INTERCEPT</div>
+    <div class="ticker-content" id="ticker-content">AWAITING CONNECTION...</div>
+  </div>
+
+  <!-- Terminal Button Removed. Focus is purely on Military Navigation. -->
+  <div id="botnav">
+    <div class="nbtn" data-nav="op" onclick="openDossier()">[ OPERATIVE DOSSIER ]</div>
+    <div class="nbtn" data-nav="in" onclick="openIntel()">[ INTEL · CONTACT ]</div>
+    <a class="nbtn" href="https://github.com/CODERUDRA-X" target="_blank" rel="noopener">[ GITHUB ]</a>
+    <a class="nbtn" href="https://linkedin.com/in/coderudrax" target="_blank" rel="noopener">[ LINKEDIN ]</a>
+  </div>
+</div>
+
+<!-- Main Island Mission Briefing -->
+<div id="mission-modal" class="h-modal">
+  <div class="hm-backdrop" onclick="closeModal()"></div>
+  <div class="hm-content">
+    <div class="hm-corner hm-tl"></div><div class="hm-corner hm-tr"></div>
+    <div class="hm-corner hm-bl"></div><div class="hm-corner hm-br"></div>
+    <div class="p-close" onclick="closeModal()">✕</div>
+    
+    <div class="ptag" id="mm-tag">// LOADING...</div>
+    <div class="ptitle" id="mm-title">LOADING...</div>
+    <span class="mst" id="mm-status">STATUS</span>
+    <div class="pdiv"></div>
+    
+    <div class="mm-split">
+      <div class="mm-left">
+        <div class="pbody" id="mm-objective"></div>
+        <div class="srow" id="mm-stats"></div>
+        <div class="pdiv"></div>
+        <div class="ptag">// TECH STACK</div>
+        <div style="margin-top:8px" id="mm-stack"></div>
+        
+        <div class="deploy-btn hidden" id="mm-deploy-btn" onclick="enterSector()">
+          ▶ ENTER SECTOR — DEEP DIVE
+        </div>
+      </div>
+      
+      <div class="mm-right" id="mm-right">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deep Lore Dossier (Kuber-Style Narrative Layout) -->
+<!-- Content is rendered by Modals.js from src/data/profile.js -->
+<div id="dossier-modal" class="h-modal">
+  <div class="hm-backdrop" onclick="closeDossier()"></div>
+  <div class="hm-content hm-wide" style="background: #0a0a0a; border: 1px solid var(--border-lit); padding: clamp(20px, 4vw, 40px); border-radius: 8px;">
+    <div class="p-close" onclick="closeDossier()">✕</div>
+
+    <div id="dossier-body" style="display: flex; gap: clamp(20px, 4vw, 40px); flex-wrap: wrap;"></div>
+  </div>
+</div>
+
+<!-- Intel Vault -->
+<!-- Cards are rendered by Modals.js from src/data/profile.js -->
+<div id="intel-modal" class="h-modal">
+  <div class="hm-backdrop" onclick="closeIntel()"></div>
+  <div class="hm-content hm-wide">
+    <div class="hm-corner hm-tl"></div><div class="hm-corner hm-tr"></div>
+    <div class="hm-corner hm-bl"></div><div class="hm-corner hm-br"></div>
+    <div class="p-close" onclick="closeIntel()">✕</div>
+    
+    <div class="ptag" style="margin-bottom:15px">// ESTABLISH CONTACT & SECURE ASSETS</div>
+    <div class="intel-grid" id="intel-grid"></div>
+  </div>
+</div>
+
+<!-- Sector Drill Down Map Layer -->
+<div id="sector-screen">
+  <div id="sector-rtb" onclick="exitSector()">
+    <span class="rtb-arrow">◄</span>
+    <span>RTB — RETURN TO BASE</span>
+  </div>
+
+  <div id="sector-topbar">
+    <div class="st-status">◈ SECTOR ACTIVE</div>
+    <div class="st-name" id="sector-name">LOADING...</div>
+    <div class="st-clearance">CLEARANCE LVL-5</div>
+  </div>
+
+  <div id="sector-map"></div>
+  
+  <canvas id="sector-canvas"></canvas>
+
+  <!-- MOVED HOLOGRAM CONTAINER TO BE INSIDE SECTOR SCREEN FOR PROPER Z-INDEX -->
+  <div id="holo-popup">
+    <div class="holo-base"><div class="holo-ring hr1"></div><div class="holo-ring hr2"></div></div>
+    <div class="hp-content" id="hp-content"></div>
+  </div>
+
+  <div class="hud-corner hud-tl" style="top:52px"><span class="hc-data" id="sector-sys">SECTOR: LOADING</span></div>
+  <div class="hud-corner hud-tr" style="top:52px"><span class="hc-data">INTEL: ACTIVE</span></div>
+  <div class="hud-corner hud-bl"><span class="hc-data">ZOOM: ENHANCED</span></div>
+  <div class="hud-corner hud-br"><span class="hc-data">MODE: RECON</span></div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

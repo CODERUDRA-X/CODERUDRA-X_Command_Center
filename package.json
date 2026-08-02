@@ -1,0 +1,17 @@
+{
+  "name": "coderudra-x-portfolio",
+  "version": "11.2.0",
+  "description": "CODERUDRA-X Command Center — AAA-grade military command-center portfolio (modular Vite build)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
