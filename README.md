@@ -4,7 +4,7 @@
 
 **A Military-Grade Interactive Portfolio.** Not a scrolling résumé — a full tactical command center: hold-to-deploy boot sequence, free-fall drop into a live Leaflet radar map, six mission "islands" with drill-down sector recon, and a holographic HUD for every project.
 
-  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/wow.png?raw=true" alt="NAAD Logo" width="200"/>
+  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/wow.png?raw=true" alt="NAAD Logo" width="900"/>
 
 [![Live Site](https://img.shields.io/badge/LIVE-coderudrax.xyz-00ff88?style=for-the-badge)](https://coderudrax.xyz)
 [![Built with Vite](https://img.shields.io/badge/Built%20with-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev)
@@ -16,7 +16,6 @@
   ![demo](public/assets/demo.gif)
 -->
 </div>
----
 
 ## ✨ What's inside
 
