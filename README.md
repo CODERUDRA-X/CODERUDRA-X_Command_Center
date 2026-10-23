@@ -1,93 +1,112 @@
-# PromptlyAI Research Portfolio — Reproducible Applied AI Research
+<div align="center">
+  
+# CODERUDRA-X — Command Center 🛰️
 
-> **Scope:** independent, reproducible research artifacts for LLM evaluation, inference-cost modelling, consent safeguards, market-observation auditing, and human-reviewed B2B workflow design.
->
-> **Evidence standard:** synthetic fixtures are labelled as synthetic. A demo run proves that the code path executes; it does **not** prove a model is accurate, establish a vendor's current price, reproduce a private company's production system, or validate a legal claim.
+### "The Most Hardcore Spatial Intelligence Portfolio on the Internet™️"
 
-## What is implemented
+**A Military-Grade Mission Control Terminal.** Not a scrolling résumé — a full tactical command center: hold-to-deploy boot sequence, free-fall drop into a live Leaflet radar map, and modular "Islands" rendering localized sub-maps for spatial intelligence assets.
 
-| Workstream | Implemented artifact | What it demonstrates | What it does not claim |
-|---|---|---|---|
-| LLM evaluation | `src/promptly_research/eval_harness.py` | Row-level evaluation of supplied outputs for required content, JSON structure/value checks, refusal signals, and forbidden markers | No model was called by the included fixture run; fixture pass rate is not model quality |
-| Token economics | `src/promptly_research/tokenomics.py` | Cost arithmetic for configurable input/output token rates, easy/hard routing, and cache-hit assumptions | Sample rate card is illustrative, not a current provider quote; no measured “6x moat” claim |
-| Voice workflow safety | `src/promptly_research/voice_consent.py` | Expiring, signed one-time challenge validation and replay rejection | Transcript matching is not speaker identification, proof of legal consent, or deepfake detection |
-| Pricing/funding observations | `src/promptly_research/market_watch.py` | CSV validation and change summaries for source-linked observations | Not a live scraper; no real vendor prices or funding claims are shipped as facts |
-| B2B workflow | `src/promptly_research/b2b_workflow.py` | Evidence-bounded outreach drafting with human approval required | Does not scrape company sites, enrich personal data, or send messages |
+  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/wow.png?raw=true" alt="NAAD Logo" width="900"/>
 
-## Architecture
+[![Live Site](https://img.shields.io/badge/LIVE-coderudrax.xyz-00ff88?style=for-the-badge)](https://coderudrax.xyz)
+[![Built with Vite](https://img.shields.io/badge/Built%20with-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev)
+[![License](https://img.shields.io/github/license/CODERUDRA-X/CODERUDRA-X_Command_Center?style=for-the-badge)](LICENSE)
 
-```mermaid
-flowchart TD
-    A[Prompt cases + expected checks] --> B[Evaluation harness]
-    C[Model or fixture outputs] --> B
-    B --> D[Row-level CSV + summary]
-    E[Editable rate card] --> F[Tokenomics simulator]
-    F --> G[Scenario report]
-    H[Signed one-time challenge] --> I[Consent gate]
-    J[Source-linked observations] --> K[Market data audit]
-    K --> L[Dashboard]
-    M[User-provided evidence] --> N[B2B draft workflow]
-    N --> O[Human review before sending]
+</div>
+
+## 🛡️ Strategic Operational Status (Stealth Mode Active)
+
+This terminal is the central mainframe of **CODERUDRA-X**. It tracks core R&D engineering, decentralized architectures, and mission-critical vision systems developed over 2.5 years of absolute isolation.
+
+*   🛸 **AEGIS-SWARM:** Core AI Defense Tech flagship featuring decentralized multi-agent decision intelligence logic. **[OFFICIALLY RECOGNIZED BY THE INDIAN AIR FORCE (IAF) 🇮🇳]**.
+*   🎙️ **NAAD PROTOCOL:** An ultra-low bandwidth secure transport protocol for Edge AI in degraded networks. **[SHORTLISTED FOR YC VOICE AGENTS HACKATHON, SAN FRANCISCO 🇺🇸]**.
+*   📄 **Intellectual Property:** 4 Core Research Papers locked/pending publication & 1 Deep-Tech Patent currently under construction.
+
+*Note: Core source repositories and full text for defense assets are running under active IP protection. Access is restricted to Level 5 Clearances only.*
+
+---
+
+## 👁️ The Interface Directive
+
+Scrolling web pages don't do justice to edge-AI, drone swarms, and safety-critical infrastructure. Real-world defense tech operates on **spatial intelligence and telemetry**. 
+
+I didn't want to build a standard portfolio. I built a live deployment simulation of the environments my code operates in. This repository replaces the traditional résumé with a fully modular, mathematically driven Leaflet radar map, spatial holograms, and trigonometric radar sweeps.
+
+---
+
+## ⚙️ Infrastructure Core (Technical Stack)
+
+To ensure maximum frame-rate and zero bloat, heavy frameworks were bypassed in favor of a strict **Enterprise-Grade Modular Architecture** powered by raw **Vanilla ES6 Modules** and **Vite**.
+
+| Layer | Technology Choice | Engineering Purpose |
+| :--- | :--- | :--- |
+| **Mapping Engine** | Leaflet.js (`CRS.Simple`) | Hijacked a geographic mapping library to render a custom Cartesian pixel-space environment without real-world coordinates. |
+| **Rendering** | Canvas 2D + CSS3 3D | Math-driven hex grids, circuit traces, and `rotateX` volumetric holograms mapped precisely to live DOM nodes. |
+| **Physics** | Trigonometry + `rAF` | Custom `Math.atan2` loops calculating real-time intersection angles between the radar sweep and active mission nodes. |
+| **Audio** | Web Audio API | Zero audio files (`.mp3`/`.wav`) used. Mechanical clanks and wind swells are 100% mathematically synthesized via oscillators. |
+
+---
+
+## 🎯 System Capabilities
+
+### 🗺️ Sector Drill-Down Architecture
+Navigating into an island doesn't trigger a standard modal—it transitions into a localized Cartesian sub-map.
+* Dynamically calculates bounding boxes for seamless spatial zooming.
+* Renders animated Canvas 2D circuit-traces connecting sub-nodes to the sector's centroid.
+
+### 📡 Trigonometric Radar Intersection
+The radar sweep is fully functional, not a looped CSS background.
+* A `requestAnimationFrame` loop tracks the exact angle of the sweep line.
+* Uses `Math.atan2` to calculate the bearing of every DOM node relative to the screen's center.
+* Triggers synchronized CSS ripple-bursts and "Loot Beam" flares the exact millisecond the radar angle crosses a node's coordinates.
+
+### 🗜️ Space-Aware 3D Holograms
+Clicking a node generates a floor-projected volumetric UI.
+* **Collision Math:** An algorithm calculates viewport boundaries to ensure the panel never renders off-screen, shifting its anchor dynamically.
+* **Perspective:** Uses `perspective(1000px)` and `rotateX()` to lay the UI flat against the isometric map floor while preserving text legibility.
+
+---
+
+## 🗂️ Systems Anatomy
+
+The codebase follows a strict separation of concerns, decoupling static data from UI logic to maintain production-readiness:
+
+```text
+src/
+ ├── constants/     # Static data, boot logs, and the modular MISSIONS JSON array
+ ├── data/          # Profile metrics and operative history
+ ├── context/       # StateStore.js (Global state management)
+ ├── components/    # Isolated UI Logic:
+ │    ├── BootEngine.js       (Neural-radar canvas & deployment logic)
+ │    ├── RadarMap.js         (Leaflet init & Canvas 2D Hex-grid)
+ │    ├── SectorDrillDown.js  (Sub-map routing & circuit-trace logic)
+ │    ├── Hologram.js         (3D Projection math & bounding constraints)
+ │    └── Modals.js           (Dossier & Intel routing)
+ └── main.js        # The Central ES6 Orchestrator
 ```
 
-## Quick start (Windows PowerShell)
+## 🚀 Getting Started
 
-Use Python 3.11 or newer.
-
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -e ".[dev,dashboard]"
-pytest
-python scripts/run_evaluation.py --benchmark benchmarks/synthetic_benchmark.jsonl --outputs benchmarks/fixtures/deterministic_demo_outputs.jsonl --csv reports/demo_fixture_results.csv --summary reports/demo_fixture_summary.json
-python scripts/run_cost_simulation.py --config config/rate_card.example.json --output reports/illustrative_cost_scenario.json
-python scripts/audit_market_data.py --input data/market_observations_demo.csv --output reports/demo_market_audit.json
-streamlit run app.py
+```bash
+git clone https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center.git
+cd CODERUDRA-X_Command_Center
+npm install
+npm run dev        # http://localhost:5173
+npm run build       # production build -> dist/
 ```
 
-The evaluation fixture contains deliberately imperfect examples so the evaluator demonstrates both passing and failing checks. The report labels its adapter as `deterministic_demo_fixture`; do not present its metrics as a model benchmark. The output schema also has optional columns for provider/model/run metadata, request latency, TTFT, token counts, and externally supplied judge scores. A real provider adapter must measure/populate them; `evaluator_runtime_ms` is only the local checker runtime. See [`docs/evaluation_protocol.md`](docs/evaluation_protocol.md) for the measurement boundaries and [`docs/provider_adapter_contract.md`](docs/provider_adapter_contract.md) for the output contract. A helper for measuring the latency of a supplied streaming SDK iterator is in `src/promptly_research/streaming_adapter.py`; it makes no provider calls by itself.
+## 🌐 Deployment
 
-## Replacing fixtures with real evidence
+Pushes to `main` auto-deploy via `.github/workflows/deploy.yml` → GitHub Pages.
+Live at **[coderudrax.xyz](https://coderudrax.xyz)**.
 
-1. **Model evaluation:** add a provider adapter that writes one JSONL object per `case_id` with `response` and `adapter`. Record provider/model/version, prompt-template version, run date, decode parameters, and token usage. Run repeated trials where outputs are stochastic. Keep raw outputs and row-level failures.
-2. **Cost modelling:** replace the example rate card with dated figures copied from official pricing pages or contracts. Save the source URL, access date, currency, caching treatment, and any batch/volume discounts. Run a sensitivity analysis, not just one optimistic scenario.
-3. **Voice safety:** wire in an explicit consent UX and a proper identity/authorization control appropriate to the product. The included gate is a small demonstration only. Never rely on spoken passphrase matching alone to authorize voice cloning.
-4. **Market observations:** populate the CSV only after manually checking primary sources or writing source-specific adapters that respect each provider's terms and robots guidance. Keep a timestamp and evidence URL for each row. Do not describe the tracker as real-time until a scheduled ingestion path has been deployed and monitored.
-5. **B2B workflow:** provide factual, non-sensitive company evidence yourself; review all output; do not send automatically. Validate contact sourcing, consent and applicable outreach rules before integrating any CRM.
+## 👤 About
 
-## Data provenance and privacy
+Built by **Shreyansh Srivastava** ([CODERUDRA-X](https://github.com/CODERUDRA-X)) — AI/ML Engineer & Systems Architect, B.Tech CSE (Data Science) @ UIT Prayagraj. Building safety-critical AI vision systems for indigenous defense infrastructure (`#build4bharat`).
 
-- `benchmarks/synthetic_benchmark.jsonl`: generated synthetic test cases.
-- `benchmarks/fixtures/deterministic_demo_outputs.jsonl`: hand-authored deterministic fixtures, not outputs from a language model.
-- `config/rate_card.example.json`: illustrative assumptions; not vendor rates.
-- `data/market_observations_demo.csv`: clearly marked fictional rows to demonstrate the audit/dashboard path.
-- `data/market_observations_template.csv`: empty schema for verified observations.
-- No company-confidential data, personal contact data, credentials, or proprietary source code should be committed.
+- GitHub: [github.com/CODERUDRA-X](https://github.com/CODERUDRA-X)
+- LinkedIn: [linkedin.com/in/shreyansh-srivastava-9a83b9291](https://linkedin.com/in/shreyansh-srivastava-9a83b9291)
 
-Do **not** add an NDA disclaimer unless a real NDA/proprietary restriction applies and the statement has been approved. This repository is an independent public portfolio; it does not assert that it reproduces Promptly AI's internal methodology.
+---
 
-## Resume bullets supported by the current code
-
-Use these only after you run the tests and can explain the implementation:
-
-- Built a Python evaluation harness that audits supplied LLM outputs for required-content coverage, JSON schema/value validity, refusal behavior, and forbidden markers, exporting case-level CSV evidence.
-- Implemented an assumption-driven inference-cost simulator for model routing and semantic-cache hit rates, with editable rate cards and explicit sensitivity inputs.
-- Prototyped a signed, expiring one-time challenge gate with replay rejection for consent-sensitive voice workflows, documenting the limitations of transcript-only verification.
-- Developed a source-linked market-observation validator and dashboard scaffold for pricing and funding data; live vendor ingestion remains a separate implementation task.
-- Built a human-in-the-loop B2B outreach draft workflow that constrains personalization to user-supplied evidence and requires approval before sending.
-
-Do **not** claim “30+ tools benchmarked,” “6x cost advantage,” “prevented legal liability,” “real-time price bot,” or “₹8 Cr+ funding tracked” on the strength of this repository alone. Those require distinct, auditable evidence.
-
-## Roadmap
-
-- [ ] Add provider-specific model adapters and repeatable real-model benchmark runs.
-- [ ] Add dated official source records to the rate card and market observations.
-- [ ] Add confidence intervals and paired comparisons across models.
-- [ ] Add source-specific permitted price ingestion with change detection and alerting.
-- [ ] Add persistent, atomic replay protection and an explicit consent-record lifecycle for any real deployment.
-- [ ] Add structured evaluation of B2B draft factuality and human-review outcomes.
-
-## License
-
-MIT for the original code in this repository. Third-party model weights, datasets, provider APIs, and source-page content remain subject to their own terms.
+*॥ HAR HAR MAHADEV ॥*
