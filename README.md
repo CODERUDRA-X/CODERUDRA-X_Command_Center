@@ -6,7 +6,7 @@
 
 **A Military-Grade Mission Control Terminal.** Not a scrolling résumé — a full tactical command center: hold-to-deploy boot sequence, free-fall drop into a live Leaflet radar map, and modular "Islands" rendering localized sub-maps for spatial intelligence assets.
 
-  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/wow.png?raw=true" alt="NAAD Logo" width="900"/>
+  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/cinematic-map.webp?raw=true" alt="view" width="900"/>
 
 [![Live Site](https://img.shields.io/badge/LIVE-coderudrax.xyz-00ff88?style=for-the-badge)](https://coderudrax.xyz)
 [![Built with Vite](https://img.shields.io/badge/Built%20with-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev)
