@@ -8,7 +8,7 @@
 
   <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/Screenshot%202026-10-23%20212151.png?raw=true" alt="view" width="900"/>
 
-[![Live Site](https://img.shields.io/badge/LIVE-coderudrax.xyz-00ff88?style=for-the-badge)](https://coderudrax.xyz)
+[![Live Site](https://img.shields.io/badge/LIVE-iamcoderudrax.xyz-00ff88?style=for-the-badge)](https://coderudrax.xyz)
 [![Built with Vite](https://img.shields.io/badge/Built%20with-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev)
 [![License](https://img.shields.io/github/license/CODERUDRA-X/CODERUDRA-X_Command_Center?style=for-the-badge)](LICENSE)
 
