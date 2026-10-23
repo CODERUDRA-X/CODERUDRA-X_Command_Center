@@ -6,7 +6,7 @@
 
 **A Military-Grade Mission Control Terminal.** Not a scrolling résumé — a full tactical command center: hold-to-deploy boot sequence, free-fall drop into a live Leaflet radar map, and modular "Islands" rendering localized sub-maps for spatial intelligence assets.
 
-  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/cinematic-map.webp?raw=true" alt="view" width="900"/>
+  <img src="https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center/blob/main/public/assets/Screenshot%202026-10-23%20212151.png?raw=true" alt="view" width="900"/>
 
 [![Live Site](https://img.shields.io/badge/LIVE-coderudrax.xyz-00ff88?style=for-the-badge)](https://coderudrax.xyz)
 [![Built with Vite](https://img.shields.io/badge/Built%20with-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev)
@@ -85,28 +85,13 @@ src/
  └── main.js        # The Central ES6 Orchestrator
 ```
 
-## 🚀 Getting Started
-
-```bash
-git clone https://github.com/CODERUDRA-X/CODERUDRA-X_Command_Center.git
-cd CODERUDRA-X_Command_Center
-npm install
-npm run dev        # http://localhost:5173
-npm run build       # production build -> dist/
-```
-
 ## 🌐 Deployment
 
 Pushes to `main` auto-deploy via `.github/workflows/deploy.yml` → GitHub Pages.
-Live at **[coderudrax.xyz](https://coderudrax.xyz)**.
+Live at **[coderudrax.xyz](https://iamcoderudrax.xyz)**.
 
-## 👤 About
-
-Built by **Shreyansh Srivastava** ([CODERUDRA-X](https://github.com/CODERUDRA-X)) — AI/ML Engineer & Systems Architect, B.Tech CSE (Data Science) @ UIT Prayagraj. Building safety-critical AI vision systems for indigenous defense infrastructure (`#build4bharat`).
-
-- GitHub: [github.com/CODERUDRA-X](https://github.com/CODERUDRA-X)
-- LinkedIn: [linkedin.com/in/shreyansh-srivastava-9a83b9291](https://linkedin.com/in/shreyansh-srivastava-9a83b9291)
-
+**Built by [CODERUDRA-X](https://github.com/CODERUDRA-X)**
+*Building the future of AI, Vision Systems, and Defense-Tech.*
 ---
 
 *॥ HAR HAR MAHADEV ॥*
